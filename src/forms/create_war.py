@@ -34,7 +34,7 @@ async def cmd_end_war(state, ctx):
     war, msg = await select_war(state, ctx, 'Select the war to end', allow_multiple=False)
     if war is not None:
         war.active = False
-        await msg.edit(contents=f'War \'{war.location}\' has been ended!', components=None)
+        await msg.edit(content=f'War \'{war.location}\' has been ended!', components=None)
         state.save_war_data()
 
 
