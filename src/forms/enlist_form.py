@@ -19,38 +19,42 @@ async def cmd_enlist(state, ctx, username, level, company):
 
     print(f'Started Enlisting {username} ({level}) [{company}]')
 
-    selected_wars = await select_war(state, ctx, 'Select which war to enlist in', allow_multiple=True)
+    selected_wars, sel_msg = await select_war(state, ctx, 'Select which war to enlist in', allow_multiple=True)
     if len(selected_wars) > 0:
-        enlistment = await enlist_form(ctx, state.client, enlistment)
+        enlistment = await enlist_form(ctx, state.client, enlistment, sel_msg)
 
+        if enlistment is None:
+            print(f'Finished Enlisting {username} ({level}) [{company}] FAILED')
+            return
         for war in selected_wars:
             if war.add_enlistment(enlistment.copy()):
-                await ctx.send(content=f'your enlistment application for **{war}** has been updated!', hidden=True)
+                await sel_msg.edit(content=f'your enlistment application for **{war}** has been updated!',
+                                   components=None)
             else:
-                await ctx.send(content=f'your enlistment application for **{war}** has been submitted!', hidden=True)
+                await sel_msg.edit(content=f'your enlistment application for **{war}** has been submitted!',
+                                   components=None)
             await update_war_boards(war, state)
 
         state.save_war_data()
 
         for ch in state.config.get_signup_channels(state.client):
-            discord.Message = await ch.send(embed=enlistment.create_embed())
+            await ch.send(embed=enlistment.create_embed())
 
         # await ctx.send(content=f'You have been successfully enlisted in the war(s):\n {selected_wars}', hidden=True)
     print(f'Finished Enlisting {username} ({level}) [{company}]')
 
 
-async def ask_weapons_for_role(ctx, client, role):
-    msg = await ctx.send(f'What are your weapons for the {role} role?', components=[
+async def ask_weapons_for_role(ctx, client, role, msg):
+    await msg.edit(f'What are your weapons for the {role} role?', components=[
         [SelectMenu('pw', options=weapon_select_options, placeholder='Primary Weapon')],
         [SelectMenu('sw', options=weapon_select_options, placeholder='Secondary Weapon')]
-    ], hidden=True)
+    ])
 
     primary_weapon = None
     secondary_weapon = None
     while True:
         menu: SelectedMenu = await msg.wait_for('select', client, timeout=60)
         await menu.respond(ninja_mode=True)
-        print('id', menu.custom_id)
         if menu.custom_id == 'pw':
             primary_weapon = menu.selected_options[0].label
         if menu.custom_id == 'sw':
@@ -61,21 +65,20 @@ async def ask_weapons_for_role(ctx, client, role):
     return role, primary_weapon, secondary_weapon
 
 
-async def enlist_form(ctx, client, enlistment):
+async def enlist_form(ctx: SlashedCommand, client, enlistment, msg):
     # embed_msg: discord.Message = await ctx.send(embed=enlistment.create_embed(), hidden=True)
 
     try:
-        msg = await ctx.send('What is your faction?', components=[
+        await msg.edit('What is your faction?', components=[
             SelectMenu('faction', options=faction_select_options, placeholder='Select Faction')
-        ], hidden=True)
-
+        ])
         menu: SelectedMenu = await msg.wait_for('select', client, timeout=60)
         await menu.respond(ninja_mode=True)
         enlistment.faction = menu.selected_options[0].label
 
-        msg = await ctx.send('What roles can you fill?', components=[
-            SelectMenu('role', options=role_select_options, placeholder='Desired Roles', max_values=len(WAR_ROLES))
-        ], hidden=True)
+        await msg.edit('What role can you fill?', components=[
+            SelectMenu('role', options=role_select_options, placeholder='Desired Role', max_values=1)  # len(WAR_ROLES))
+        ])
 
         menu: SelectedMenu = await msg.wait_for('select', client, timeout=60)
         await menu.respond(ninja_mode=True)
@@ -84,10 +87,11 @@ async def enlist_form(ctx, client, enlistment):
 
         enlistment.roles = {}
         for role in roles:
-            r, pw, sw = await ask_weapons_for_role(ctx, client, role)
+            r, pw, sw = await ask_weapons_for_role(ctx, client, role, msg)
             enlistment.roles[r] = f'{pw}/{sw}'
             # await embed_msg.edit(embed=enlistment.create_embed())
+        return enlistment
 
     except asyncio.TimeoutError:
-        await ctx.send(content="you took too long to choose", hidden=True)
-    return enlistment
+        await msg.edit(content="you took too long to choose", components=None)
+    return None

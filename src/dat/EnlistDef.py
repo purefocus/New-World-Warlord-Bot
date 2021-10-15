@@ -118,9 +118,12 @@ class Enlistment:
     def make_table_row(self):
 
         roles = ''
+        weapons = ''
         for role in self.roles:
-            roles += f'{role} ({self.roles[role]})\n'
-        roles = roles[:-1]
+            roles = role
+            weapons = self.roles[role]
+            # roles += f'{role} ({self.roles[role]})\n'
+        # roles = roles[:-1]
 
-        return [self.id, self.username, self.level, self.faction, self.company, roles]
+        return [self.username, self.level, self.faction, self.company, roles, weapons]
         # return f'\"{self.username}\", \"{self.level}\", \"{self.faction}\", \"{self.company}\", \"{roles}\"\n'

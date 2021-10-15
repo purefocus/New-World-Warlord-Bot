@@ -128,12 +128,17 @@ async def on_message(message: discord.Message):
     if state.config.is_war_management(message):
         await handle_management_message(state, message)
 
+    if state.config.is_war_signup(message):
+        await handle_signup_message(state, message)
+
 
 @client.event
 async def on_ready():
     print(f'Logged in as {client.user} (ID: {client.user.id})')
     print('------')
     config.resolve(client)
+
+    # client.
 
     state.load_war_data()
     for war in state.wars:

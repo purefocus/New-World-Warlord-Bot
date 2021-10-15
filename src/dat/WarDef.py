@@ -1,4 +1,5 @@
 import discord
+from dat.UserSignup import *
 from dat.EnlistDef import *
 from dat.WarStrategy import WarStrategy
 
@@ -64,7 +65,7 @@ class WarDef:
     def get_embeded(self):
         embed = discord.Embed(title='War! [Beta]')
         embed.add_field(name='Details',
-                        value=f'Location: {self.location}\nTime: {self.war_time}\nLeading Company: {self.owners}',
+                        value=f'Location: {self.location}\nTime: {self.war_time}\nContact: {self.owners}',
                         inline=False)
 
         embed.add_field(name='Attackers', value=self.attacking, inline=True)
@@ -88,7 +89,7 @@ class WarDef:
 
     def create_table(self, filter=None):
 
-        table = [['User_id', 'Name', 'Level', 'Faction', 'Company', 'Roles']]
+        table = [['Name', 'Level', 'Faction', 'Company', 'Role', 'Weapons']]
         for enlisted in self.enlisted:
             entry = self.enlisted[enlisted]
             if filter is None or filter(entry):

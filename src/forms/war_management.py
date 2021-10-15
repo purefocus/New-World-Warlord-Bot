@@ -75,7 +75,7 @@ async def cmd_war_group_configure(state, ctx, group_id, name):
 
 
 async def cmd_get_enlisted(state, ctx):
-    war: WarDef = await select_war(state, ctx, 'Select the war to get the enlistment roster for', allow_multiple=False)
+    war, _ = await select_war(state, ctx, 'Select the war to get the enlistment roster for', allow_multiple=False)
     if war is not None:
         # create_war_roster(war)
         # roster = create_text_war_roster(war)
@@ -88,7 +88,7 @@ async def cmd_get_enlisted(state, ctx):
 
 
 async def cmd_dl_enlisted(state, ctx):
-    war: WarDef = await select_war(state, ctx, 'Select the war to get the enlistment roster for', allow_multiple=False)
+    war, _ = await select_war(state, ctx, 'Select the war to get the enlistment roster for', allow_multiple=False)
     if war is not None:
         file = create_war_roster(war)
         await ctx.send(content='Here\'s the roster.', file=discord.File(file), hidden=True)

@@ -1,0 +1,77 @@
+{
+    "Fort Mourningdale": {
+        "active": false,
+        "attacking": "The Research Commission (Syndicate)",
+        "defending": "Pink Wolf Raiders (Marauders)",
+        "location": "Fort Mourningdale",
+        "wartime": "Oct. 13th 8:30-9:00pm EST",
+        "owners": "Insert contact info here",
+        "enlisted": {
+            "purefocus": {
+                "id": "0",
+                "username": "purefocus",
+                "level": "42",
+                "faction": "Syndicate",
+                "company": "The Positive Treehouse",
+                "roles": {
+                    "Tank": "Sword+Shield (15)/War Hammer (12)"
+                },
+                "group": null
+            }
+        },
+        "boards": {
+            "894675526776676382": {
+                "cid": 896290527622869003,
+                "mid": 898452977428348970
+            },
+            "897098434153185290": {
+                "cid": 897161705333858346,
+                "mid": 898452978283995167
+            }
+        },
+        "groups": {
+            "groups": {
+                "0": {
+                    "name": "Group 0",
+                    "members": {}
+                },
+                "1": {
+                    "name": "Group 1",
+                    "members": {}
+                },
+                "2": {
+                    "name": "Group 2",
+                    "members": {}
+                },
+                "3": {
+                    "name": "Group 3",
+                    "members": {}
+                },
+                "4": {
+                    "name": "Group 4",
+                    "members": {}
+                },
+                "5": {
+                    "name": "Group 5",
+                    "members": {}
+                },
+                "6": {
+                    "name": "Group 6",
+                    "members": {}
+                },
+                "7": {
+                    "name": "Group 7",
+                    "members": {}
+                },
+                "8": {
+                    "name": "Group 8",
+                    "members": {}
+                },
+                "9": {
+                    "name": "Group 9",
+                    "members": {}
+                }
+            }
+        }
+    }
+}

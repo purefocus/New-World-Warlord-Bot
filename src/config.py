@@ -7,6 +7,7 @@ import os
 FILES_DIR = '../files'
 CFG_FILE = os.path.join(FILES_DIR, 'config.json')
 TMP_DIR = os.path.join(FILES_DIR, '.tmp')
+WAR_DATA = os.path.join(FILES_DIR, 'wardata.json')
 
 BOT_TOKEN_FILE = os.path.join(FILES_DIR, 'token.json')
 if not os.path.exists(FILES_DIR):
@@ -40,24 +41,33 @@ class Config:
 
     def __init__(self):
         self.bot_token = None
-        self.war_board_channels = [
-            {'gid': 897098434153185290, 'cid': 897161705333858346},  # Test Server
-            {'gid': 894675526776676382,
-             'cid': 896290527622869003,  # #war-boards
-             # 'cid': 895494342653927435  # bot-setup-and-data
-
-             }  # 895494342653927435} # Syndicate Group Server
-        ]
-        self.war_signup_channels = [
-            {'gid': 897098434153185290, 'cid': 897114437553647636},  # Test Server
-            {'gid': 894675526776676382,
-             'cid': 896289677164822578,  # #war-signup
-             # 'cid': 895494342653927435  # bot-setup-and-data
-
-             }  # 895494342653927435} # Syndicate Group Server
-        ]
+        # self.war_board_channels = [
+        #     {'gid': 897098434153185290, 'cid': 897161705333858346},  # Test Server
+        #     {'gid': 894675526776676382,
+        #      'cid': 896290527622869003,  # #war-boards
+        #      # 'cid': 895494342653927435  # bot-setup-and-data
+        #
+        #      }  # 895494342653927435} # Syndicate Group Server
+        # ]
+        # self.war_signup_channels = [
+        #     {'gid': 897098434153185290, 'cid': 897114437553647636},  # Test Server
+        #     {'gid': 894675526776676382,
+        #      'cid': 896289677164822578,  # #war-signup
+        #      # 'cid': 895494342653927435  # bot-setup-and-data
+        #
+        #      }  # 895494342653927435} # Syndicate Group Server
+        # ]
+        self.war_notice_channels = {
+            '897098434153185290': '897161705333858346',  # Test server: wars
+            '894675526776676382': '896290527622869003'
+        }
+        self.war_signup_channels = {
+            '897098434153185290': '897114437553647636',  # Test server: war-signup
+            '894675526776676382': '896289677164822578'
+        }
         self.war_management_channels = {
-            '897098434153185290': '898221091372298250'  # Test server: war-management
+            '897098434153185290': '898221091372298250',  # Test server: war-management
+            '894675526776676382': '896290527622869003'
         }
         self.question_timeout = int(60 * 5)
 
@@ -141,23 +151,26 @@ class Config:
     def get_signup_channels(self, client: discord.Client):
         channels = []
         for guild in client.guilds:
-            for ch in self.war_signup_channels:
-                if ch['gid'] == guild.id:
-                    channels.append(guild.get_channel(ch['cid']))
+            if str(guild.id) in self.war_signup_channels:
+                channels.append(guild.get_channel(int(self.war_signup_channels[str(guild.id)])))
         return channels
 
     def get_notice_channels(self, client: discord.Client):
         channels = []
         for guild in client.guilds:
-            for ch in self.war_board_channels:
-                if ch['gid'] == guild.id:
-                    channels.append(guild.get_channel(ch['cid']))
+            if str(guild.id) in self.war_notice_channels:
+                channels.append(guild.get_channel(int(self.war_notice_channels[str(guild.id)])))
         return channels
 
     def is_war_management(self, msg: discord.Message):
         gid = str(msg.guild.id)
         return gid in self.war_management_channels \
                and str(msg.channel.id) == self.war_management_channels[gid]
+
+    def is_war_signup(self, msg: discord.Message):
+        gid = str(msg.guild.id)
+        return gid in self.war_signup_channels \
+               and str(msg.channel.id) == self.war_signup_channels[gid]
 
     def save(self):
         try:

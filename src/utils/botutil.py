@@ -29,15 +29,16 @@ async def set_selected_war(state, ctx: SlashedCommand):
     return None
 
 
-async def select_war(state, ctx, question, allow_multiple=False):
+async def select_war(state, ctx: SlashedCommand, question, allow_multiple=False):
     select_options = []
 
     for w in state.wars:
         if state.wars[w].active:
             select_options.append(SelectOption(value=w, label=state.wars[w].location))
+
     if len(select_options) == 0:
         await ctx.send(content='There are no active wars!', hidden=True)
-        return [] if allow_multiple else None
+        return ([], None) if allow_multiple else (None, None)
 
     msg = await ctx.send(question,
                          components=[
@@ -46,6 +47,7 @@ async def select_war(state, ctx, question, allow_multiple=False):
                                         placeholder='War',
                                         max_values=len(select_options) if allow_multiple else 1)
                          ], hidden=True)
+
     menu: SelectedMenu = await msg.wait_for('select', state.client, timeout=state.config.question_timeout)
 
     selected_wars = []
@@ -53,10 +55,9 @@ async def select_war(state, ctx, question, allow_multiple=False):
         selected_wars.append(state.wars[selected])
 
     await menu.respond(ninja_mode=True)
-
     if len(selected_wars) > 0:
-        return selected_wars if allow_multiple else selected_wars[0]
-    return [] if allow_multiple else None
+        return (selected_wars, msg) if allow_multiple else (selected_wars[0], msg)
+    return ([], msg) if allow_multiple else (None, msg)
 
 
 def create_war_roster(war):
@@ -88,9 +89,15 @@ def create_text_war_roster(war, filter=None):
 
 
 async def add_war_board(war, state):
-    channels = state.config.get_notice_channels(state.client)
-    for ch in channels:
-        await ch.send(embed=war.get_embeded())
+    if war is not None:
+        channels = state.config.get_notice_channels(state.client)
+        for ch in channels:
+            msg: discord.Message = await ch.send(embed=war.get_embeded())
+            war.add_board(msg)
+
+            # button = Button()
+            # await(msg.re)
+
     # for ch in state.config.war_board_channels:
     #     guild = state.client.get_guild(ch['gid'])
     #     channel = guild.get_channel(ch['cid'])
