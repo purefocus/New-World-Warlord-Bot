@@ -116,6 +116,15 @@ async def warlord_config(ctx):
     await cmd_bot_configure(state, ctx)
 
 
+@ui.slash.command(description='Shutdown the bot', **config.cmd_cfg_elev)
+async def warlord_shutdown(ctx):
+    state.save_war_data()
+    config.save()
+    import sys
+    sys.exit(1)
+    # TODO: Elevate Permissions
+
+
 ####################
 #    Bot Events    #
 ####################
