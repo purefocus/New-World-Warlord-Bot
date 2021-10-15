@@ -17,7 +17,7 @@ if not os.path.exists(TMP_DIR):
 
 WAR_ROLES = ['DPS', 'Healer', 'Tank', 'Siege', 'Sharpshooter']
 
-WEAPON_CHOICES = ['Sword and Shield', 'Rapier', 'Hatchet',  # One handed
+WEAPON_CHOICES = ['Sword & Shield', 'Rapier', 'Hatchet',  # One handed
                   'Spear', 'Great Axe', 'War Hammer',  # 2 handed
                   'Bow', 'Musket',  # Ranged
                   'Fire Staff', 'Life Staff', 'Ice Gauntlet']  # Magic
@@ -41,33 +41,18 @@ class Config:
 
     def __init__(self):
         self.bot_token = None
-        # self.war_board_channels = [
-        #     {'gid': 897098434153185290, 'cid': 897161705333858346},  # Test Server
-        #     {'gid': 894675526776676382,
-        #      'cid': 896290527622869003,  # #war-boards
-        #      # 'cid': 895494342653927435  # bot-setup-and-data
-        #
-        #      }  # 895494342653927435} # Syndicate Group Server
-        # ]
-        # self.war_signup_channels = [
-        #     {'gid': 897098434153185290, 'cid': 897114437553647636},  # Test Server
-        #     {'gid': 894675526776676382,
-        #      'cid': 896289677164822578,  # #war-signup
-        #      # 'cid': 895494342653927435  # bot-setup-and-data
-        #
-        #      }  # 895494342653927435} # Syndicate Group Server
-        # ]
+
         self.war_notice_channels = {
             '897098434153185290': '897161705333858346',  # Test server: wars
-            '894675526776676382': '896290527622869003'
+            '894675526776676382': '896290527622869003'  # Syndicate Server #war-boards
         }
         self.war_signup_channels = {
             '897098434153185290': '897114437553647636',  # Test server: war-signup
-            '894675526776676382': '896289677164822578'
+            '894675526776676382': '896289677164822578'  # Syndicate Server #war-signup
         }
         self.war_management_channels = {
             '897098434153185290': '898221091372298250',  # Test server: war-management
-            '894675526776676382': '896290527622869003'
+            '894675526776676382': '896290527622869003'  # Syndicate Server #war-boards
         }
         self.question_timeout = int(60 * 5)
 
@@ -100,34 +85,40 @@ class Config:
                     },
                     'permissions': {
                         'enlist': [
-                            {'name': 'WarAdmin',
-                             'id': '897191745060745297',
-                             'type': 'role'
-                             },
-                            {'name': '@purefocus#3061',
-                             'id': '198526201374048256',
-                             'type': 'user'
-                             }
+                            {
+                                'name': 'WarAdmin',
+                                'id': '897191745060745297',
+                                'type': 'role'
+                            },
+                            {
+                                'name': '@purefocus#3061',
+                                'id': '198526201374048256',
+                                'type': 'user'
+                            }
                         ],
                         'create': [
-                            {'name': 'WarAdmin',
-                             'id': '897191745060745297',
-                             'type': 'role'
-                             },
-                            {'name': '@purefocus#3061',
-                             'id': '198526201374048256',
-                             'type': 'user'
-                             }
+                            {
+                                'name': 'WarAdmin',
+                                'id': '897191745060745297',
+                                'type': 'role'
+                            },
+                            {
+                                'name': '@purefocus#3061',
+                                'id': '198526201374048256',
+                                'type': 'user'
+                            }
                         ],
                         'manage': [
-                            {'name': 'WarAdmin',
-                             'id': '897191745060745297',
-                             'type': 'role'
-                             },
-                            {'name': '@purefocus#3061',
-                             'id': '198526201374048256',
-                             'type': 'user'
-                             }
+                            {
+                                'name': 'WarAdmin',
+                                'id': '897191745060745297',
+                                'type': 'role'
+                            },
+                            {
+                                'name': '@purefocus#3061',
+                                'id': '198526201374048256',
+                                'type': 'user'
+                            }
                         ],
                     }
                 }
@@ -236,34 +227,40 @@ class GuildConfig:
             },
             'permissions': {
                 'enlist': [
-                    {'name': 'WarAdmin',
-                     'id': '897191745060745297',
-                     'type': 'role'
-                     },
-                    {'name': '@purefocus#3061',
-                     'id': '198526201374048256',
-                     'type': 'user'
-                     }
+                    {
+                        'name': 'WarAdmin',
+                        'id': '897191745060745297',
+                        'type': 'role'
+                    },
+                    {
+                        'name': '@purefocus#3061',
+                        'id': '198526201374048256',
+                        'type': 'user'
+                    }
                 ],
                 'create': [
-                    {'name': 'WarAdmin',
-                     'id': '897191745060745297',
-                     'type': 'role'
-                     },
-                    {'name': '@purefocus#3061',
-                     'id': '198526201374048256',
-                     'type': 'user'
-                     }
+                    {
+                        'name': 'WarAdmin',
+                        'id': '897191745060745297',
+                        'type': 'role'
+                    },
+                    {
+                        'name': '@purefocus#3061',
+                        'id': '198526201374048256',
+                        'type': 'user'
+                    }
                 ],
                 'manage': [
-                    {'name': 'WarAdmin',
-                     'id': '897191745060745297',
-                     'type': 'role'
-                     },
-                    {'name': '@purefocus#3061',
-                     'id': '198526201374048256',
-                     'type': 'user'
-                     }
+                    {
+                        'name': 'WarAdmin',
+                        'id': '897191745060745297',
+                        'type': 'role'
+                    },
+                    {
+                        'name': '@purefocus#3061',
+                        'id': '198526201374048256',
+                        'type': 'user'
+                    }
                 ],
             }
         }
