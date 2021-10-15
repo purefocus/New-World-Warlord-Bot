@@ -1,7 +1,7 @@
 {
     "Fort Mourningdale": {
         "id": "7dc79c0b-6ecc-43bc-a901-14c867ba732c",
-        "active": true,
+        "active": false,
         "attacking": "The Research Commission (Syndicate)",
         "defending": "Pink Wolf Raiders (Marauders)",
         "location": "Fort Mourningdale",
@@ -21,14 +21,6 @@
             }
         },
         "boards": {
-            "897098434153185290": {
-                "cid": 897161705333858346,
-                "mid": 898672978965966940
-            },
-            "894675526776676382": {
-                "cid": 896290527622869003,
-                "mid": 898672979431551087
-            },
             "897098434153185290": {
                 "cid": 897161705333858346,
                 "mid": 898676259440185384
@@ -131,6 +123,107 @@
                         "Troubled": "yout",
                         "dakowanda": null,
                         "fghfghh": null
+                    }
+                }
+            }
+        }
+    },
+    "<Territory Name>": {
+        "id": "9a7b29d6-f83b-46da-a558-a3600fdce1af",
+        "active": true,
+        "attacking": "<Some Company Name> (<Attacking Faction>)",
+        "defending": "<Some Other Company> (<Other Faction>)",
+        "location": "<Territory Name>",
+        "wartime": "<date/time> (Oct. 13th 8:30-9:00pm EST)",
+        "owners": "<contact info here> (Company Name / @yourself)",
+        "enlisted": {
+            "<Character Name>": {
+                "id": "0",
+                "username": "<Character Name>",
+                "level": "<level>",
+                "faction": "<Faction Name>",
+                "company": "<Company Name>",
+                "roles": {
+                    "<role>": "<Weapon Type> (<Master Level>)/<Weapon Type> (<Master Level>)"
+                },
+                "group": null
+            }
+        },
+        "boards": {
+            "897098434153185290": {
+                "cid": 897161705333858346,
+                "mid": 898688294647386122
+            },
+            "894675526776676382": {
+                "cid": 896290527622869003,
+                "mid": 898688295318470776
+            }
+        },
+        "groups": {
+            "groups": {
+                "group 1": {
+                    "name": "<Group Name>",
+                    "members": {
+                        "player1": "lead,dps",
+                        "player2": "tank,siege",
+                        "player3": "healer",
+                        "player4": "siege",
+                        "player5": "sharpshooter,dps"
+                    }
+                },
+                "group 2": {
+                    "name": "<Group 2 Name>",
+                    "members": {
+                        "player6": null,
+                        "": null
+                    }
+                },
+                "group 3": {
+                    "name": "",
+                    "members": {
+                        "": null
+                    }
+                },
+                "group 4": {
+                    "name": "",
+                    "members": {
+                        "": null
+                    }
+                },
+                "group 5": {
+                    "name": "",
+                    "members": {
+                        "": null
+                    }
+                },
+                "group 6": {
+                    "name": "",
+                    "members": {
+                        "": null
+                    }
+                },
+                "group 7": {
+                    "name": "",
+                    "members": {
+                        "": null
+                    }
+                },
+                "group 8": {
+                    "name": "",
+                    "members": {
+                        "": null
+                    }
+                },
+                "group 9": {
+                    "name": "",
+                    "members": {
+                        "": null
+                    }
+                },
+                "group 10": {
+                    "name": "",
+                    "members": {
+                        "": null
                     }
                 }
             }

@@ -58,7 +58,7 @@ class WarDef:
         return self
 
     def add_board(self, msg: discord.Message):
-        self.war_board[msg.guild.id] = {'cid': msg.channel.id, 'mid': msg.id}
+        self.war_board[str(msg.guild.id)] = {'cid': msg.channel.id, 'mid': msg.id}
 
     def add_enlistment(self, enlisted) -> bool:
         name = self.enlisted.is_enlisted(enlisted)
@@ -79,9 +79,9 @@ class WarDef:
 
         self.groups.embed(embed)
 
-        embed.set_footer(text=f'**Use /enlist to signup for this war! \n\nID: {self.id}')
+        embed.set_footer(text=f'\nID: {self.id}')
 
-        embed.add_field(name='Enlisted', value=str(len(self.enlisted)), inline=False)
+        embed.add_field(name='Enlisted', value=f'{str(len(self.enlisted))}\n**!**  Use @#war-signup to signup for this war!', inline=False)
 
         return embed
 
