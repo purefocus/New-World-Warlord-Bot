@@ -88,12 +88,26 @@ def create_text_war_roster(war, filter=None):
     return formatted_roster
 
 
-async def add_war_board(war, state):
+async def add_war_board(war: WarDef, state, update_if_exists=True):
     if war is not None:
-        channels = state.config.get_notice_channels(state.client)
+        channels = state.config.get_notice_channels()
         for ch in channels:
-            msg: discord.Message = await ch.send(embed=war.get_embeded())
-            war.add_board(msg)
+            flag = True
+            if str(ch.guild.id) in war.war_board:
+                dat = war.war_board[str(ch.guild.id)]
+                if int(ch.id) == int(dat['cid']):
+                    msg = ch.get_partial_message(int(dat['mid']))
+                    if msg is not None:
+                        print('Update Existing!')
+                        if update_if_exists:
+                            await msg.edit(embed=war.embeds())
+                            flag = False
+                        else:
+                            await msg.delete()
+
+            if flag:
+                msg: discord.Message = await ch.send(embed=war.embeds())
+                war.add_board(msg)
 
             # button = Button()
             # await(msg.re)
@@ -109,9 +123,10 @@ async def update_war_boards(war, state):
     for guild in state.client.guilds:
         if str(guild.id) in war.war_board:
             dat = war.war_board[str(guild.id)]
-            channel = guild.get_channel(dat['cid'])
-            msg = channel.get_partial_message(dat['mid'])
-            await msg.edit(embed=war.get_embeded())
+            channel = guild.get_channel(int(dat['cid']))
+            msg = channel.get_partial_message(int(dat['mid']))
+            if msg is not None:
+                await msg.edit(embed=war.embeds())
 
 
 class ChannelReference:

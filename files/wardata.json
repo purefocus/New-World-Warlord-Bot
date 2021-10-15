@@ -1,75 +1,137 @@
 {
     "Fort Mourningdale": {
-        "active": false,
+        "id": "7dc79c0b-6ecc-43bc-a901-14c867ba732c",
+        "active": true,
         "attacking": "The Research Commission (Syndicate)",
         "defending": "Pink Wolf Raiders (Marauders)",
         "location": "Fort Mourningdale",
         "wartime": "Oct. 13th 8:30-9:00pm EST",
-        "owners": "Insert contact info here",
+        "owners": "<contact info here>",
         "enlisted": {
             "purefocus": {
                 "id": "0",
                 "username": "purefocus",
-                "level": "42",
-                "faction": "Syndicate",
-                "company": "The Positive Treehouse",
+                "level": "45",
+                "faction": "syndicate",
+                "company": "Positive Treehouse",
                 "roles": {
-                    "Tank": "Sword+Shield (15)/War Hammer (12)"
+                    "Tank": "S&S (18)/War Hammer (13)"
                 },
                 "group": null
             }
         },
         "boards": {
+            "897098434153185290": {
+                "cid": 897161705333858346,
+                "mid": 898672978965966940
+            },
             "894675526776676382": {
                 "cid": 896290527622869003,
-                "mid": 898452977428348970
+                "mid": 898672979431551087
             },
             "897098434153185290": {
                 "cid": 897161705333858346,
-                "mid": 898452978283995167
+                "mid": 898676259440185384
+            },
+            "894675526776676382": {
+                "cid": 896290527622869003,
+                "mid": 898676260375502858
             }
         },
         "groups": {
             "groups": {
-                "0": {
-                    "name": "Group 0",
-                    "members": {}
+                "group 1": {
+                    "name": "Tank 1",
+                    "members": {
+                        "Bhfeice": "lead,tank",
+                        "IMainSniperzz": null,
+                        "": null,
+                        "Vyrsaelis": null
+                    }
                 },
-                "1": {
-                    "name": "Group 1",
-                    "members": {}
+                "group 2": {
+                    "name": "Tank 2",
+                    "members": {
+                        "purefocus": "lead,tank",
+                        "Vaspio": "dps",
+                        "1lxst": "dps",
+                        "Original": "Geralthealer",
+                        "Sinclook": "dps"
+                    }
                 },
-                "2": {
-                    "name": "Group 2",
-                    "members": {}
+                "group 3": {
+                    "name": "Tank 3",
+                    "members": {
+                        "lalala": null,
+                        "Boogula": null,
+                        "MeditatedStone0": null,
+                        "": null
+                    }
                 },
-                "3": {
-                    "name": "Group 3",
-                    "members": {}
+                "group 4": {
+                    "name": "General Damage/Rando",
+                    "members": {
+                        "MAinZQc": null,
+                        "itorlamoppe": null,
+                        "SteauIo": null,
+                        "KrzyKamii": null,
+                        "": null
+                    }
                 },
-                "4": {
-                    "name": "Group 4",
-                    "members": {}
+                "group 5": {
+                    "name": "General Damage/Rando",
+                    "members": {
+                        "Civilanarchy": null,
+                        "Woffums": null,
+                        "Snargleflarg": null,
+                        "Juhzy": null,
+                        "Wardsquid": null
+                    }
                 },
-                "5": {
-                    "name": "Group 5",
-                    "members": {}
+                "group 6": {
+                    "name": "Flank 1",
+                    "members": {
+                        "KiwiMango": null,
+                        "Sir": "Avo",
+                        "Bensoupis": null,
+                        "Jedo": null,
+                        "Sahagin": null
+                    }
                 },
-                "6": {
-                    "name": "Group 6",
-                    "members": {}
+                "group 7": {
+                    "name": "Flank 2",
+                    "members": {
+                        "stickyhandjoe": null,
+                        "PapiBezos": null,
+                        "": null,
+                        "Lurrn": null
+                    }
                 },
-                "7": {
-                    "name": "Group 7",
-                    "members": {}
+                "group 8": {
+                    "name": "Backline 1",
+                    "members": {
+                        "mixxy": null,
+                        "Valaso": null,
+                        "Jeoff": "Bezsoz",
+                        "Gernard": null,
+                        "Valdeaux": null
+                    }
                 },
-                "8": {
-                    "name": "Group 8",
-                    "members": {}
+                "group 9": {
+                    "name": "Backline 2 - Siege 2",
+                    "members": {
+                        "": null
+                    }
                 },
-                "9": {
-                    "name": "Group 9",
-                    "members": {}
+                "group 10": {
+                    "name": "Backline 3 - Siege 1",
+                    "members": {
+                        "Rory": "McRory",
+                        "Estellise": null,
+                        "Troubled": "yout",
+                        "dakowanda": null,
+                        "fghfghh": null
+                    }
                 }
             }
         }

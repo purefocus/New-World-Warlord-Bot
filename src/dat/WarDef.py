@@ -1,13 +1,16 @@
 import discord
 from dat.UserSignup import *
 from dat.EnlistDef import *
-from dat.WarStrategy import WarStrategy
+from dat.GroupAssignments import *
+
+import uuid
 
 
 class WarDef:
 
     def __init__(self, data=None):
-        self.id = None
+        self.id = str(uuid.uuid4())
+
         self.active = False
 
         self.attacking = None
@@ -19,13 +22,14 @@ class WarDef:
         self.enlisted = Enlisted()
         self.war_board = {}
 
-        self.groups = WarStrategy(self)
+        self.groups = GroupAssignments(None, self)
 
         if data is not None:
             self.from_dict(data)
 
     def as_dict(self):
         ret = {
+            'id': self.id,
             'active': self.active,
             'attacking': self.attacking,
             'defending': self.defending,
@@ -34,11 +38,12 @@ class WarDef:
             'owners': self.owners,
             'enlisted': self.enlisted.as_dict(),
             'boards': self.war_board,
-            'groups': self.groups.as_dict()
+            'groups': self.groups.__dict__()
         }
         return ret
 
     def from_dict(self, dic):
+        self.id = dic['id']
         self.active = dic['active']
         self.attacking = dic['attacking']
         self.defending = dic['defending']
@@ -63,17 +68,20 @@ class WarDef:
         return name is not None
 
     def get_embeded(self):
-        embed = discord.Embed(title='War! [Beta]')
+        embed = discord.Embed(title=f':exclamation: __War Declared!__ :exclamation: ')
+        # embed.set_author(name='Test')
         embed.add_field(name='Details',
-                        value=f'Location: {self.location}\nTime: {self.war_time}\nContact: {self.owners}',
+                        value=f'Location: `{self.location}`\nTime: `{self.war_time}`\nContact: `{self.owners}`',
                         inline=False)
 
         embed.add_field(name='Attackers', value=self.attacking, inline=True)
         embed.add_field(name='Defenders', value=self.defending, inline=True)
 
-        embed.add_field(name='Enlisted', value=str(len(self.enlisted)), inline=False)
+        self.groups.embed(embed)
 
-        embed.set_footer(text='Use /enlist to signup for this war!')
+        embed.set_footer(text=f'**Use /enlist to signup for this war! \n\nID: {self.id}')
+
+        embed.add_field(name='Enlisted', value=str(len(self.enlisted)), inline=False)
 
         return embed
 
@@ -96,3 +104,9 @@ class WarDef:
                 table.append(entry.make_table_row())
 
         return table
+
+    def embeds(self):
+        # ret = [self.get_embeded(), self.groups.embed()]
+        # if self.groups is not None and len(self.groups) > 0:
+        #     ret.append(self.groups.embed())
+        return self.get_embeded()

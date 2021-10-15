@@ -1,49 +1,20 @@
 {
-    "guilds": {
-        "897098434153185290": {
-            "name": "Warlord Test Server",
-            "channels": {
-                "signup": "war-signup",
-                "listings": "wars"
-            },
-            "permissions": {
-                "enlist": [
-                    {
-                        "name": "WarAdmin",
-                        "id": "897191745060745297",
-                        "type": "role"
-                    },
-                    {
-                        "name": "@purefocus#3061",
-                        "id": "198526201374048256",
-                        "type": "user"
-                    }
-                ],
-                "create": [
-                    {
-                        "name": "WarAdmin",
-                        "id": "897191745060745297",
-                        "type": "role"
-                    },
-                    {
-                        "name": "@purefocus#3061",
-                        "id": "198526201374048256",
-                        "type": "user"
-                    }
-                ],
-                "manage": [
-                    {
-                        "name": "WarAdmin",
-                        "id": "897191745060745297",
-                        "type": "role"
-                    },
-                    {
-                        "name": "@purefocus#3061",
-                        "id": "198526201374048256",
-                        "type": "user"
-                    }
-                ]
-            }
-        }
+  "guilds": {
+    "897098434153185290": {
+      "name": "Warlord Test server",
+      "channels": {
+        "signup": "war-signup",
+        "notice": "wars",
+        "management": "war-management"
+      }
+    },
+    "894675526776676382": {
+      "name": "Ohonoo Syndicate Group",
+      "channels": {
+        "signup": "war-signup",
+        "notice": "war-boards",
+        "management": "war-boards"
+      }
     }
+  }
 }

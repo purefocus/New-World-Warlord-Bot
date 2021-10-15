@@ -8,7 +8,7 @@ from forms.bot_configure import *
 from utils.botutil import *
 
 client = commands.Bot(" ")
-ui = UI(client, slash_options={'auto_sync': True, "wait_sync": 2, "delete_unused": True})
+ui = UI(client, slash_options={'auto_sync': False, "wait_sync": 2, "delete_unused": True})
 
 config = Config()
 config.load()
@@ -54,44 +54,48 @@ async def repost_war(ctx):
     await cmd_repost_war(state, ctx)
 
 
+'''
+
 ####################
 # War Organization #
 ####################
 
-@ui.slash.command(description='Creates 10 placeholder groups that for a war to place selected players in',
-                  **config.cmd_cfg_elev)
-async def make_groups(ctx):
-    await cmd_war_make_groups(state, ctx)
+# @ui.slash.command(description='Creates 10 placeholder groups that for a war to place selected players in',
+#                   **config.cmd_cfg_elev)
+# async def make_groups(ctx):
+#     await cmd_war_make_groups(state, ctx)
+# 
+# 
+# @ui.slash.command(description='Changes which war you are focusing on.', **config.cmd_cfg_elev)
+# async def select(ctx):
+#     await cmd_war_select(state, ctx)
+# 
+# 
+# @ui.slash.command(options=[
+#     SlashOption(int, name='user_id', description='The ID of the user you are assigning a group', required=True),
+#     SlashOption(int, name='group_id', description='The group you are assigning the user to. values: [0-9]',
+#                 required=True),
+#     SlashOption(str, name='role', description=f'{WAR_ROLES}', required=True),
+# ], description='Assigns a player to a group', **config.cmd_cfg_elev)
+# async def assign(ctx, user_id, group_id, role):
+#     await cmd_war_assign(state, ctx, user_id, group_id, role)
+# 
+# 
+# @ui.slash.command(options=[
+#     SlashOption(int, name='user_id', description='The ID of the user you are removing from the war', required=True),
+# ], description='Unassigns a player from all groups', **config.cmd_cfg_elev)
+# async def unassign(ctx, user_id):
+#     await cmd_war_unassign(state, ctx, user_id)
+# 
+# 
+# @ui.slash.command(options=[
+#     SlashOption(int, name='group_id', description='The group you are configuring', required=True),
+#     SlashOption(str, name='name', description='The name of the group', required=True),
+# ], description='Renames a group. The group ID will remain the same though [0-10]', **config.cmd_cfg_elev)
+# async def group_configure(ctx, group_id, name):
+#     await cmd_war_group_configure(state, ctx, group_id, name)
 
-
-@ui.slash.command(description='Changes which war you are focusing on.', **config.cmd_cfg_elev)
-async def select(ctx):
-    await cmd_war_select(state, ctx)
-
-
-@ui.slash.command(options=[
-    SlashOption(int, name='user_id', description='The ID of the user you are assigning a group', required=True),
-    SlashOption(int, name='group_id', description='The group you are assigning the user to. values: [0-9]',
-                required=True),
-    SlashOption(str, name='role', description=f'{WAR_ROLES}', required=True),
-], description='Assigns a player to a group', **config.cmd_cfg_elev)
-async def assign(ctx, user_id, group_id, role):
-    await cmd_war_assign(state, ctx, user_id, group_id, role)
-
-
-@ui.slash.command(options=[
-    SlashOption(int, name='user_id', description='The ID of the user you are removing from the war', required=True),
-], description='Unassigns a player from all groups', **config.cmd_cfg_elev)
-async def unassign(ctx, user_id):
-    await cmd_war_unassign(state, ctx, user_id)
-
-
-@ui.slash.command(options=[
-    SlashOption(int, name='group_id', description='The group you are configuring', required=True),
-    SlashOption(str, name='name', description='The name of the group', required=True),
-], description='Renames a group. The group ID will remain the same though [0-10]', **config.cmd_cfg_elev)
-async def group_configure(ctx, group_id, name):
-    await cmd_war_group_configure(state, ctx, group_id, name)
+'''
 
 
 @ui.slash.command(description='Replies with a table of all the users enlisted for a specific war',
@@ -108,12 +112,34 @@ async def download_enlisted(ctx):
 
 
 #####################
+#  Error Handling   #
+#####################
+
+@client.event
+async def on_command_error(ctx, error):
+    print(colors.red('[ERROR] Comand ', ctx.name, ': ', error))
+    import traceback
+    import sys
+    traceback.print_exception(*sys.exc_info())
+
+
+@client.event
+async def on_error(event_method, *args, **kwargs):
+    print(colors.red('[ERROR] ', event_method, ': ', str(args), str(kwargs)))
+    import traceback
+    import sys
+    traceback.print_exception(*sys.exc_info())
+
+
+#####################
 # Bot Configuration #
 #####################
 
-@ui.slash.command(description='Allows configuring the bot', **config.cmd_cfg_elev)
-async def warlord_config(ctx):
-    await cmd_bot_configure(state, ctx)
+@ui.slash.command(name='warlord_cfg', options=[
+    SlashOption(str, name='options', description='configuration options', required=True),
+], description='Allows configuring the bot', **config.cmd_cfg_elev)
+async def warlord_config(ctx, options: str):
+    await cmd_bot_configure(state, ctx, options)
 
 
 @ui.slash.command(description='Shutdown the bot', **config.cmd_cfg_elev)
@@ -129,37 +155,51 @@ async def warlord_shutdown(ctx):
 #    Bot Events    #
 ####################
 
+# @client.event
+# async def on_message(message: discord.Message):
+#     try:
+#         if message.author == client.user:
+#             return
+#
+#         if state.config.is_war_management(message):
+#             await handle_management_message(state, message)
+#
+#         if state.config.is_war_signup(message):
+#             await handle_signup_message(state, message)
+#     except Exception as e:
+#         import traceback
+#         import sys
+#         traceback.print_exception(*sys.exc_info())
+
 @client.event
-async def on_message(message: discord.Message):
-    if message.author == client.user:
-        return
-
-    if state.config.is_war_management(message):
-        await handle_management_message(state, message)
-
-    if state.config.is_war_signup(message):
-        await handle_signup_message(state, message)
-
+async def on_message_edit(self, before: discord.Message, after: discord.Message):
+    print('Test!')
 
 @client.event
 async def on_ready():
-    print(f'Logged in as {client.user} (ID: {client.user.id})')
-    print('------')
-    config.resolve(client)
+    try:
+        print(f'Logged in as {client.user} (ID: {client.user.id})')
+        print('------')
+        config.resolve(client)
 
-    # client.
+        # await config.test_resolved()
 
-    state.load_war_data()
-    for war in state.wars:
-        await update_war_boards(state.wars[war], state)
-        if state.wars[war].groups is not None:
-            await state.wars[war].groups.update_boards(client)
+        state.load_war_data()
+        for war in state.wars:
+            await update_war_boards(state.wars[war], state)
+
+    except Exception as e:
+        import traceback
+        import sys
+        traceback.print_exception(*sys.exc_info())
 
 
 state.load_war_data()
 for war in state.wars:
     generate_enlistment_pdf(state.wars[war])
+from cog_management import WarManagementCog
 
+client.add_cog(WarManagementCog(client, state))
 client.run(config.bot_token)
 
 if __name__ == '__main__':

@@ -23,6 +23,8 @@ class BotState:
                     or war.defending == old_war.defending:
                 war.enlisted = old_war.enlisted
                 war.war_board = old_war.war_board
+                war.groups = old_war.groups
+                war.id = old_war.id
 
         self.wars[war.location] = war
 

@@ -37,7 +37,7 @@ async def cmd_enlist(state, ctx, username, level, company):
 
         state.save_war_data()
 
-        for ch in state.config.get_signup_channels(state.client):
+        for ch in state.config.get_signup_channels():
             await ch.send(embed=enlistment.create_embed())
 
         # await ctx.send(content=f'You have been successfully enlisted in the war(s):\n {selected_wars}', hidden=True)
