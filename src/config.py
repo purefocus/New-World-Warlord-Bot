@@ -15,15 +15,6 @@ if not os.path.exists(FILES_DIR):
 if not os.path.exists(TMP_DIR):
     os.mkdir(TMP_DIR)
 
-WAR_ROLES = ['DPS', 'Healer', 'Tank', 'Siege', 'Sharpshooter']
-
-WEAPON_CHOICES = ['Sword & Shield', 'Rapier', 'Hatchet',  # One handed
-                  'Spear', 'Great Axe', 'War Hammer',  # 2 handed
-                  'Bow', 'Musket',  # Ranged
-                  'Fire Staff', 'Life Staff', 'Ice Gauntlet']  # Magic
-
-FACTIONS = ['Syndicate', 'Covenant', 'Marauders']
-
 
 def tmpfile(file):
     return os.path.join(TMP_DIR, file)

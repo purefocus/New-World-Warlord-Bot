@@ -6,6 +6,8 @@ from discord_ui import *
 from config import *
 from utils.botutil import *
 
+from utils.details import WEAPON_CHOICES, WAR_ROLES, FACTIONS
+
 weapon_select_options = [SelectOption(i, x) for (i, x) in enumerate(WEAPON_CHOICES)]
 role_select_options = [SelectOption(i, x) for (i, x) in enumerate(WAR_ROLES)]
 faction_select_options = [SelectOption(i, x) for (i, x) in enumerate(FACTIONS)]

@@ -81,10 +81,10 @@ class UserSignup:
         self.preferred_group = data['preferred_group']
 
     def embed(self) -> discord.Embed:
-        embed = discord.Embed(title='War Enlistment')
-        user_data = f'*name*: {self.username} (level {self.level})\n*Faction*: {self.faction}\n*Company*: {self.company}'
+        embed = discord.Embed(title=f'{self.username} ({self.level})')
+        user_data = f'*Faction*: {self.faction}\n*Company*: {self.company}'
 
-        embed.add_field(name='User', value=user_data, inline=False)
+        embed.add_field(name='Affiliation', value=user_data, inline=False)
 
         embed.add_field(name='Role', value=self.role, inline=True)
         embed.add_field(name='Weapons', value=f'{self.primary_weapon}\n{self.secondary_weapon}', inline=True)

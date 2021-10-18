@@ -6,10 +6,12 @@ from forms.enlist_form import cmd_enlist
 from forms.war_management import *
 from forms.bot_configure import *
 from utils.botutil import *
+from forms.dm_enlist import *
+from cog_management import WarManagementCog
+from cog_admin import AdminCog
 
 client = commands.Bot(" ")
-ui = UI(client, slash_options={'auto_sync': False, "wait_sync": 2, "delete_unused": True})
-
+ui = UI(client, slash_options={'auto_sync': True, "wait_sync": 2, "delete_unused": True})
 config = Config()
 config.load()
 state = BotState(client, config)
@@ -142,13 +144,18 @@ async def warlord_config(ctx, options: str):
     await cmd_bot_configure(state, ctx, options)
 
 
-@ui.slash.command(description='Shutdown the bot', **config.cmd_cfg_elev)
-async def warlord_shutdown(ctx):
-    state.save_war_data()
-    config.save()
-    import sys
-    sys.exit(1)
-    # TODO: Elevate Permissions
+@ui.slash.command(name='warlord_cmd_sync', **config.cmd_cfg_elev)
+async def warlord_cmd_sync(ctx):
+    await ui.slash.sync_commands(delete_unused=True)
+
+
+# @ui.slash.command(description='Shutdown the bot', **config.cmd_cfg_elev)
+# async def warlord_shutdown(ctx):
+#     state.save_war_data()
+#     config.save()
+#     import sys
+#     sys.exit(1)
+#     # TODO: Elevate Permissions
 
 
 ####################
@@ -172,10 +179,6 @@ async def warlord_shutdown(ctx):
 #         traceback.print_exception(*sys.exc_info())
 
 @client.event
-async def on_message_edit(self, before: discord.Message, after: discord.Message):
-    print('Test!')
-
-@client.event
 async def on_ready():
     try:
         print(f'Logged in as {client.user} (ID: {client.user.id})')
@@ -197,9 +200,10 @@ async def on_ready():
 state.load_war_data()
 for war in state.wars:
     generate_enlistment_pdf(state.wars[war])
-from cog_management import WarManagementCog
 
 client.add_cog(WarManagementCog(client, state))
+client.add_cog(DMEnlistmentCog(client, state))
+client.add_cog(AdminCog(client, state))
 client.run(config.bot_token)
 
 if __name__ == '__main__':

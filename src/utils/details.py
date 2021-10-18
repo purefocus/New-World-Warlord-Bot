@@ -1,3 +1,12 @@
+WEAPON_CHOICES = ['Sword & Shield', 'Rapier', 'Hatchet',  # One handed
+                  'Spear', 'Great Axe', 'War Hammer',  # 2 handed
+                  'Bow', 'Musket',  # Ranged
+                  'Fire Staff', 'Life Staff', 'Ice Gauntlet']  # Magic
+
+WAR_ROLES = ['DPS', 'Healer', 'Tank', 'Siege', 'Sharpshooter']
+
+FACTIONS = ['Syndicate', 'Covenant', 'Marauders']
+
 def add_mapping(mappings, name: str, aliases: list):
     fort_name = f'{name}'
     mappings[name.lower()] = fort_name
@@ -21,7 +30,8 @@ add_mapping(role_emoji_mappings, ':crown:', ['leader', 'lead'])
 ##########################
 location_mappings = {}
 add_mapping(location_mappings, 'Fort First Light', ['First Light', 'firstlight', 'FL'])
-add_mapping(location_mappings, 'Fort Monarch\'s Bluff', ['Monarch\'s Bluff', 'MB', 'monarchs bluff', 'monarchs', 'bluff'])
+add_mapping(location_mappings, 'Fort Monarch\'s Bluff',
+            ['Monarch\'s Bluff', 'MB', 'monarchs bluff', 'monarchs', 'bluff'])
 add_mapping(location_mappings, 'Fort Brightwood', ['Brightwood', 'BW', 'blight'])
 add_mapping(location_mappings, 'Fort Weaver\'s Fen', ['Weaver\'s Fen', 'weavers fen', 'WF', 'weavers'])
 add_mapping(location_mappings, 'Fort Mourningdale', ['MD', 'mourningdale', 'morningdale'])
@@ -30,7 +40,7 @@ add_mapping(location_mappings, 'Fort Cutlass Keys', ['Cutlass Keys', 'CK', 'cutl
 add_mapping(location_mappings, 'Fort Restless Shores', ['Restless Shores', 'RS', 'restless', 'shores'])
 add_mapping(location_mappings, 'Fort Ebonscale Reach', ['Ebonscale Reach', 'ER', 'ebonscale', 'reach'])
 add_mapping(location_mappings, 'Fort Reekwater', ['Reekwater', 'RW', 'reek'])
-add_mapping(location_mappings, 'Fort Windsward', ['Windsward','WW'])
+add_mapping(location_mappings, 'Fort Windsward', ['Windsward', 'WW'])
 
 
 def get_location(loc):

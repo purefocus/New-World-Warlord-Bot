@@ -65,23 +65,27 @@ class WarDef:
         if name is not None:
             enlisted.id = self.enlisted[name].id
         self.enlisted.enlist(enlisted)
+
         return name is not None
 
     def get_embeded(self):
         embed = discord.Embed(title=f':exclamation: __War Declared!__ :exclamation: ')
         # embed.set_author(name='Test')
-        embed.add_field(name='Details',
-                        value=f'Location: `{self.location}`\nTime: `{self.war_time}`\nContact: `{self.owners}`',
+        if self.attacking is not None:
+            embed.add_field(name='Details',
+                            value=f'Location: `{self.location}`\nTime: `{self.war_time}`\nContact: {self.owners}',
+                            inline=False)
+            embed.add_field(name='Attackers', value=self.attacking, inline=True)
+            embed.add_field(name='Defenders', value=self.defending, inline=True)
+
+            self.groups.embed(embed)
+
+        embed.add_field(name='Enlisted',
+                        value=f'{str(len(self.enlisted))}',
                         inline=False)
 
-        embed.add_field(name='Attackers', value=self.attacking, inline=True)
-        embed.add_field(name='Defenders', value=self.defending, inline=True)
+        # embed.set_footer(text=f'\nID: {self.id}')
 
-        self.groups.embed(embed)
-
-        embed.set_footer(text=f'\nID: {self.id}')
-
-        embed.add_field(name='Enlisted', value=f'{str(len(self.enlisted))}\n**!**  Use @#war-signup to signup for this war!', inline=False)
 
         return embed
 

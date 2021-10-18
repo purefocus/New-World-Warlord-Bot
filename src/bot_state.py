@@ -3,6 +3,7 @@ import config
 import json
 import discord
 from discord.ext import commands
+from discord_ui import Button
 
 
 class BotState:
@@ -56,3 +57,42 @@ class BotState:
 
     def set_modifying_war(self, userid, war):
         self.war_selection[userid] = war
+
+    async def update_war_boards(self, war):
+        for guild in self.client.guilds:
+            if str(guild.id) in war.war_board:
+                dat = war.war_board[str(guild.id)]
+                channel = guild.get_channel(int(dat['cid']))
+                msg = channel.get_partial_message(int(dat['mid']))
+                if msg is not None:
+                    await msg.edit(**self.create_board(war))
+
+    def create_board(self, war: WarDef, btn=False):
+        ret = {
+            'embed': war.embeds(),
+        }
+        if btn:
+            ret['components'] = [
+                Button(custom_id=f'btn:enlist:{war.location}', label='Enlist Now!')
+            ]
+        return ret
+
+    async def add_war_board(self, war: WarDef, update_if_exists=True):
+        if war is not None:
+            channels = self.config.get_notice_channels()
+            for ch in channels:
+                flag = True
+                if str(ch.guild.id) in war.war_board:
+                    dat = war.war_board[str(ch.guild.id)]
+                    if int(ch.id) == int(dat['cid']):
+                        msg = ch.get_partial_message(int(dat['mid']))
+                        if msg is not None:
+                            if update_if_exists:
+                                await msg.edit(**self.create_board(war))
+                                flag = False
+                            else:
+                                await msg.delete()
+
+                if flag:
+                    msg: discord.Message = await ch.send(**self.create_board(war, btn=True))
+                    war.add_board(msg)
