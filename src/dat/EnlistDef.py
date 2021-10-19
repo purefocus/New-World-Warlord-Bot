@@ -138,4 +138,5 @@ class Enlistment:
             roles = role
             weapons = self.roles[role]
 
-        return f'[{replace_emojis(roles)} {self.level}] **{self.username}** *[{self.company} ({self.faction[0]})]*'
+        # return f'[{replace_emojis(roles)} {self.level}] **{self.username}** *[{self.company} ({self.faction[0]})]*'
+        return f'[{replace_emojis(roles)} {self.level}] **{self.username}** *[{weapons}]*'
