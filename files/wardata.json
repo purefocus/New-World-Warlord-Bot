@@ -9,13 +9,52 @@
         "owners": "<@!897096655634047007>",
         "enlisted": {
             "purefocus": {
-                "id": "0",
                 "username": "purefocus",
                 "level": 52,
                 "faction": "Syndicate",
-                "company": "the Positive Treehouse",
+                "company": "The Positive Treehouse",
                 "roles": {
-                    "Tank": "Sword & Shield (20)/War Hammer (15)"
+                    "Tank": "Sword & Shield/War Hammer"
+                },
+                "group": null
+            },
+            "I clicked": {
+                "username": "I clicked",
+                "level": 53,
+                "faction": "Syndicate",
+                "company": "Lotus Trading Company",
+                "roles": {
+                    "Siege": "Life Staff (20)/War Hammer (16)"
+                },
+                "group": null
+            },
+            "Bhfeice": {
+                "username": "Bhfeice",
+                "level": 54,
+                "faction": "Syndicate",
+                "company": "The Research Commission",
+                "roles": {
+                    "Tank": "Sword & Shield (19)/War Hammer (18)"
+                },
+                "group": null
+            },
+            "1lxst": {
+                "username": "1lxst",
+                "level": 55,
+                "faction": "Syndicate",
+                "company": "Thiccc Bois",
+                "roles": {
+                    "Tank": "Sword & Shield (16)/Great Axe (16)"
+                },
+                "group": null
+            },
+            "dfgsdgdfgs": {
+                "username": "dfgsdgdfgs",
+                "level": "dfgsdgdfgs",
+                "faction": "dfgsdgdfgs",
+                "company": "dfgsdgdfgs",
+                "roles": {
+                    "dfgsdgdfgs": "dfgsdgdfgs/dfgsdgdfgs"
                 },
                 "group": null
             }

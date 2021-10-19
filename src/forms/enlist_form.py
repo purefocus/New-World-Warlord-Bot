@@ -5,6 +5,7 @@ from discord_ui import *
 
 from config import *
 from utils.botutil import *
+from bot_state import BotState
 
 from utils.details import WEAPON_CHOICES, WAR_ROLES, FACTIONS
 
@@ -13,11 +14,15 @@ role_select_options = [SelectOption(i, x) for (i, x) in enumerate(WAR_ROLES)]
 faction_select_options = [SelectOption(i, x) for (i, x) in enumerate(FACTIONS)]
 
 
-async def cmd_enlist(state, ctx, username, level, company):
+async def cmd_enlist(state: BotState, ctx, username, level, company):
     enlistment = Enlistment()
     enlistment.username = username
     enlistment.level = level
     enlistment.company = company
+    print(level)
+    if not 0 < int(level) <= 60:
+        await ctx.send('Your level must be between 0 and 60!', hidden=True)
+        return
 
     print(f'Started Enlisting {username} ({level}) [{company}]')
 
@@ -35,12 +40,12 @@ async def cmd_enlist(state, ctx, username, level, company):
             else:
                 await sel_msg.edit(content=f'your enlistment application for **{war}** has been submitted!',
                                    components=None)
-            await update_war_boards(war, state)
+            await state.add_enlistment(war, enlistment, save=False)
 
-        state.save_war_data()
+        if len(selected_wars) > 0:
+            state.save_war_data()
 
-        for ch in state.config.get_signup_channels():
-            await ch.send(embed=enlistment.create_embed())
+        await state.announce_signup(enlistment)
 
         # await ctx.send(content=f'You have been successfully enlisted in the war(s):\n {selected_wars}', hidden=True)
     print(f'Finished Enlisting {username} ({level}) [{company}]')

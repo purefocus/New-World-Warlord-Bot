@@ -21,7 +21,8 @@ question_list = [
     {
         'question': 'What level is your character?',
         'response_type': int,
-        'key': 'level'
+        'key': 'level',
+        'check': lambda response, answers: None if 0 < response <= 60 else 'Your answer must be between 0-60'
     },
     {
         'question': 'What Faction are you?',
@@ -46,7 +47,8 @@ question_list = [
     {
         'followup': lambda x: f"What is your Mastery Level for your {x['primary_weapon']}",
         'response_type': int,
-        'key': 'primary_level'
+        'key': 'primary_level',
+        'check': lambda response, answers: None if 0 < response <= 20 else 'Your answer must be between 0-20'
     },
     {
         'question': 'What is your Secondary Weapon?',
@@ -59,6 +61,7 @@ question_list = [
         'followup': lambda x: f"What is your Mastery Level for your {x['secondary_weapon']}",
         'response_type': int,
         'key': 'secondary_level',
+        'check': lambda response, answers: None if 0 < response <= 20 else 'Your answer must be between 0-20'
     },
     {
         'question': 'Do you have a preferred group? Enter No if you do not have one.',
@@ -99,7 +102,8 @@ async def question(client: commands.Bot, ctx, answers,
     else:
         test: discord.Message = await client.wait_for('message',
                                                       check=lambda x: x.author == ctx.author and
-                                                                      x.type == discord.ChannelType.private, timeout=120)
+                                                                      x.channel.type == discord.ChannelType.private,
+                                                      timeout=120)
 
         response = test.content
         if response_type == int:
@@ -138,9 +142,9 @@ class DMEnlistmentCog(commands.Cog):
                     key, response = await question(self.client, ctx, responses, **q)
                     if key is None:
                         return False
-
                 responses[key] = response
 
+            # print_dict(responses)
             user = UserSignup()
             user.faction = responses['faction']
             user.company = responses['company']
@@ -151,19 +155,15 @@ class DMEnlistmentCog(commands.Cog):
             user.secondary_weapon = f"{responses['secondary_weapon']} ({responses['secondary_level']})"
             user.preferred_group = responses['group']
 
-            war.add_enlistment(user.to_enlistment())
-
-            self.state.save_war_data()
-
-            for ch in self.state.config.get_signup_channels():
-                await ch.send(embed=user.embed())
-
-            await self.state.update_war_boards(war)
+            await self.state.add_enlistment(war, user.to_enlistment())
 
             return True
 
         except asyncio.TimeoutError as e:
-            return False
+            import traceback
+            import sys
+            traceback.print_exception(*sys.exc_info())
+        return False
 
     @commands.Cog.listener()
     async def on_message(self, msg: discord.Message):

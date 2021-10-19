@@ -143,6 +143,15 @@ class Config:
         for guild_key in gdict:
             self.guilds[guild_key] = GuildConfig(guild_key, gdict[guild_key])
 
+        if 'config' not in self.config:
+            self.config = {
+                'announce_signup': True
+            }
+
+        cfg = self.config['config']
+        self.announce_signup = cfg['announce_signup']
+        self.save()
+
     def add_guild(self, guild: discord.Guild):
         gc = self.guilds[guild.id] = GuildConfig(str(guild.id), guild=guild)
         self.config['guilds'][guild.id] = gc.__dict__()

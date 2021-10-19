@@ -15,6 +15,34 @@ class BotState:
 
         self.war_selection = {}
 
+    async def add_enlistment(self, war: WarDef, user: Enlistment, save=True, announce=True):
+        try:
+            num_enlisted = len(war)
+            if isinstance(user, UserSignup):
+                enl = user.to_enlistment()
+                war.add_enlistment(enl)
+            else:
+                war.add_enlistment(user)
+
+            if self.config.announce_signup and announce:
+                await self.announce_signup(user)
+
+            if num_enlisted != len(war):
+                await self.update_war_boards(war)
+
+            if save:
+                self.save_war_data()
+
+        except Exception as e:
+            import traceback
+            import sys
+            traceback.print_exception(*sys.exc_info())
+
+    async def announce_signup(self, user):
+        if self.config.announce_signup:
+            for ch in self.config.get_signup_channels():
+                await ch.send(embed=user.embed())
+
     def add_war(self, war: WarDef):
         if war.location in self.wars:
             old_war = self.wars[war.location]
@@ -36,7 +64,7 @@ class BotState:
 
         json.dump(saved_data, open(config.WAR_DATA, 'w+'), indent=4)
 
-        print('Saved: ', saved_data)
+        # print('Saved: ', saved_data)
 
     def load_war_data(self):
         try:

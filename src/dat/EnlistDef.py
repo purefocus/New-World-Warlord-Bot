@@ -16,20 +16,18 @@ class Enlisted:
         return name if name in self.roster else None
 
     def enlist(self, entry):
-        if entry.id is None:
-            entry.id = str(len(self.roster))
         self.roster[entry.username] = entry
 
     def as_dict(self):
         result = {}
         for entry in self.roster:
-            result[entry] = self.roster[entry].as_dict()
+            result[entry] = self.roster[entry].__dict__()
         return result
 
     def from_dict(self, data):
         self.roster = {}
         for key in data:
-            self.roster[key] = Enlistment(data[key])
+            self.roster[key] = Enlistment(**data[key])
         return self
 
     def __getitem__(self, item):
@@ -49,33 +47,31 @@ class Enlisted:
 
 class Enlistment:
 
-    def __init__(self, data=None):
-        self.id = None
-        self.username = None
-        self.level = None
-        self.faction = None
-        self.company = None
+    def __init__(self, username=None, level=None, faction=None, company=None, group=None, roles=None, **args):
+        self.username = username
+        self.level = level
+        self.faction = faction
+        self.company = company
 
-        self.group = None
+        self.group = group
 
-        self.roles: dict = {}
+        self.roles: dict = roles
+        if roles is None:
+            self.roles = {}
 
-        if data is not None:
-            self.from_dict(data)
+        # if data is not None:
+        #     self.from_dict(data)
 
     def copy(self):
-        cpy = Enlistment()
-        cpy.username = self.username
-        cpy.level = self.level
-        cpy.faction = self.faction
-        cpy.company = self.company
-        cpy.roles = self.roles.copy()
+        return Enlistment(username=self.username,
+                          level=self.level,
+                          faction=self.faction,
+                          company=self.company,
+                          roles=self.roles,
+                          group=self.group)
 
-        return cpy
-
-    def as_dict(self):
+    def __dict__(self):
         return {
-            'id': self.id,
             'username': self.username,
             'level': self.level,
             'faction': self.faction,
@@ -84,17 +80,16 @@ class Enlistment:
             'group': self.group
         }
 
-    def from_dict(self, dic):
-        self.id = dic['id']
-        self.username = dic['username']
-        self.level = dic['level']
-        self.faction = dic['faction']
-        self.company = dic['company']
-        self.roles = dic['roles']
-        self.group = dic['group']
-        return self
+    # def from_dict(self, dic):
+    #     self.username = dic['username']
+    #     self.level = dic['level']
+    #     self.faction = dic['faction']
+    #     self.company = dic['company']
+    #     self.roles = dic['roles']
+    #     self.group = dic['group']
+    #     return self
 
-    def create_embed(self):
+    def embed(self):
         embed = discord.Embed(title='War Enlistment')
         user_data = f'*name*: {self.username} (level {self.level})\n*Faction*: {self.faction}\n*Company*: {self.company}'
 

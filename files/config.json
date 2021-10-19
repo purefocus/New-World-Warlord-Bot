@@ -1,4 +1,7 @@
 {
+  "config": {
+    "announce_signup": false
+  },
   "guilds": {
     "897098434153185290": {
       "name": "Warlord Test server",

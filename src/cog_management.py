@@ -157,16 +157,17 @@ async def handle_signup_message(state: BotState, message: discord.Message, edite
                 await test.respond(ninja_mode=True)
 
             if war is not None:
+                await state.add_enlistment(war, entry)
                 war.add_enlistment(entry.to_enlistment())
                 await resp.edit(
                     content='You have been signed up!\nDo not forget to sign up at the war board in-game too!',
                     components=None)
 
-            await message.delete()
-            await channel.send(embed=entry.embed())
+            # await message.delete()
+            # await channel.send(embed=entry.embed())
 
-            await update_war_boards(war, state)
-            state.save_war_data()
+            # await update_war_boards(war, state)
+            # state.save_war_data()
             return True
 
     except Exception as e:

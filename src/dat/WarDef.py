@@ -62,8 +62,6 @@ class WarDef:
 
     def add_enlistment(self, enlisted) -> bool:
         name = self.enlisted.is_enlisted(enlisted)
-        if name is not None:
-            enlisted.id = self.enlisted[name].id
         self.enlisted.enlist(enlisted)
 
         return name is not None
@@ -84,8 +82,9 @@ class WarDef:
                         value=f'{str(len(self.enlisted))}',
                         inline=False)
 
-        # embed.set_footer(text=f'\nID: {self.id}')
+        embed.set_footer(text='Use /enlist to sign up!')
 
+        # embed.set_footer(text=f'\nID: {self.id}')
 
         return embed
 
@@ -95,6 +94,9 @@ class WarDef:
             if entry.id == id:
                 return entry
         return None
+
+    def __len__(self):
+        return len(self.enlisted)
 
     def __repr__(self):
         return f'{self.location}'
