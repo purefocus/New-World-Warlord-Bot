@@ -132,3 +132,6 @@ dmypy.json
 token.json
 .tmp/
 wardata.json
+config.json
+bot_config.json
+wars.json
