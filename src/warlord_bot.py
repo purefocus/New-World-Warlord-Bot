@@ -189,8 +189,12 @@ async def on_ready():
 
         state.load_war_data()
         for war in state.wars:
-            await update_war_boards(state.wars[war], state)
-
+            war = state.wars[war]
+            try:
+                await update_war_boards(war, state)
+            except Exception as e:
+                if war.active:
+                    await add_war_board(war, state)
     except Exception as e:
         import traceback
         import sys
