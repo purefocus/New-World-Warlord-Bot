@@ -51,9 +51,13 @@ class Enlistment:
 
     def __init__(self, username=None, level=None, faction=None, company=None, group=None, roles=None, **args):
         self.username = username
-        self.level = level
         self.faction = faction
         self.company = company
+
+        try:
+            self.level = int(level)
+        except:
+            self.level = -1
 
         self.group = group
 
