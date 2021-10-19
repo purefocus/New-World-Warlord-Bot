@@ -106,21 +106,22 @@ class BotState:
         return ret
 
     async def add_war_board(self, war: WarDef, update_if_exists=True):
-        if war is not None:
-            channels = self.config.get_notice_channels()
-            for ch in channels:
-                flag = True
-                if str(ch.guild.id) in war.war_board:
-                    dat = war.war_board[str(ch.guild.id)]
-                    if int(ch.id) == int(dat['cid']):
-                        msg = ch.get_partial_message(int(dat['mid']))
-                        if msg is not None:
-                            if update_if_exists:
-                                await msg.edit(**self.create_board(war))
-                                flag = False
-                            else:
-                                await msg.delete()
+        if self.config.announce_war:
+            if war is not None:
+                channels = self.config.get_notice_channels()
+                for ch in channels:
+                    flag = True
+                    if str(ch.guild.id) in war.war_board:
+                        dat = war.war_board[str(ch.guild.id)]
+                        if int(ch.id) == int(dat['cid']):
+                            msg = ch.get_partial_message(int(dat['mid']))
+                            if msg is not None:
+                                if update_if_exists:
+                                    await msg.edit(**self.create_board(war))
+                                    flag = False
+                                else:
+                                    await msg.delete()
 
-                if flag:
-                    msg: discord.Message = await ch.send(**self.create_board(war, btn=True))
-                    war.add_board(msg)
+                    if flag:
+                        msg: discord.Message = await ch.send(**self.create_board(war, btn=True))
+                        war.add_board(msg)

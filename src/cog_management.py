@@ -13,7 +13,8 @@ war_fields = {
     'defending faction': 'defending',
     'contact': 'owner',
     'war time': 'time',
-    'location': 'location'
+    'location': 'location',
+    'looking for': 'looking_for'
 }
 
 signup_fields = {
@@ -47,12 +48,15 @@ def get_field(line: str, fields):
 
 def parse_war_info(state: BotState, lines) -> WarDef:
     result = {}
-    for line in lines:
+    for i in range(len(lines)):
+        line = lines[i]
+
         field, info = get_field(line, war_fields)
+
         if field is not None:
             result[field] = info
 
-    if len(result) == len(war_fields):
+    if len(result) > len(war_fields) - 1:
         # print_dict(result)
         war = WarDef()
         war.attacking = result['attacking']
@@ -60,6 +64,8 @@ def parse_war_info(state: BotState, lines) -> WarDef:
         war.location = get_location(result['location'])
         war.war_time = result['time']
         war.owners = result['owner']
+        if 'looking_for' in result:
+            war.looking_for = result['looking_for'].replace(';', '\n')
 
         return war
 

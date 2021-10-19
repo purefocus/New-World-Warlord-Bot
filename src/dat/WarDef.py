@@ -22,6 +22,8 @@ class WarDef:
         self.enlisted = Enlisted()
         self.war_board = {}
 
+        self.looking_for = None
+
         self.groups = GroupAssignments(None, self)
 
         if data is not None:
@@ -38,6 +40,7 @@ class WarDef:
             'owners': self.owners,
             'enlisted': self.enlisted.as_dict(),
             'boards': self.war_board,
+            'looking_for': self.looking_for,
             'groups': self.groups.__dict__()
         }
         return ret
@@ -52,6 +55,9 @@ class WarDef:
         self.owners = dic['owners']
         self.war_board = dic['boards']
         self.enlisted = Enlisted(dic['enlisted'])
+
+        if 'looking_for' in dic:
+            self.looking_for = dic['looking_for']
 
         self.groups.from_dict(dic['groups'])
 
@@ -81,6 +87,9 @@ class WarDef:
         embed.add_field(name='Enlisted',
                         value=f'{str(len(self.enlisted))}',
                         inline=False)
+
+        if self.looking_for is not None:
+            embed.add_field(name='Looking for', value=self.looking_for)
 
         embed.set_footer(text='Use /enlist to sign up!')
 

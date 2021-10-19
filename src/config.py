@@ -145,11 +145,13 @@ class Config:
 
         if 'config' not in self.config:
             self.config['config'] = {
+                'announce_war': True,
                 'announce_signup': True
             }
 
         cfg = self.config['config']
         self.announce_signup = cfg['announce_signup']
+        self.announce_war = cfg['announce_war']
         self.save()
 
     def add_guild(self, guild: discord.Guild):
