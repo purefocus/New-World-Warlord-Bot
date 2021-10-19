@@ -20,7 +20,7 @@ def create_enlistment_embed(war, group_by):
         idx = 0
         for enl in enlisted:
             enl: Enlistment = enl
-            val = ' - ' + str(enl) + '\n'
+            val = '\t' + str(enl) + '\n'
             if len(value) + len(val) > 1024:
                 embed.add_field(name=f'{key}s {"" if idx == 0 else idx}', value=value, inline=False)
                 value = ''
