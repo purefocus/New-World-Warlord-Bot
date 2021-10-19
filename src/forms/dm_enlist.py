@@ -97,7 +97,9 @@ async def question(client: commands.Bot, ctx, answers,
 
         response = value
     else:
-        test: discord.Message = await client.wait_for('message', check=lambda x: x.author == ctx.author)
+        test: discord.Message = await client.wait_for('message',
+                                                      check=lambda x: x.author == ctx.author and
+                                                                      x.type == discord.ChannelType.private)
 
         response = test.content
         if response_type == int:
@@ -134,6 +136,8 @@ class DMEnlistmentCog(commands.Cog):
                 key, response = None, None
                 while response is None:
                     key, response = await question(self.client, ctx, responses, **q)
+                    if key is None:
+                        return False
 
                 responses[key] = response
 
@@ -188,7 +192,8 @@ class DMEnlistmentCog(commands.Cog):
 
                         if success:
                             await ctx.author.send(
-                                content=f'You have successfully been enlisted for the war **{id}**')
+                                content=f'You have successfully been enlisted for the war **{id}**\n'
+                                        f'You can update you enlistment by clicking the \'Enlist Now!\' button again.')
                         else:
                             await ctx.author.send(
                                 content=f'Something went wrong and you have not been enlisted.')
