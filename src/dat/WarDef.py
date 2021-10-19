@@ -103,7 +103,7 @@ class WarDef:
 
     def create_table(self, filter=None):
 
-        table = [['Name', 'Level', 'Faction', 'Company', 'Role', 'Weapons']]
+        table = [['Name', 'Role', 'Weapons', 'Company']]
         for enlisted in self.enlisted:
             entry = self.enlisted[enlisted]
             if filter is None or filter(entry):

@@ -1,5 +1,7 @@
 import discord
 
+from utils.details import replace_emojis
+
 
 class Enlisted:
 
@@ -120,5 +122,16 @@ class Enlistment:
             # roles += f'{role} ({self.roles[role]})\n'
         # roles = roles[:-1]
 
-        return [self.username, self.level, self.faction, self.company, roles, weapons]
+        company = f'{self.company} ({self.faction[0]})'
+        name = f'[{self.level}] {self.username}'
+        return [name, roles, weapons, company]
         # return f'\"{self.username}\", \"{self.level}\", \"{self.faction}\", \"{self.company}\", \"{roles}\"\n'
+
+    def __str__(self):
+        roles = ''
+        weapons = ''
+        for role in self.roles:
+            roles = role
+            weapons = self.roles[role]
+
+        return f'[{replace_emojis(roles)} {self.level}] **{self.username}** *[{self.company} ({self.faction[0]})]*'

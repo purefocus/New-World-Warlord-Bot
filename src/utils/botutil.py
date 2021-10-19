@@ -83,7 +83,7 @@ def create_war_roster(war):
 def create_text_war_roster(war, filter=None):
     data = war.create_table(filter)
 
-    formatted_roster = tabulate(tabular_data=data[1:], headers=data[0], tablefmt="fancy_grid")
+    formatted_roster = tabulate(tabular_data=data[1:], headers=data[0])#, tablefmt="fancy_grid"
 
     return formatted_roster
 
