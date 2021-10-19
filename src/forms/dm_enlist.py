@@ -99,7 +99,7 @@ async def question(client: commands.Bot, ctx, answers,
     else:
         test: discord.Message = await client.wait_for('message',
                                                       check=lambda x: x.author == ctx.author and
-                                                                      x.type == discord.ChannelType.private)
+                                                                      x.type == discord.ChannelType.private, timeout=120)
 
         response = test.content
         if response_type == int:
