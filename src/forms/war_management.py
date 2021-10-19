@@ -40,7 +40,7 @@ async def cmd_dl_enlisted(state, ctx):
     war, _ = await select_war(state, ctx, 'Select the war to get the enlistment roster for', allow_multiple=False)
     if war is not None:
         file = generate_enlistment_pdf(war)
-        await ctx.send(content='Here\'s the roster.', file=discord.File(file))
+        await ctx.send(content='Here\'s the roster.', file=discord.File(file), hidden=False)
         # file = create_war_roster(war)
         # await ctx.send(content='Here\'s the roster.', file=discord.File(file), hidden=True)
     else:

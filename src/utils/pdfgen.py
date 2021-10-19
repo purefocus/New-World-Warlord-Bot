@@ -10,21 +10,34 @@ def generate_enlistment_pdf(war: WarDef):
     document = SimpleDocTemplate(file, pagesize=A4)
     data = war.create_table()
 
-    table = Table(data)
-    table.setStyle(TableStyle(
-        [
-            ('INNERGRID', (0, 0), (-1, -1), 0.5, colors.lightgrey),  # grid lines inside table
-            # ('ALIGN', (0, 0), (-1, 0), 'CENTER'),  # header row
-            ('ALIGN', (0, 0), (0, -1), 'CENTER'),  # user_id column
-            ('ALIGN', (2, 0), (2, -1), 'CENTER'),  # level column
-            ('ALIGN', (-1, 0), (-1, -1), 'LEFT'),  # roles column
+    data = sorted(data, key=lambda x: x.sort_key(), reverse=True)
 
-            ('FONT', (0, 0), (-1, 0), 'Times-Bold'),  # header row
-            ('FONTSIZE', (0, 1), (-1, -1), 8),
-            ('LINEBELOW', (0, 0), (-1, 0), 1.5, colors.black),  # Thicker grid lines for the header
-            ('LINEBELOW', (0, 0), (-1, -1), 0.5, colors.black),  # row grid lines for all cells
-        ]
-    ))
+    table_data = [['Name', 'Role', 'Weapons', 'Company']]
+    for dat in data:
+        row = dat.make_table_row()
+        table_data.append(row)
+
+    style_data = [
+        ('INNERGRID', (0, 0), (-1, -1), 0.5, colors.lightgrey),  # grid lines inside table
+        # ('ALIGN', (0, 0), (-1, 0), 'CENTER'),  # header row
+        ('ALIGN', (0, 0), (0, -1), 'CENTER'),  # user_id column
+        ('ALIGN', (2, 0), (2, -1), 'CENTER'),  # level column
+        ('ALIGN', (-1, 0), (-1, -1), 'LEFT'),  # roles column
+
+        ('FONT', (0, 0), (-1, 0), 'Times-Bold'),  # header row
+        ('FONTSIZE', (0, 1), (-1, -1), 8),
+        ('LINEBELOW', (0, 0), (-1, 0), 1.5, colors.black),  # Thicker grid lines for the header
+        ('LINEBELOW', (0, 0), (-1, -1), 0.5, colors.black),  # row grid lines for all cells
+    ]
+
+    last_role = table_data[0][1]
+    for i in range(1, len(table_data)):
+        if last_role != table_data[i][1]:
+            last_role = table_data[i][1]
+            style_data.append(('LINEBELOW', (0, i-1), (-1, i-1), 1.5, colors.black))
+
+    table = Table(table_data)
+    table.setStyle(TableStyle(style_data))
     contents = [
         table,
     ]

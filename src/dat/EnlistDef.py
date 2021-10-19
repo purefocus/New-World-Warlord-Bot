@@ -126,7 +126,7 @@ class Enlistment:
             # roles += f'{role} ({self.roles[role]})\n'
         # roles = roles[:-1]
 
-        company = f'{self.company} ({self.faction[0]})'
+        company = f'({self.faction[0]}) {self.company}'
         name = f'[{self.level}] {self.username}'
         return [name, roles, weapons, company]
         # return f'\"{self.username}\", \"{self.level}\", \"{self.faction}\", \"{self.company}\", \"{roles}\"\n'
@@ -140,3 +140,10 @@ class Enlistment:
 
         # return f'[{replace_emojis(roles)} {self.level}] **{self.username}** *[{self.company} ({self.faction[0]})]*'
         return f'{self.level} {replace_emojis(roles)} **{self.username}** *[{weapons}]*'
+
+    def sort_key(self):
+
+        r = ''
+        for role in self.roles:
+            r = role
+        return r + str(self.level) + str(self.company)
