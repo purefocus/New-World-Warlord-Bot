@@ -26,12 +26,10 @@ async def cmd_get_enlisted(state, ctx):
         embed.add_field(name='roster', value=f'```{roster}```')
 
         embed = create_enlistment_embed(war, 'roles')
-        await ctx.send(content='Here\'s the roster.', embed=embed, hidden=True)
+        await ctx.send(content='Here\'s the roster.', embed=embed)
         # print_dict(by_roles)
         # create_war_roster(war)
         #
-        # file = generate_enlistment_pdf(war)
-        # await ctx.send(content='Here\'s the roster.', file=discord.File(file))
 
         # await ctx.send(content=f"```\n{roster}\n```", hidden=True)
     else:
@@ -41,7 +39,9 @@ async def cmd_get_enlisted(state, ctx):
 async def cmd_dl_enlisted(state, ctx):
     war, _ = await select_war(state, ctx, 'Select the war to get the enlistment roster for', allow_multiple=False)
     if war is not None:
-        file = create_war_roster(war)
-        await ctx.send(content='Here\'s the roster.', file=discord.File(file), hidden=True)
+        file = generate_enlistment_pdf(war)
+        await ctx.send(content='Here\'s the roster.', file=discord.File(file))
+        # file = create_war_roster(war)
+        # await ctx.send(content='Here\'s the roster.', file=discord.File(file), hidden=True)
     else:
         await ctx.send(content=f"Denied!")
