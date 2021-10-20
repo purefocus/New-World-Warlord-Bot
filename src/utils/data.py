@@ -67,10 +67,13 @@ def get_messages_in_channel(channel: discord.TextChannel, refs):
     return result
 
 
-def get_message(client, guild_id, channel_id, message_id) -> discord.PartialMessage:
+def get_message(client, guild_id, channel_id, message_id) -> discord.Message:
     guild: discord.Guild = client.get_guild(int(guild_id))
     channel: discord.TextChannel = guild.get_channel(int(channel_id))
-    message: discord.PartialMessage = channel.get_partial_message(int(message_id))
+    message: discord.Message = await channel.fetch_message(int(message_id))
+
+    if message.reference is not None:
+        print(message.reference.cached_message())
 
     return message
 
