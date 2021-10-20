@@ -85,78 +85,70 @@ class BotState:
         self.wars[war.location] = war
         return exists
 
+    def save_war_data(self):
+        saved_data = {}
+        for w in self.wars:
+            saved_data[w] = self.wars[w].as_dict()
 
-def save_war_data(self):
-    saved_data = {}
-    for w in self.wars:
-        saved_data[w] = self.wars[w].as_dict()
+        json.dump(saved_data, open(config.WAR_DATA, 'w+'), indent=4)
 
-    json.dump(saved_data, open(config.WAR_DATA, 'w+'), indent=4)
+        # print('Saved: ', saved_data)
 
-    # print('Saved: ', saved_data)
-
-
-def load_war_data(self):
-    try:
-        war_data = json.load(open(config.WAR_DATA, 'r+'))
-
-        for w in war_data:
-            self.add_war(WarDef(war_data[w]))
-
-    except Exception as e:
-        self.wars = {}
-        raise e
-
-
-def get_modifying_war(self, userid):
-    if userid in self.war_selection:
-        return self.war_selection[userid]
-    else:
-        return None
-
-
-def set_modifying_war(self, userid, war):
-    self.war_selection[userid] = war
-
-
-async def update_war_boards(self, war: WarDef):
-    for board in war.boards:
+    def load_war_data(self):
         try:
-            msg: discord.Message = await board.get_message(client=self.client)
-            if msg is not None:
-                await msg.edit(**self.create_board(war))
-        except discord.NotFound as e:
-            print('Message Not Found!')
-            board.valid = False
+            war_data = json.load(open(config.WAR_DATA, 'r+'))
+
+            for w in war_data:
+                self.add_war(WarDef(war_data[w]))
+
+        except Exception as e:
+            self.wars = {}
+            raise e
+
+    def get_modifying_war(self, userid):
+        if userid in self.war_selection:
+            return self.war_selection[userid]
+        else:
+            return None
+
+    def set_modifying_war(self, userid, war):
+        self.war_selection[userid] = war
+
+    async def update_war_boards(self, war: WarDef):
+        for board in war.boards:
+            try:
+                msg: discord.Message = await board.get_message(client=self.client)
+                if msg is not None:
+                    await msg.edit(**self.create_board(war))
+            except discord.NotFound as e:
+                print('Message Not Found!')
+                board.valid = False
+
+    def create_board(self, war: WarDef, btn=False):
+        ret = {
+            'embed': war.embeds(),
+        }
+        if btn:
+            ret['components'] = [
+                Button(custom_id=f'btn:enlist:{war.location}', label='Enlist Now!')
+            ]
+        return ret
+
+    async def add_war_board(self, war: WarDef, reply_msg=None):
+        try:
+            if self.config.announce_war:
+                if war is not None:
+                    channels = self.config.get_notice_channels()
+                    for ch in channels:
+                        msg: discord.Message = await ch.send(reference=reply_msg, **self.create_board(war, btn=True))
+                        war.add_board(msg)
 
 
-def create_board(self, war: WarDef, btn=False):
-    ret = {
-        'embed': war.embeds(),
-    }
-    if btn:
-        ret['components'] = [
-            Button(custom_id=f'btn:enlist:{war.location}', label='Enlist Now!')
-        ]
-    return ret
+        except Exception as e:
+            import traceback
+            import sys
+            traceback.print_exception(*sys.exc_info())
 
-
-async def add_war_board(self, war: WarDef, reply_msg=None):
-    try:
-        if self.config.announce_war:
-            if war is not None:
-                channels = self.config.get_notice_channels()
-                for ch in channels:
-                    msg: discord.Message = await ch.send(reference=reply_msg, **self.create_board(war, btn=True))
-                    war.add_board(msg)
-
-
-    except Exception as e:
-        import traceback
-        import sys
-        traceback.print_exception(*sys.exc_info())
-
-
-async def add_war_board_to(self, war: WarDef, ch: discord.TextChannel):
-    msg: discord.Message = await ch.send(**self.create_board(war, btn=True))
-    war.add_board(msg)
+    async def add_war_board_to(self, war: WarDef, ch: discord.TextChannel):
+        msg: discord.Message = await ch.send(**self.create_board(war, btn=True))
+        war.add_board(msg)
