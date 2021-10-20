@@ -122,7 +122,7 @@ def parse_group_info(group: GroupAssignments, lines):
                 members.append((args[0], args[1]))
             group.update_group(group_id, members=members)
 
-    print_dict(group.__dict__())
+    # print_dict(group.__dict__())
 
 
 async def handle_management_message(state: BotState, msg: discord.Message, edited):
