@@ -186,9 +186,11 @@ class DMEnlistmentCog(commands.Cog):
                     await ctx.respond(ninja_mode=True)
                     war = self.state.wars[id]
                     if war is not None:
+                        print('Enlistment Started!')
                         self.users_enlisting[ctx.author] = True
                         success = await self.enlist_questionair(war, ctx)
                         del self.users_enlisting[ctx.author]
+                        print('Enlistment Ended! ', len(self.users_enlisting))
 
                         if success:
                             await ctx.author.send(
