@@ -93,8 +93,8 @@ class BotState:
 
         for board in war.boards:
             try:
-                msg = await board.get_message(client=self.client)
-                print(msg.references)
+                msg: discord.Message = await board.get_message(client=self.client)
+                print(msg.reference)
                 if msg is not None:
                     await msg.edit(**self.create_board(war))
             except discord.NotFound as e:
