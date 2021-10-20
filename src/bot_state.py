@@ -12,11 +12,12 @@ def _chsum(cond):
 
 def _compare_wars(war, old_war):
     try:
-        return _chsum(war.owners.lower() == old_war.owners.lower()) \
-               + (war.war_time.lower() == old_war.war_time.lower()) \
-               + (war.attacking.lower() == old_war.attacking.lower()) \
-               + (war.defending.lower() == old_war.defending.lower()) \
-               + (war.location.lower() == old_war.location.lower())
+        return _chsum(war.owners == old_war.owners) \
+               + (war.war_time == old_war.war_time) \
+               + (war.attacking == old_war.attacking) \
+               + (war.defending == old_war.defending) \
+               + (war.location == old_war.location) \
+               + (war.name == old_war.name)
     except:
         return 0
 
