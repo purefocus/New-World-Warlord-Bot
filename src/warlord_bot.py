@@ -56,48 +56,9 @@ async def repost_war(ctx):
     await cmd_repost_war(state, ctx)
 
 
-'''
-
-####################
-# War Organization #
-####################
-
-# @ui.slash.command(description='Creates 10 placeholder groups that for a war to place selected players in',
-#                   **config.cmd_cfg_elev)
-# async def make_groups(ctx):
-#     await cmd_war_make_groups(state, ctx)
-# 
-# 
-# @ui.slash.command(description='Changes which war you are focusing on.', **config.cmd_cfg_elev)
-# async def select(ctx):
-#     await cmd_war_select(state, ctx)
-# 
-# 
-# @ui.slash.command(options=[
-#     SlashOption(int, name='user_id', description='The ID of the user you are assigning a group', required=True),
-#     SlashOption(int, name='group_id', description='The group you are assigning the user to. values: [0-9]',
-#                 required=True),
-#     SlashOption(str, name='role', description=f'{WAR_ROLES}', required=True),
-# ], description='Assigns a player to a group', **config.cmd_cfg_elev)
-# async def assign(ctx, user_id, group_id, role):
-#     await cmd_war_assign(state, ctx, user_id, group_id, role)
-# 
-# 
-# @ui.slash.command(options=[
-#     SlashOption(int, name='user_id', description='The ID of the user you are removing from the war', required=True),
-# ], description='Unassigns a player from all groups', **config.cmd_cfg_elev)
-# async def unassign(ctx, user_id):
-#     await cmd_war_unassign(state, ctx, user_id)
-# 
-# 
-# @ui.slash.command(options=[
-#     SlashOption(int, name='group_id', description='The group you are configuring', required=True),
-#     SlashOption(str, name='name', description='The name of the group', required=True),
-# ], description='Renames a group. The group ID will remain the same though [0-10]', **config.cmd_cfg_elev)
-# async def group_configure(ctx, group_id, name):
-#     await cmd_war_group_configure(state, ctx, group_id, name)
-
-'''
+@ui.slash.command(description='posts a war notification in your current channel', **config.cmd_cfg_elev)
+async def post_war(ctx):
+    await cmd_post_war(state, ctx)
 
 
 @ui.slash.command(description='Replies with a table of all the users enlisted for a specific war',
@@ -190,11 +151,10 @@ async def on_ready():
         state.load_war_data()
         for war in state.wars:
             war = state.wars[war]
-            try:
-                await update_war_boards(war, state)
-            except Exception as e:
-                if war.active:
-                    await add_war_board(war, state)
+            await update_war_boards(war, state)
+
+        state.save_war_data()
+
     except Exception as e:
         import traceback
         import sys

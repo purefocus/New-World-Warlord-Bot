@@ -35,7 +35,11 @@ def parse_line(line: str):
         key = line[0].lower().strip()
         val = line[1].strip()
 
+        if val.lower() == 'none' or len(val) == 0:
+            val = None
+
         return key, val
+
     return None, None
 
 
@@ -131,12 +135,19 @@ async def handle_management_message(state: BotState, msg: discord.Message, edite
     if war is not None:
         war.active = True
         # await msg.reply(embed=war.get_embeded())
-        state.add_war(war)
         parse_group_info(war.groups, lines)
-        await add_war_board(war, state, update_if_exists=edited)
+        existed = state.add_war(war)
+        if existed and edited:
+            try:
+                await update_war_boards(war, state)
+            except:
+                await add_war_board(war, state)
+        else:
+            await add_war_board(war, state)
+
         state.save_war_data()
         return True
-    # await channel.send(embed=group.embed())
+
     return False
 
 

@@ -83,77 +83,30 @@ def create_war_roster(war):
 def create_text_war_roster(war, filter=None):
     data = war.create_table(filter)
 
-    formatted_roster = tabulate(tabular_data=data[1:], headers=data[0])#, tablefmt="fancy_grid"
+    formatted_roster = tabulate(tabular_data=data[1:], headers=data[0])  # , tablefmt="fancy_grid"
 
     return formatted_roster
 
 
-async def add_war_board(war: WarDef, state, update_if_exists=True):
-    await state.add_war_board(war, update_if_exists)
+async def add_war_board(war: WarDef, state):
+    await state.add_war_board(war)
+
+
+async def add_war_board_to(war: WarDef, state, channel):
+    await state.add_war_board_to(war, channel)
 
 
 async def update_war_boards(war, state):
     await state.update_war_boards(war)
 
 
-class ChannelReference:
-
-    def __init__(self, ch: discord.TextChannel = None):
-        if ch is None:
-            self.guild_id = None
-            self.channel_id = None
-        else:
-            self.guild_id = ch.guild.id
-            self.channel_id = ch.id
-
-    def as_dict(self):
-        return {
-            'guild_id': self.guild_id,
-            'channel_id': self.channel_id,
-        }
-
-    def from_dict(self, data):
-        self.guild_id = data['guild_id']
-        self.channel_id = data['channel_id']
-        return self
-
-    def get_channel(self, client: discord.Client) -> discord.TextChannel:
-
-        guild: discord.Guild = client.get_guild(self.guild_id)
-        channel: discord.TextChannel = guild.get_channel(self.channel_id)
-
-        return channel
-
-
-class MessageReference:
-
-    def __init__(self, msg=None):
-        if msg is None:
-            self.guild_id = None
-            self.channel_id = None
-            self.message_id = None
-        else:
-            self.guild_id = msg.guild.id
-            self.channel_id = msg.channel.id
-            self.message_id = msg.id
-
-    def as_dict(self):
-        return {
-            'guild_id': self.guild_id,
-            'channel_id': self.channel_id,
-            'message_id': self.message_id
-        }
-
-    def from_dict(self, data):
-        self.guild_id = data['guild_id']
-        self.channel_id = data['channel_id']
-        self.message_id = data['message_id']
-        return self
-
-    def get_message(self, client: discord.Client) -> discord.Message:
-
-        guild: discord.Guild = client.get_guild(self.guild_id)
-        channel: discord.TextChannel = guild.get_channel(self.channel_id)
-        message: discord.Message = channel.get_partial_message(self.message_id)
-
-        return message
+# def load_message_references(self, data: dict, key: str):
+#
+#     result = []
+#     if key in data:
+#         data = data[key]
+#
+#         if isinstance(data, dict):
+#             for k in data:
+#
+#     return result

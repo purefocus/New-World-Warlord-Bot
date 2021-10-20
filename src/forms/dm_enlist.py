@@ -64,7 +64,7 @@ question_list = [
         'check': lambda response, answers: None if 0 < response <= 20 else 'Your answer must be between 0-20'
     },
     {
-        'question': 'Do you have a preferred group? Enter No if you do not have one.',
+        'question': 'Do you have a preferred group? Enter `None` if you do not have one.',
         'response_type': str,
         'key': 'group'
     },

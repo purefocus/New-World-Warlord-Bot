@@ -44,6 +44,7 @@ class BotState:
                 await ch.send(embed=user.embed())
 
     def add_war(self, war: WarDef):
+        exists = False
         if war.location in self.wars:
             old_war = self.wars[war.location]
             if war.owners == old_war.owners \
@@ -51,11 +52,13 @@ class BotState:
                     or war.attacking == old_war.attacking \
                     or war.defending == old_war.defending:
                 war.enlisted = old_war.enlisted
-                war.war_board = old_war.war_board
+                war.boards = old_war.boards
                 war.groups = old_war.groups
                 war.id = old_war.id
+            exists = True
 
         self.wars[war.location] = war
+        return exists
 
     def save_war_data(self):
         saved_data = {}
@@ -86,14 +89,12 @@ class BotState:
     def set_modifying_war(self, userid, war):
         self.war_selection[userid] = war
 
-    async def update_war_boards(self, war):
-        for guild in self.client.guilds:
-            if str(guild.id) in war.war_board:
-                dat = war.war_board[str(guild.id)]
-                channel = guild.get_channel(int(dat['cid']))
-                msg = channel.get_partial_message(int(dat['mid']))
-                if msg is not None:
-                    await msg.edit(**self.create_board(war))
+    async def update_war_boards(self, war: WarDef):
+
+        for board in war.boards:
+            msg = board.get_message(client=self.client)
+            if msg is not None:
+                await msg.edit(**self.create_board(war))
 
     def create_board(self, war: WarDef, btn=False):
         ret = {
@@ -105,28 +106,21 @@ class BotState:
             ]
         return ret
 
-    async def add_war_board(self, war: WarDef, update_if_exists=True):
+    async def add_war_board(self, war: WarDef):
         try:
             if self.config.announce_war:
                 if war is not None:
                     channels = self.config.get_notice_channels()
                     for ch in channels:
-                        flag = True
-                        if str(ch.guild.id) in war.war_board:
-                            dat = war.war_board[str(ch.guild.id)]
-                            if int(ch.id) == int(dat['cid']):
-                                msg = ch.get_partial_message(int(dat['mid']))
-                                if msg is not None:
-                                    if update_if_exists:
-                                        await msg.edit(**self.create_board(war))
-                                        flag = False
-                                    else:
-                                        await msg.delete()
+                        msg: discord.Message = await ch.send(**self.create_board(war, btn=True))
+                        war.add_board(msg)
 
-                        if flag:
-                            msg: discord.Message = await ch.send(**self.create_board(war, btn=True))
-                            war.add_board(msg)
+
         except Exception as e:
             import traceback
             import sys
             traceback.print_exception(*sys.exc_info())
+
+    async def add_war_board_to(self, war: WarDef, ch: discord.TextChannel):
+        msg: discord.Message = await ch.send(**self.create_board(war, btn=True))
+        war.add_board(msg)

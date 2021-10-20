@@ -3,6 +3,8 @@ from dat.UserSignup import *
 from dat.EnlistDef import *
 from dat.GroupAssignments import *
 
+from utils.data import *
+
 import uuid
 
 
@@ -20,7 +22,8 @@ class WarDef:
         self.war_time = None
         self.owners = None
         self.enlisted = Enlisted()
-        self.war_board = {}
+        # self.war_board = []
+        self.boards = []
 
         self.looking_for = None
 
@@ -39,7 +42,8 @@ class WarDef:
             'wartime': self.war_time,
             'owners': self.owners,
             'enlisted': self.enlisted.as_dict(),
-            'boards': self.war_board,
+            # 'boards': self.war_board,
+            'boards': store_message_references(self.boards),
             'looking_for': self.looking_for,
             'groups': self.groups.__dict__()
         }
@@ -53,8 +57,10 @@ class WarDef:
         self.location = dic['location']
         self.war_time = dic['wartime']
         self.owners = dic['owners']
-        self.war_board = dic['boards']
+        # self.war_board = dic['boards']
         self.enlisted = Enlisted(dic['enlisted'])
+
+        self.boards = parse_message_references(dic['boards'])
 
         if 'looking_for' in dic:
             self.looking_for = dic['looking_for']
@@ -64,7 +70,8 @@ class WarDef:
         return self
 
     def add_board(self, msg: discord.Message):
-        self.war_board[str(msg.guild.id)] = {'cid': msg.channel.id, 'mid': msg.id}
+        self.boards.append(MessageReference(msg=msg))
+        # self.war_board[str(msg.guild.id)] = {'cid': msg.channel.id, 'mid': msg.id}
 
     def add_enlistment(self, enlisted) -> bool:
         name = self.enlisted.is_enlisted(enlisted)

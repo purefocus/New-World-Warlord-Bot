@@ -86,15 +86,6 @@ class Enlistment:
             'group': self.group
         }
 
-    # def from_dict(self, dic):
-    #     self.username = dic['username']
-    #     self.level = dic['level']
-    #     self.faction = dic['faction']
-    #     self.company = dic['company']
-    #     self.roles = dic['roles']
-    #     self.group = dic['group']
-    #     return self
-
     def embed(self):
         embed = discord.Embed(title='War Enlistment')
         user_data = f'*name*: {self.username} (level {self.level})\n*Faction*: {self.faction}\n*Company*: {self.company}'

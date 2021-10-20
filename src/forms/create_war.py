@@ -43,3 +43,10 @@ async def cmd_repost_war(state, ctx):
     for war in wars:
         await add_war_board(war, state, update_if_exists=False)
         state.save_war_data()
+
+
+async def cmd_post_war(state, ctx):
+    wars, _ = await select_war(state, ctx, 'Select war', allow_multiple=True)
+    for war in wars:
+        await add_war_board_to(war, state, ctx.channel)
+        state.save_war_data()
