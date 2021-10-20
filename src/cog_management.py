@@ -234,7 +234,7 @@ class WarManagementCog(commands.Cog):
     async def on_raw_message_edit(self, payload: discord.RawMessageUpdateEvent):
         try:
             data = payload.data
-            print('authorid: ', data['author']['id'], self.client.user.id)
+            print('authorid: ', type(data['author']['id']), type(self.client.user.id))
             if data['author']['id'] == self.client.user.id:
                 print('Self Edited!')
                 return
