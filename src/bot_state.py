@@ -92,9 +92,13 @@ class BotState:
     async def update_war_boards(self, war: WarDef):
 
         for board in war.boards:
-            msg = board.get_message(client=self.client)
-            if msg is not None:
-                await msg.edit(**self.create_board(war))
+            try:
+                msg = board.get_message(client=self.client)
+                if msg is not None:
+                    await msg.edit(**self.create_board(war))
+            except discord.NotFound as e:
+                print('Message Not Found!')
+                board.valid = False
 
     def create_board(self, war: WarDef, btn=False):
         ret = {

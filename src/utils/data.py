@@ -8,6 +8,8 @@ class MessageReference:
         self.channel_id = channel_id
         self.message_id = message_id
 
+        self.valid = True
+
         if msg is not None:
             self.guild_id = msg.guild.id
             self.channel_id = msg.channel.id
@@ -51,7 +53,8 @@ def parse_message_references(data: list):
 def store_message_references(data: list):
     result = []
     for item in data:
-        result.append(item.__dict__())
+        if item.valid:
+            result.append(item.__dict__())
 
     return result
 
