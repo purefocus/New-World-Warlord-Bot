@@ -61,7 +61,7 @@ class BotState:
             best_match = None
             best_score = 0
             for w in self.wars:
-                score = _compare_wars(war, w)
+                score = _compare_wars(war, self.wars[w])
                 if score > best_score:
                     best_match = w
                     best_score = score
