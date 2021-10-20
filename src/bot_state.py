@@ -81,7 +81,7 @@ class BotState:
             exists = True
             war.enlisted = best_match.enlisted
             war.boards = best_match.boards
-            war.groups = best_match.groups
+            # war.groups = best_match.groups
             war.id = best_match.id
 
             if war.location.lower() != best_match.location.lower():
