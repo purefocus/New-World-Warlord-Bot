@@ -145,7 +145,7 @@ class BotState:
                 if war is not None:
                     channels = self.config.get_notice_channels()
                     for ch in channels:
-                        msg: discord.Message = await ch.send(reference=reply_msg, **self.create_board(war, btn=True))
+                        msg: discord.Message = await ch.send(**self.create_board(war, btn=True))
                         war.add_board(msg)
 
 
