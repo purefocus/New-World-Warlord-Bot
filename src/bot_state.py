@@ -93,7 +93,7 @@ class BotState:
 
         for board in war.boards:
             try:
-                msg = board.get_message(client=self.client)
+                msg = await board.get_message(client=self.client)
                 print(msg.references)
                 if msg is not None:
                     await msg.edit(**self.create_board(war))

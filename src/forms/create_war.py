@@ -43,7 +43,7 @@ async def cmd_repost_war(state, ctx):
     for war in wars:
         for board in war.boards:
             try:
-                msg = board.get_message(state.client)
+                msg = await board.get_message(state.client)
                 if msg is not None:
                     await msg.delete()
                 board.valid = False
