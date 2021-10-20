@@ -101,5 +101,5 @@ class UserSignup:
         en.company = self.company
         en.roles[self.role] = f'{self.primary_weapon}/{self.secondary_weapon}'
         en.level = self.level
-
+        en.group = self.preferred_group
         return en

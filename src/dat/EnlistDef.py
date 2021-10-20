@@ -104,6 +104,8 @@ class Enlistment:
 
         embed.add_field(name='Roles', value=roles, inline=True)
         embed.add_field(name='Weapons', value=weapons, inline=True)
+        if self.group is not None:
+            embed.add_field(name='Preferred Group', value=self.group, inline=True)
 
         return embed
 
