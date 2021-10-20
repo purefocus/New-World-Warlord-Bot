@@ -136,7 +136,7 @@ async def handle_management_message(state: BotState, msg: discord.Message, edite
         war.active = True
         # await msg.reply(embed=war.get_embeded())
         parse_group_info(war.groups, lines)
-        existed = state.add_war(war)
+        existed = state.add_war(war, edit=edited)
         if existed and edited:
             try:
                 await update_war_boards(war, state)
