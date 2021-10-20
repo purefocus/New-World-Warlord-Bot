@@ -232,4 +232,9 @@ class WarManagementCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_raw_message_edit(self, payload: discord.RawMessageUpdateEvent):
-        print_dict(payload.cached_message, '\tdata:', payload.data)
+        try:
+            print_dict(payload.cached_message, '\tdata:', payload.data)
+        except Exception as e:
+            import traceback
+            import sys
+            traceback.print_exception(*sys.exc_info())
