@@ -80,7 +80,7 @@ class WarDef:
         return name is not None
 
     def get_embeded(self):
-        embed = discord.Embed(title=f':exclamation: __War Declared!__ :exclamation: ')
+        embed = discord.Embed(title=f':exclamation: __War Signup!__ :exclamation: ')
         # embed.set_author(name='Test')
         if self.attacking is not None:
             embed.add_field(name='Details',
