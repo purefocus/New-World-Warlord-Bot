@@ -237,10 +237,15 @@ class WarManagementCog(commands.Cog):
             mentions = data['mentions']
             if mentions is not None:
                 for mention in mentions:
+                    print_dict(mention)
                     if mention['id'] == self.client.user.id:
+                        print(2)
                         channel = self.client.get_channel(payload.channel_id)
                         msg = await channel.fetch_message(payload.message_id)
+                        print(3)
                         if msg is not None:
+                            print(4)
+                            print('handle')
                             await handle_management_message(self.state, msg, True)
             # print_dict(payload.data)
         except Exception as e:
