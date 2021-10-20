@@ -182,8 +182,10 @@ class DMEnlistmentCog(commands.Cog):
             if id.startswith('btn:enlist:'):
                 id = id[11:]
                 war = None
+                print(id)
                 for w in self.state.wars:
                     w = self.state.wars[w]
+                    print(w.id)
                     if w == id:
                         war = w
                         break
