@@ -26,6 +26,9 @@ class MessageReference:
         guild: discord.Guild = client.get_guild(int(self.guild_id))
         channel: discord.TextChannel = guild.get_channel(int(self.channel_id))
         message: discord.Message = await channel.fetch_message(int(self.message_id))
+
+        if message.reference is not None:
+            print(message.reference.cached_message)
         return message
 
     def is_channel(self, channel: discord.TextChannel):
@@ -71,9 +74,6 @@ async def get_message(client, guild_id, channel_id, message_id) -> discord.Messa
     guild: discord.Guild = client.get_guild(int(guild_id))
     channel: discord.TextChannel = guild.get_channel(int(channel_id))
     message: discord.Message = await channel.fetch_message(int(message_id))
-
-    if message.reference is not None:
-        print(message.reference.cached_message)
 
     return message
 
