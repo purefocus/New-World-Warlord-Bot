@@ -28,7 +28,7 @@ class MessageReference:
         message: discord.Message = await channel.fetch_message(int(self.message_id))
 
         if message.reference is not None:
-            print(message.reference.cached_message)
+            print('cashed', message.reference.cached_message)
         return message
 
     def is_channel(self, channel: discord.TextChannel):
