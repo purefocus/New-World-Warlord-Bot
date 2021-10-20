@@ -234,9 +234,14 @@ class WarManagementCog(commands.Cog):
     async def on_raw_message_edit(self, payload: discord.RawMessageUpdateEvent):
         try:
             data = payload.data
-            if data['mentions'] is not None:
-                print('Has Mentions!')
-                print_dict(data['mentions'])
+            mentions = data['mentions']
+            if mentions is not None:
+                for mention in mentions:
+                    if mention['id'] == self.client.user.id:
+                        channel = self.client.get_channel(payload.channel_id)
+                        msg = await channel.fetch_message(payload.message_id)
+                        if msg is not None:
+                            await handle_management_message(self.state, msg, True)
             # print_dict(payload.data)
         except Exception as e:
             import traceback
