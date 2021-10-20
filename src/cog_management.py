@@ -238,7 +238,6 @@ class WarManagementCog(commands.Cog):
 
             data = payload.data
             if data['author']['id'] == str(self.client.user.id):
-                print('Self Edited!')
                 return
 
             mentions = data['mentions']
