@@ -235,6 +235,7 @@ class WarManagementCog(commands.Cog):
         try:
             data = payload.data
             mentions = data['mentions']
+            print(mentions)
             if mentions is not None:
                 for mention in mentions:
                     print_dict(mention)
