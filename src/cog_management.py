@@ -233,6 +233,9 @@ class WarManagementCog(commands.Cog):
     @commands.Cog.listener()
     async def on_raw_message_edit(self, payload: discord.RawMessageUpdateEvent):
         try:
+            if payload.cached_message is not None:
+                return
+
             data = payload.data
             if data['author']['id'] == str(self.client.user.id):
                 print('Self Edited!')
@@ -241,15 +244,11 @@ class WarManagementCog(commands.Cog):
             mentions = data['mentions']
             if mentions is not None:
                 for mention in mentions:
-                    print_dict(mention)
+
                     if mention['id'] == str(self.client.user.id):
-                        print(2)
                         channel = self.client.get_channel(payload.channel_id)
                         msg = await channel.fetch_message(payload.message_id)
-                        print(3)
                         if msg is not None:
-                            print(4)
-                            print('handle')
                             await handle_management_message(self.state, msg, True)
             # print_dict(payload.data)
         except Exception as e:

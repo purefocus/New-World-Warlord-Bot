@@ -13,6 +13,7 @@ class WarDef:
     def __init__(self, data=None):
         self.id = str(uuid.uuid4())
 
+        self.name = None
         self.active = False
 
         self.attacking = None
@@ -35,6 +36,7 @@ class WarDef:
     def as_dict(self):
         ret = {
             'id': self.id,
+            'name': self.name,
             'active': self.active,
             'attacking': self.attacking,
             'defending': self.defending,
@@ -59,6 +61,8 @@ class WarDef:
         self.owners = dic['owners']
         # self.war_board = dic['boards']
         self.enlisted = Enlisted(dic['enlisted'])
+        if 'name' in dic:
+            self.name = dic['name']
 
         self.boards = parse_message_references(dic['boards'])
 
