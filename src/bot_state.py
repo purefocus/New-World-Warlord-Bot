@@ -11,11 +11,14 @@ def _chsum(cond):
 
 
 def _compare_wars(war, old_war):
-    return _chsum(war.owners.lower() == old_war.owners.lower()) \
-           + (war.war_time.lower() == old_war.war_time.lower()) \
-           + (war.attacking.lower() == old_war.attacking.lower()) \
-           + (war.defending.lower() == old_war.defending.lower()) \
-           + (war.location.lower() == old_war.location.lower())
+    try:
+        return _chsum(war.owners.lower() == old_war.owners.lower()) \
+               + (war.war_time.lower() == old_war.war_time.lower()) \
+               + (war.attacking.lower() == old_war.attacking.lower()) \
+               + (war.defending.lower() == old_war.defending.lower()) \
+               + (war.location.lower() == old_war.location.lower())
+    except:
+        return 0
 
 
 class BotState:
