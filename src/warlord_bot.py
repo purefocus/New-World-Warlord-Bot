@@ -161,6 +161,7 @@ async def on_ready():
         traceback.print_exception(*sys.exc_info())
 
 
+
 state.load_war_data()
 for war in state.wars:
     generate_enlistment_pdf(state.wars[war])

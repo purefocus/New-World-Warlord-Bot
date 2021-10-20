@@ -229,3 +229,7 @@ class WarManagementCog(commands.Cog):
     @commands.Cog.listener()
     async def on_message_edit(self, before: discord.Message, after: discord.Message):
         await self.process_messages(after, True)
+
+    @commands.Cog.listener()
+    async def on_raw_message_edit(self, payload: discord.RawMessageUpdateEvent):
+        print_dict(payload.cached_message, '\tdata:', payload.data)
