@@ -186,7 +186,8 @@ class DMEnlistmentCog(commands.Cog):
                 for w in self.state.wars:
                     w = self.state.wars[w]
                     print(w.id)
-                    if w == id:
+                    if str(w) == str(id):
+                        print('match!')
                         war = w
                         break
 
