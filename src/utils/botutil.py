@@ -88,8 +88,8 @@ def create_text_war_roster(war, filter=None):
     return formatted_roster
 
 
-async def add_war_board(war: WarDef, state):
-    await state.add_war_board(war)
+async def add_war_board(war: WarDef, state, reply_msg=None):
+    await state.add_war_board(war, reply_msg)
 
 
 async def add_war_board_to(war: WarDef, state, channel):

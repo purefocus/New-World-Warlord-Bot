@@ -141,9 +141,9 @@ async def handle_management_message(state: BotState, msg: discord.Message, edite
             try:
                 await update_war_boards(war, state)
             except:
-                await add_war_board(war, state)
+                await add_war_board(war, state, msg)
         else:
-            await add_war_board(war, state)
+            await add_war_board(war, state, msg)
 
         state.save_war_data()
         return True
