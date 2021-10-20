@@ -234,8 +234,10 @@ class WarManagementCog(commands.Cog):
     async def on_raw_message_edit(self, payload: discord.RawMessageUpdateEvent):
         try:
             data = payload.data
+            if data['author']['id'] == self.client.user.id:
+                print('Self Edited!')
+                return
             mentions = data['mentions']
-            print(mentions)
             if mentions is not None:
                 for mention in mentions:
                     print_dict(mention)
