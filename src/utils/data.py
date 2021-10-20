@@ -25,7 +25,7 @@ class MessageReference:
     async def get_message(self, client: discord.Client) -> discord.Message:
         guild: discord.Guild = client.get_guild(int(self.guild_id))
         channel: discord.TextChannel = guild.get_channel(int(self.channel_id))
-        message: discord.Message = channel.fetch_message(int(self.message_id))
+        message: discord.Message = await channel.fetch_message(int(self.message_id))
         return message
 
     def is_channel(self, channel: discord.TextChannel):
