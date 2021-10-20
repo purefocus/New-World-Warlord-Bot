@@ -135,7 +135,7 @@ class BotState:
         }
         if btn:
             ret['components'] = [
-                Button(custom_id=f'btn:enlist:{war.location}', label='Enlist Now!')
+                Button(custom_id=f'btn:enlist:{war.id}', label='Enlist Now!')
             ]
         return ret
 

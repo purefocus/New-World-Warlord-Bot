@@ -181,10 +181,16 @@ class DMEnlistmentCog(commands.Cog):
             id: str = data['custom_id']
             if id.startswith('btn:enlist:'):
                 id = id[11:]
+                war = None
+                for w in self.state.wars:
+                    w = self.state.wars[w]
+                    if w == id:
+                        war = w
+                        break
 
                 if ctx.author not in self.users_enlisting:
                     await ctx.respond(ninja_mode=True)
-                    war = self.state.wars[id]
+                    # war = self.state.wars[id]
                     if war is not None:
                         print('Enlistment Started!')
                         self.users_enlisting[ctx.author] = True
