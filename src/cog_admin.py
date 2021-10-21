@@ -29,7 +29,7 @@ class AdminCog(commands.Cog):
     @slash_cog(name='new_faction', options=[
         SlashOption(str, 'faction', 'The name of the faction', required=True)
     ], guild_ids=[894675526776676382], guild_permissions=guild_permissions)
-    async def command(self, ctx: discord_ui.SlashedCommand, faction: str):
+    async def new_faction(self, ctx: discord_ui.SlashedCommand, faction: str):
 
         guild: discord.Guild = ctx.guild
 
@@ -42,11 +42,12 @@ class AdminCog(commands.Cog):
 
         # guild.create_role(name=faction)
 
-    @slash_cog(name='command_sync', guild_ids=[894675526776676382], guild_permissions=guild_permissions)
+    @slash_cog(name='warlord_cmd_sync', guild_ids=[894675526776676382], guild_permissions=guild_permissions)
     async def warlord_cmd_sync(self, ctx: SlashedCommand):
         try:
             await ctx.defer(hidden=True)
             await self.ui.slash.sync_commands(delete_unused=True)
-            await ctx.respond('Done!')
+            await ctx.respond('Done!', hidden=True)
         except Exception as e:
-            await ctx.respond(content=str(e))
+            await ctx.respond(content=str(e), hidden=True)
+        print('Done')
