@@ -7,6 +7,17 @@ import discord_ui
 from discord_ui.slash import SlashOption, SlashPermission
 from discord_ui import Interaction
 
+admin_permissions = SlashPermission(
+    allowed={
+        '894677353479942154': SlashPermission.Role,  # Admin
+        '895490018246815776': SlashPermission.Role,  # Moderator
+        '198526201374048256': SlashPermission.User  # purefocus
+    }
+)
+guild_permissions = {
+    '894675526776676382': admin_permissions
+}
+
 
 class AdminCog(commands.Cog):
 
@@ -16,13 +27,10 @@ class AdminCog(commands.Cog):
 
     @slash_cog(name='new_faction', options=[
         SlashOption(str, 'faction', 'The name of the faction', required=True)
-    ], guild_ids=[894675526776676382], guild_permissions=SlashPermission(
-        allowed={
-            '894677353479942154': SlashPermission.ROLE,  # Admin
-            '895490018246815776': SlashPermission.ROLE,  # Moderator
-            '198526201374048256': SlashPermission.USER  # purefocus
-        }))
-    async def command(self, ctx: discord_ui.SlashedCommand, faction: str):
+    ], guild_ids=[894675526776676382], guild_permissions=guild_permissions)
+    async
+
+    def command(self, ctx: discord_ui.SlashedCommand, faction: str):
 
         guild: discord.Guild = ctx.guild
 
