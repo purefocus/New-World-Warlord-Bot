@@ -19,6 +19,28 @@ guild_permissions = {
 }
 
 
+def _get_all_faction_roles(guild: discord.Guild):
+    factions = []
+    non_factions = []
+    for role in guild.roles:
+        if role.colour.value == 0xb9adff:
+            factions.append(role.name)
+        else:
+            non_factions.append(role.name)
+
+    print('Factions: ', factions)
+    print('Non Factions: ', non_factions)
+
+
+def _make_role(name: str, guild: discord.Guild):
+    guild.create_role(name=name,
+                      colour=discord.Colour(0xb9adff),
+                      permissions=discord.Permissions(permissions=2147863617),
+                      hoist=True,
+                      mentionable=False,
+                      reason='Adding a new faction tag')
+
+
 class AdminCog(commands.Cog):
 
     def __init__(self, client: commands.Bot, state: BotState, ui: discord_ui.UI):
@@ -26,19 +48,30 @@ class AdminCog(commands.Cog):
         self.state = state
         self.ui = ui
 
-    @slash_cog(name='new_faction', options=[
-        SlashOption(str, 'faction', 'The name of the faction', required=True)
+    @slash_cog(name='test_cmd', options=[
+        SlashOption(str, 'arguments', 'command args', required=True)
     ], guild_ids=[894675526776676382], guild_permissions=guild_permissions)
-    async def new_faction(self, ctx: discord_ui.SlashedCommand, faction: str):
+    async def test_cmd(self, ctx: discord_ui.SlashedCommand, arguments: str):
+        args = arguments.split(' ')
+        try:
+            if len(args) == 0:
+                await ctx.respond('test!', hidden=True)
+            elif args[0] == 'nfaction':
+                faction = args[1]
 
-        guild: discord.Guild = ctx.guild
+                guild: discord.Guild = ctx.guild
 
-        for role in guild.roles:
-            role: discord.Role = role
-            if role.name.lower() == faction.lower():
-                await ctx.respond('Role Found!')
-            else:
-                await ctx.respond('Role Not Found!')
+                _get_all_faction_roles()
+
+                for role in guild.roles:
+                    role: discord.Role = role
+                    if role.name.lower() == faction.lower():
+                        await ctx.respond('Role Found!')
+                    else:
+                        await ctx.respond('Role Not Found!')
+
+        except Exception as e:
+            await ctx.send(str(e), hidden=True)
 
         # guild.create_role(name=faction)
 
@@ -46,7 +79,7 @@ class AdminCog(commands.Cog):
     async def warlord_cmd_sync(self, ctx: SlashedCommand):
         try:
             await ctx.defer(hidden=True)
-            await self.ui.slash.sync_commands(delete_unused=True)
+            await self.ui.slash.sync_commands(delete_unused=False)
             await ctx.respond('Done!', hidden=True)
         except Exception as e:
             await ctx.respond(content=str(e), hidden=True)
