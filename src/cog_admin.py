@@ -34,13 +34,13 @@ def _get_all_faction_roles(guild: discord.Guild):
     print('Non Factions: ', non_factions)
 
 
-def _make_role(name: str, guild: discord.Guild):
-    role = guild.create_role(name=name,
-                             colour=discord.Colour(0xb9adff),
-                             permissions=discord.Permissions(permissions=2147863617),
-                             hoist=True,
-                             mentionable=False,
-                             reason='Adding a new faction tag')
+async def _make_role(name: str, guild: discord.Guild):
+    role = await guild.create_role(name=name,
+                                   colour=discord.Colour(0xb9adff),
+                                   permissions=discord.Permissions(permissions=2147863617),
+                                   hoist=True,
+                                   mentionable=False,
+                                   reason='Adding a new faction tag')
 
 
 class AdminCog(commands.Cog):
@@ -76,8 +76,12 @@ class AdminCog(commands.Cog):
                     await ctx.respond('Role Not Found!', hidden=True)
                     add_role = await ask_confirm(self.state, ctx,
                                                  f'Would you like to add the new faction role **{faction}**?')
-                    # _make_role(faction)
-                    print('Responded', add_role)
+                    if add_role:
+                        await _make_role(faction, guild)
+
+                    await ctx.send(
+                        f'Role {faction} Added!\n *Don\'t forget to change the role\'s position in the server role list!*',
+                        hidden=True)
 
         except Exception as e:
             await ctx.send(str(e), hidden=True)
