@@ -25,6 +25,8 @@ class AdminCog(commands.Cog):
         self.client = client
         self.state = state
 
+        print(self.client.commands)
+
     @slash_cog(name='new_faction', options=[
         SlashOption(str, 'faction', 'The name of the faction', required=True)
     ], guild_ids=[894675526776676382], guild_permissions=guild_permissions)
