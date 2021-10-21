@@ -4,7 +4,7 @@ from discord_ui.cogs import slash_cog, subslash_cog, listening_component_cog
 from bot_state import BotState
 
 import discord_ui
-from discord_ui.slash import SlashOption, SlashPermission
+from discord_ui import SlashOption, SlashPermission, SlashedCommand
 from discord_ui import Interaction
 
 admin_permissions = SlashPermission(
@@ -21,9 +21,10 @@ guild_permissions = {
 
 class AdminCog(commands.Cog):
 
-    def __init__(self, client: commands.Bot, state: BotState):
+    def __init__(self, client: commands.Bot, state: BotState, ui: discord_ui.UI):
         self.client = client
         self.state = state
+        self.ui = ui
 
     @slash_cog(name='new_faction', options=[
         SlashOption(str, 'faction', 'The name of the faction', required=True)
@@ -40,3 +41,12 @@ class AdminCog(commands.Cog):
                 await ctx.respond('Role Not Found!')
 
         # guild.create_role(name=faction)
+
+    @slash_cog(name='command_sync', guild_ids=[894675526776676382], guild_permissions=guild_permissions)
+    async def warlord_cmd_sync(self, ctx: SlashedCommand):
+        try:
+            await ctx.defer(hidden=True)
+            await self.ui.slash.sync_commands(delete_unused=True)
+            await ctx.respond('Done!')
+        except Exception as e:
+            await ctx.respond(content=str(e))

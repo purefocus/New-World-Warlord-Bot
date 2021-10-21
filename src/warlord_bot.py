@@ -11,7 +11,7 @@ from cog_management import WarManagementCog
 from cog_admin import AdminCog
 
 client = commands.Bot(" ")
-ui = UI(client, slash_options={'auto_sync': True, "wait_sync": 2, "delete_unused": True})
+ui = UI(client, slash_options={'auto_sync': False, "wait_sync": 2, "delete_unused": True})
 config = Config()
 config.load()
 state = BotState(client, config)
@@ -105,9 +105,6 @@ async def warlord_config(ctx, options: str):
     await cmd_bot_configure(state, ctx, options)
 
 
-@ui.slash.command(name='warlord_cmd_sync', **config.cmd_cfg_elev)
-async def warlord_cmd_sync(ctx):
-    await ui.slash.sync_commands(delete_unused=True)
 
 
 # @ui.slash.command(description='Shutdown the bot', **config.cmd_cfg_elev)
