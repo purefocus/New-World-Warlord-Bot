@@ -105,8 +105,6 @@ async def warlord_config(ctx, options: str):
     await cmd_bot_configure(state, ctx, options)
 
 
-
-
 # @ui.slash.command(description='Shutdown the bot', **config.cmd_cfg_elev)
 # async def warlord_shutdown(ctx):
 #     state.save_war_data()
@@ -158,7 +156,6 @@ async def on_ready():
         import traceback
         import sys
         traceback.print_exception(*sys.exc_info())
-
 
 
 state.load_war_data()
