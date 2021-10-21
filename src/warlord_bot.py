@@ -155,6 +155,8 @@ async def on_ready():
 
         state.save_war_data()
 
+        await ui.slash.sync_commands(delete_unused=True)
+
     except Exception as e:
         import traceback
         import sys
