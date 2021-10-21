@@ -164,7 +164,7 @@ for war in state.wars:
 
 client.add_cog(WarManagementCog(client, state))
 client.add_cog(DMEnlistmentCog(client, state))
-client.add_cog(AdminCog(client, state))
+client.add_cog(AdminCog(client, state, ui))
 client.run(config.bot_token)
 
 if __name__ == '__main__':
