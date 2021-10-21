@@ -28,9 +28,7 @@ class AdminCog(commands.Cog):
     @slash_cog(name='new_faction', options=[
         SlashOption(str, 'faction', 'The name of the faction', required=True)
     ], guild_ids=[894675526776676382], guild_permissions=guild_permissions)
-    async
-
-    def command(self, ctx: discord_ui.SlashedCommand, faction: str):
+    async def command(self, ctx: discord_ui.SlashedCommand, faction: str):
 
         guild: discord.Guild = ctx.guild
 
