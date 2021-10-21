@@ -7,6 +7,8 @@ import discord_ui
 from discord_ui import SlashOption, SlashPermission, SlashedCommand
 from discord_ui import Interaction
 
+from views.view_confirm import ask_confirm
+
 admin_permissions = SlashPermission(
     allowed={
         '894677353479942154': SlashPermission.Role,  # Admin
@@ -33,12 +35,12 @@ def _get_all_faction_roles(guild: discord.Guild):
 
 
 def _make_role(name: str, guild: discord.Guild):
-    guild.create_role(name=name,
-                      colour=discord.Colour(0xb9adff),
-                      permissions=discord.Permissions(permissions=2147863617),
-                      hoist=True,
-                      mentionable=False,
-                      reason='Adding a new faction tag')
+    role = guild.create_role(name=name,
+                             colour=discord.Colour(0xb9adff),
+                             permissions=discord.Permissions(permissions=2147863617),
+                             hoist=True,
+                             mentionable=False,
+                             reason='Adding a new faction tag')
 
 
 class AdminCog(commands.Cog):
@@ -56,19 +58,26 @@ class AdminCog(commands.Cog):
         try:
             if len(args) == 0:
                 await ctx.respond('test!', hidden=True)
-            elif args[0] == 'nfaction':
-                faction = args[1]
+            elif args[0] == 'new' and args[1] == 'faction':
+                faction = ' '.join(args[2:])
 
                 guild: discord.Guild = ctx.guild
 
-                _get_all_faction_roles()
-
+                # _get_all_faction_roles(guild)
+                found = False
                 for role in guild.roles:
                     role: discord.Role = role
                     if role.name.lower() == faction.lower():
-                        await ctx.respond('Role Found!')
-                    else:
-                        await ctx.respond('Role Not Found!')
+                        found = True
+
+                if found:
+                    await ctx.respond('Role Found!', hidden=True)
+                else:
+                    await ctx.respond('Role Not Found!', hidden=True)
+                    add_role = await ask_confirm(self.state, ctx,
+                                                 f'Would you like to add the new faction role **{faction}**?')
+                    # _make_role(faction)
+                    print('Responded', add_role)
 
         except Exception as e:
             await ctx.send(str(e), hidden=True)

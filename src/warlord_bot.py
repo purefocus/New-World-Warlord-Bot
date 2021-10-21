@@ -11,10 +11,15 @@ from cog_management import WarManagementCog
 from cog_admin import AdminCog
 
 client = commands.Bot(" ")
-ui = UI(client, slash_options={'auto_sync': False, "wait_sync": 2, "delete_unused": True})
+
+ui = UI(client, slash_options={'auto_sync': False, "wait_sync": 2, "delete_unused": False})
 config = Config()
 config.load()
 state = BotState(client, config)
+
+client.add_cog(WarManagementCog(client, state))
+client.add_cog(DMEnlistmentCog(client, state))
+client.add_cog(AdminCog(client, state, ui))
 
 
 ####################
@@ -159,12 +164,7 @@ async def on_ready():
 
 
 state.load_war_data()
-for war in state.wars:
-    generate_enlistment_pdf(state.wars[war])
 
-client.add_cog(WarManagementCog(client, state))
-client.add_cog(DMEnlistmentCog(client, state))
-client.add_cog(AdminCog(client, state, ui))
 client.run(config.bot_token)
 
 if __name__ == '__main__':

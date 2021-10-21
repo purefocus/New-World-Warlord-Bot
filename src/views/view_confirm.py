@@ -13,7 +13,7 @@ async def ask_confirm(state: BotState, ctx: discord_ui.SlashedCommand, question:
             Button('btn:confirm_yes', 'Yes'),
             Button('btn:confirm_no', 'No')
         ]
-        msg = await ctx.send(content=question, components=comps)
+        msg = await ctx.send(content=question, components=comps, hidden=True)
 
         response = await msg.wait_for(event_name='button', client=state.client, timeout=60)
         result = default_response
@@ -24,7 +24,7 @@ async def ask_confirm(state: BotState, ctx: discord_ui.SlashedCommand, question:
 
         await response.respond(ninja_mode=True)
 
-        await msg.edit(content=f'{question}\n **You responded {"Yes" if result else "No"}**', components=None)
+        await msg.edit(content=f'{question}\n **You responded: {"Yes" if result else "No"}**', components=None)
 
         return result
 
