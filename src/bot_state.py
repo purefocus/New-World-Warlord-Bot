@@ -4,6 +4,9 @@ import json
 import discord
 from discord.ext import commands
 from discord_ui import Button
+from utils.userdata import UserData
+
+import time
 
 
 def _chsum(cond):
@@ -28,17 +31,39 @@ class BotState:
         self.client: commands.Bot = client
         self.wars = {}
         self.config = config
+        self.users = UserData()
 
         self.war_selection = {}
+
+    async def update_presence(self):
+        start_time = int(1000 * time.time())
+        end_time = int(1000 * (time.time() + 60 * 5))
+        print(end_time)
+        await self.client.change_presence(
+            status=discord.Status.idle,
+            activity=discord.Activity(
+                name='New World',
+                details='Test Details',
+                type=discord.ActivityType.playing,
+                timestamps={
+                    # 'start': int(1000 * time.time()),
+                    'end': int(1000 * (time.time() + 60 * 5))
+                },
+                assets={
+                    'large_image': 'new_world',
+                    'large_text': 'New World!'
+                }
+            )
+        )
 
     async def add_enlistment(self, war: WarDef, user: Enlistment, save=True, announce=True):
         try:
             num_enlisted = len(war)
             if isinstance(user, UserSignup):
-                enl = user.to_enlistment()
-                war.add_enlistment(enl)
-            else:
-                war.add_enlistment(user)
+                user = user.to_enlistment()
+            war.add_enlistment(user)
+
+            self.users.add_user(user)
 
             if self.config.announce_signup and announce:
                 await self.announce_signup(user)
@@ -47,6 +72,7 @@ class BotState:
                 await self.update_war_boards(war)
 
             if save:
+                self.users.save()
                 self.save_war_data()
 
         except Exception as e:
@@ -105,6 +131,13 @@ class BotState:
 
             for w in war_data:
                 self.add_war(WarDef(war_data[w]))
+
+            for w in self.wars:
+                war: WarDef = self.wars[w]
+                for user in war.enlisted.roster:
+                    war.add_enlistment(war.enlisted.roster[user])
+                    self.users.add_user(war.enlisted.roster[user])
+            self.users.save()
 
         except Exception as e:
             self.wars = {}

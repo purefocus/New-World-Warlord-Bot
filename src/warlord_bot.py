@@ -1,5 +1,5 @@
-from discord.ext import commands
-
+from discord.ext import commands, tasks
+import discord
 from bot_state import *
 from forms.create_war import *
 from forms.enlist_form import cmd_enlist
@@ -16,6 +16,8 @@ ui = UI(client, slash_options={'auto_sync': False, "wait_sync": 2, "delete_unuse
 config = Config()
 config.load()
 state = BotState(client, config)
+state.load_war_data()
+state.save_war_data()
 
 client.add_cog(WarManagementCog(client, state))
 client.add_cog(DMEnlistmentCog(client, state))
@@ -146,21 +148,13 @@ async def on_ready():
         print('------')
         config.resolve(client)
 
-        # await config.test_resolved()
-
-        state.load_war_data()
-        for war in state.wars:
-            war = state.wars[war]
-            await update_war_boards(war, state)
-
-        state.save_war_data()
-
         # await ui.slash.sync_commands(delete_unused=True)
 
     except Exception as e:
         import traceback
         import sys
         traceback.print_exception(*sys.exc_info())
+
 
 
 state.load_war_data()

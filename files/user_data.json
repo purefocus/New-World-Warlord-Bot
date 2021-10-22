@@ -1,12 +1,52 @@
 {
   "purefocus": {
-    "discord_user": "purefocus#3061",
     "username": "purefocus",
-    "level": 52,
+    "level": 54,
     "faction": "Syndicate",
     "company": "The Positive Treehouse",
-    "role": "Tank",
-    "Weapons": "Sword & Shield/War Hammer",
-    "last_updated": "10/20/2021"
+    "roles": {
+      "Tank": "Sword & Shield (20)/War Hammer (16)"
+    },
+    "group": null
+  },
+  "i clicked": {
+    "username": "I clicked",
+    "level": 53,
+    "faction": "Syndicate",
+    "company": "Lotus Trading Company",
+    "roles": {
+      "Siege": "Life Staff (20)/War Hammer (16)"
+    },
+    "group": null
+  },
+  "bhfeice": {
+    "username": "Bhfeice",
+    "level": 54,
+    "faction": "Syndicate",
+    "company": "The Research Commission",
+    "roles": {
+      "Tank": "Sword & Shield (19)/War Hammer (18)"
+    },
+    "group": null
+  },
+  "1lxst": {
+    "username": "1lxst",
+    "level": 55,
+    "faction": "Syndicate",
+    "company": "Thiccc Bois",
+    "roles": {
+      "Tank": "Sword & Shield (16)/Great Axe (16)"
+    },
+    "group": null
+  },
+  "dfgsfg": {
+    "username": "dfgsfg",
+    "level": 32,
+    "faction": "Syndicate",
+    "company": "dsfgsgfd",
+    "roles": {
+      "Tank": "Sword & Shield (20)/Spear (15)"
+    },
+    "group": null
   }
 }

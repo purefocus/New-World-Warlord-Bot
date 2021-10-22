@@ -23,6 +23,7 @@ class WarDef:
         self.war_time = None
         self.owners = None
         self.enlisted = Enlisted()
+        self.roster = []
         # self.war_board = []
         self.boards = []
 
@@ -43,6 +44,7 @@ class WarDef:
             'location': self.location,
             'wartime': self.war_time,
             'owners': self.owners,
+            'roster': self.roster,
             'enlisted': self.enlisted.as_dict(),
             # 'boards': self.war_board,
             'boards': store_message_references(self.boards),
@@ -63,6 +65,8 @@ class WarDef:
         self.enlisted = Enlisted(dic['enlisted'])
         if 'name' in dic:
             self.name = dic['name']
+        if 'roster' in dic:
+            self.name = dic['roster']
 
         self.boards = parse_message_references(dic['boards'])
 
@@ -80,6 +84,8 @@ class WarDef:
     def add_enlistment(self, enlisted) -> bool:
         name = self.enlisted.is_enlisted(enlisted)
         self.enlisted.enlist(enlisted)
+        if enlisted.username not in self.roster:
+            self.roster.append(enlisted.username)
 
         return name is not None
 
@@ -96,7 +102,7 @@ class WarDef:
             self.groups.embed(embed)
 
         embed.add_field(name='Enlisted',
-                        value=f'{str(len(self.enlisted))}',
+                        value=f'{str(len(self.roster))}',
                         inline=False)
 
         if self.looking_for is not None:
@@ -108,25 +114,18 @@ class WarDef:
 
         return embed
 
-    def get_by_id(self, id):
-        for enlisted in self.enlisted:
-            entry = self.enlisted[enlisted]
-            if entry.id == id:
-                return entry
-        return None
-
     def __len__(self):
         return len(self.enlisted)
 
     def __repr__(self):
         return f'{self.location}'
 
-    def create_table(self, filter=None):
+    def create_table(self, users, filter=None):
 
         table = []
 
-        for enlisted in self.enlisted:
-            entry = self.enlisted[enlisted]
+        for enlisted in self.roster:
+            entry = users[enlisted]
             if filter is None or filter(entry):
                 table.append(entry)
 

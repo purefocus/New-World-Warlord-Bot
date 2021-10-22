@@ -1,14 +1,15 @@
 from dat.WarDef import WarDef
 from dat.EnlistDef import Enlistment
 from utils.details import WAR_ROLES
+from utils.userdata import UserData
 
 from discord import Embed
 
 
-def create_enlistment_embed(war, group_by):
+def create_enlistment_embed(war, state, group_by):
     results = {}
     if group_by == 'roles':
-        results = get_enlisted_by_roles(war)
+        results = get_enlisted_by_roles(war, state.users)
 
     embed = Embed(title='War Enlistment', description=f'{war.location}')
     embed.set_author(name=f'Grouped by {group_by}')
@@ -37,14 +38,14 @@ def create_enlistment_embed(war, group_by):
     return embed
 
 
-def get_enlisted_by_roles(war: WarDef):
+def get_enlisted_by_roles(war: WarDef, users: UserData):
     print(type(war))
     result = {}
     for role in WAR_ROLES:
         lst = []
 
-        for enl in war.enlisted:
-            enl: Enlistment = war.enlisted[enl]
+        for enl in war.roster:
+            enl: Enlistment = users[enl]
             if role in enl.roles:
                 lst.append(enl)
 

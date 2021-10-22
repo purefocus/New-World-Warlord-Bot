@@ -2,6 +2,9 @@ import json
 from dat.EnlistDef import Enlistment
 import config as cfg
 
+import json
+
+
 class User:
 
     def __init__(self):
@@ -19,10 +22,22 @@ class UserData:
         return username.lower() in self.users
 
     def load(self):
-        pass
+        try:
+            data = json.load(open(cfg.USER_DATA, 'r'))
+            for key in data:
+                entry: dict = data[key]
+                self.users[key] = Enlistment(**entry)
+        except Exception as e:
+            print(e)
 
     def save(self):
-        pass
+        try:
+            data = {}
+            for key in self.users:
+                data[key] = self.users[key].__dict__()
+            json.dump(data, open(cfg.USER_DATA, 'w+'), indent=2)
+        except Exception as e:
+            print(e)
 
     def __getitem__(self, name):
         return self.users[name.lower()]
