@@ -64,9 +64,9 @@ class WarDef:
         # self.war_board = dic['boards']
         self.enlisted = Enlisted(dic['enlisted'])
         if 'name' in dic:
-            self.name = dic['name']
+            self.name = dic['location']#dic['name']
         if 'roster' in dic:
-            self.name = dic['roster']
+            self.roster = dic['roster']
 
         self.boards = parse_message_references(dic['boards'])
 
