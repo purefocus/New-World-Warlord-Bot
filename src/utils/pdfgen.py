@@ -5,10 +5,10 @@ from config import tmpfile
 from dat.WarDef import *
 
 
-def generate_enlistment_pdf(war: WarDef):
+def generate_enlistment_pdf(war: WarDef, users):
     file = tmpfile('roster.pdf')
     document = SimpleDocTemplate(file, pagesize=A4)
-    data = war.create_table()
+    data = war.create_table(users)
 
     data = sorted(data, key=lambda x: x.sort_key(), reverse=True)
 

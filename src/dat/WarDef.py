@@ -64,7 +64,7 @@ class WarDef:
         # self.war_board = dic['boards']
         self.enlisted = Enlisted(dic['enlisted'])
         if 'name' in dic:
-            self.name = dic['location']#dic['name']
+            self.name = dic['name']
         if 'roster' in dic:
             self.roster = dic['roster']
 
