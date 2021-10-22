@@ -197,26 +197,27 @@ class DMEnlistmentCog(commands.Cog):
                         self.users_enlisting[ctx.author] = True
                         msg = None
                         ask = True
-                        user_exists = self.state.users.has_user(ctx.author.display_name)
-                        if user_exists:
+                        user = self.state.users.get[ctx.author.display_name]
+                        if user is not None:
                             ask, msg = await ask_confirm(self.state, ctx,
-                                                         'You have enlisted in a previous war! Would you like to update your information?',
+                                                         'You have enlisted in a previous war! Would you like to update your information? *Note: Select **Yes** if you are enlisting someone else!*',
                                                          ret_msg=True)
                         if ask:
                             if not ctx.responded:
                                 await ctx.respond(ninja_mode=True)
                             user = await self.enlist_questionair(war, ctx)
-                            success = user is not None
-                            if success:
-                                self.state.users.add_user(user.to_enlistment())
+                            # success = user is not None
+                            # if success:
+                            #     self.state.users.add_user(user.to_enlistment())
                         else:
                             success = True
                         del self.users_enlisting[ctx.author]
                         print('Enlistment Ended! ', len(self.users_enlisting))
 
-                        if success:
-                            war.add_enlistment(ctx.author.display_name)
-                            self.state.save_war_data()
+                        if user is not None:
+                            await self.state.add_enlistment(war, user)
+                            # war.add_enlistment(ctx.author.display_name)
+                            # self.state.save_war_data()
                             if msg is not None:
                                 await msg.edit(
                                     content=f'You have successfully been enlisted for the war **{war.location}**\n'

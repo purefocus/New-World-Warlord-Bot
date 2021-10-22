@@ -122,7 +122,6 @@ class BotState:
             saved_data[w] = self.wars[w].as_dict()
 
         json.dump(saved_data, open(config.WAR_DATA, 'w+'), indent=4)
-        self.users.save()
 
         # print('Saved: ', saved_data)
 

@@ -40,7 +40,9 @@ class UserData:
             print(e)
 
     def __getitem__(self, name):
-        return self.users[name.lower()]
+        if name in self.users[name.lower()]:
+            return self.users[name.lower()]
+        return None
 
     def __contains__(self, item):
         if isinstance(item, str):

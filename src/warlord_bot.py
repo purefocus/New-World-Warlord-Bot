@@ -55,6 +55,7 @@ async def create_war(ctx, attacking, defending, location, time, owner):
 
 @ui.slash.command(description='Flags a war as ended, disabling the ability to sign up for it', **config.cmd_cfg_elev)
 async def end_war(ctx):
+    user : discord.User= ctx.author
     await cmd_end_war(state, ctx)
 
 
