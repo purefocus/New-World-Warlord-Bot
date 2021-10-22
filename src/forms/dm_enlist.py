@@ -208,7 +208,7 @@ class DMEnlistmentCog(commands.Cog):
                             user = await self.enlist_questionair(war, ctx)
                             success = user is not None
                             if success:
-                                self.state.users.add_user(user)
+                                self.state.users.add_user(user.to_enlistment())
                         else:
                             success = True
                         del self.users_enlisting[ctx.author]
