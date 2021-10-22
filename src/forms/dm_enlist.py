@@ -195,12 +195,13 @@ class DMEnlistmentCog(commands.Cog):
                     if war is not None:
                         print('Enlistment Started!')
                         self.users_enlisting[ctx.author] = True
-
+                        msg = None
                         ask = True
                         user_exists = self.state.users.has_user(ctx.author.display_name)
                         if user_exists:
-                            ask = await ask_confirm(self.state, ctx,
-                                                    'You have enlisted in a previous war! Would you like to update your information?')
+                            ask, msg = await ask_confirm(self.state, ctx,
+                                                         'You have enlisted in a previous war! Would you like to update your information?',
+                                                         ret_msg=True)
                         if ask:
                             success = await self.enlist_questionair(war, ctx)
                         else:
@@ -209,9 +210,16 @@ class DMEnlistmentCog(commands.Cog):
                         print('Enlistment Ended! ', len(self.users_enlisting))
 
                         if success:
-                            await ctx.author.send(
-                                content=f'You have successfully been enlisted for the war **{war.location}**\n'
-                                        f'You can update you enlistment by clicking the \'Enlist Now!\' button again.')
+                            if msg is not None:
+                                await msg.edit(
+                                    content=f'You have successfully been enlisted for the war **{war.location}**\n'
+                                            f'You can update you enlistment by clicking the \'Enlist Now!\' button again.',
+                                    components=None
+                                )
+                            else:
+                                await ctx.author.send(
+                                    content=f'You have successfully been enlisted for the war **{war.location}**\n'
+                                            f'You can update you enlistment by clicking the \'Enlist Now!\' button again.')
                         else:
                             await ctx.author.send(
                                 content=f'Something went wrong and you have not been enlisted.')

@@ -7,7 +7,7 @@ import discord_ui
 from discord_ui import Button
 
 
-async def ask_confirm(state: BotState, ctx: discord_ui.SlashedCommand, question: str, default_response=False):
+async def ask_confirm(state: BotState, ctx: discord_ui.SlashedCommand, question: str, default_response=False, ret_msg=False):
     try:
         comps = [
             Button('btn:confirm_yes', 'Yes'),
@@ -24,9 +24,11 @@ async def ask_confirm(state: BotState, ctx: discord_ui.SlashedCommand, question:
 
         await response.respond(ninja_mode=True)
 
-        await msg.edit(content=f'{question}\n **You responded: {"Yes" if result else "No"}**', components=None)
+        if not ret_msg:
+            await msg.edit(content=f'{question}\n **You responded: {"Yes" if result else "No"}**', components=None)
 
-        return result
+            return result
+        return result, msg
 
     except asyncio.TimeoutError as e:
         await ctx.send(f'You took too long to respond\nDefault Response={default_response}')
