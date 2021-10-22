@@ -215,7 +215,7 @@ class DMEnlistmentCog(commands.Cog):
                         print('Enlistment Ended! ', len(self.users_enlisting))
 
                         if user is not None:
-                            await self.state.add_enlistment(war, user)
+                            await self.state.add_enlistment(war, user, announce=ask)
                             # war.add_enlistment(ctx.author.display_name)
                             # self.state.save_war_data()
                             if msg is not None:
