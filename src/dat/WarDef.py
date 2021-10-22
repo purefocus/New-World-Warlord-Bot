@@ -45,7 +45,7 @@ class WarDef:
             'wartime': self.war_time,
             'owners': self.owners,
             'roster': self.roster,
-            'enlisted': self.enlisted.as_dict(),
+            # 'enlisted': self.enlisted.as_dict(),
             # 'boards': self.war_board,
             'boards': store_message_references(self.boards),
             'looking_for': self.looking_for,
@@ -62,7 +62,7 @@ class WarDef:
         self.war_time = dic['wartime']
         self.owners = dic['owners']
         # self.war_board = dic['boards']
-        self.enlisted = Enlisted(dic['enlisted'])
+        # self.enlisted = Enlisted(dic['enlisted'])
         if 'name' in dic:
             self.name = dic['name']
         if 'roster' in dic:

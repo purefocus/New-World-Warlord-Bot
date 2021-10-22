@@ -136,8 +136,6 @@ class BotState:
                 war: WarDef = self.wars[w]
                 for user in war.enlisted.roster:
                     war.add_enlistment(war.enlisted.roster[user])
-                    self.users.add_user(war.enlisted.roster[user])
-            self.users.save()
 
         except Exception as e:
             self.wars = {}

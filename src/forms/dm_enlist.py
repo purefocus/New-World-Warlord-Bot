@@ -199,10 +199,8 @@ class DMEnlistmentCog(commands.Cog):
                         ask = True
                         user_exists = self.state.users.has_user(ctx.author.display_name)
                         if user_exists:
-                            print('a')
                             ask = await ask_confirm(self.state, ctx,
                                                     'You have enlisted in a previous war! Would you like to update your information?')
-                            print('b')
                         if ask:
                             success = await self.enlist_questionair(war, ctx)
                         else:
@@ -212,7 +210,7 @@ class DMEnlistmentCog(commands.Cog):
 
                         if success:
                             await ctx.author.send(
-                                content=f'You have successfully been enlisted for the war **{id}**\n'
+                                content=f'You have successfully been enlisted for the war **{war.location}**\n'
                                         f'You can update you enlistment by clicking the \'Enlist Now!\' button again.')
                         else:
                             await ctx.author.send(
