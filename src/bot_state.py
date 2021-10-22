@@ -122,6 +122,7 @@ class BotState:
             saved_data[w] = self.wars[w].as_dict()
 
         json.dump(saved_data, open(config.WAR_DATA, 'w+'), indent=4)
+        self.users.save()
 
         # print('Saved: ', saved_data)
 
@@ -132,10 +133,12 @@ class BotState:
             for w in war_data:
                 self.add_war(WarDef(war_data[w]))
 
-            for w in self.wars:
-                war: WarDef = self.wars[w]
-                for user in war.enlisted.roster:
-                    war.add_enlistment(war.enlisted.roster[user])
+            self.users.load()
+
+            # for w in self.wars:
+            #     war: WarDef = self.wars[w]
+            #     for user in war.enlisted.roster:
+            #         war.add_enlistment(war.enlisted.roster[user])
 
         except Exception as e:
             self.wars = {}

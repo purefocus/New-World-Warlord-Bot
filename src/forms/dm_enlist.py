@@ -203,6 +203,8 @@ class DMEnlistmentCog(commands.Cog):
                                                          'You have enlisted in a previous war! Would you like to update your information?',
                                                          ret_msg=True)
                         if ask:
+                            if not ctx.responded:
+                                await ctx.respond(ninja_mode=True)
                             success = await self.enlist_questionair(war, ctx)
                         else:
                             success = True
