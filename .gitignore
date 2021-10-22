@@ -132,3 +132,4 @@ dmypy.json
 token.json
 .tmp/
 files/*
+user_data.json
