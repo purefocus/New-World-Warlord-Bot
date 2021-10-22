@@ -40,6 +40,7 @@ class UserData:
             print(e)
 
     def __getitem__(self, name):
+        print('name: ', name)
         if name in self.users[name.lower()]:
             return self.users[name.lower()]
         return None
