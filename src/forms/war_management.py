@@ -21,7 +21,7 @@ async def cmd_get_enlisted(state, ctx):
 
         embed = discord.Embed(title='Enlistment Roster')
         embed.set_author(name=war.location)
-        roster = create_text_war_roster(war)
+        roster = create_text_war_roster(war, state.users)
         print(len(roster))
         embed.add_field(name='roster', value=f'```{roster}```')
 

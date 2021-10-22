@@ -80,8 +80,8 @@ def create_war_roster(war):
     return file
 
 
-def create_text_war_roster(war, filter=None):
-    data = war.create_table(filter)
+def create_text_war_roster(war, users, filter=None):
+    data = war.create_table(users, filter)
 
     formatted_roster = tabulate(tabular_data=data[1:], headers=data[0])  # , tablefmt="fancy_grid"
 
