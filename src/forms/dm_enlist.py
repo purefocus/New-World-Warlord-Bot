@@ -157,15 +157,13 @@ class DMEnlistmentCog(commands.Cog):
             user.secondary_weapon = f"{responses['secondary_weapon']} ({responses['secondary_level']})"
             user.preferred_group = responses['group']
 
-            await self.state.add_enlistment(war, user.to_enlistment())
-
-            return True
+            return user
 
         except asyncio.TimeoutError as e:
             import traceback
             import sys
             traceback.print_exception(*sys.exc_info())
-        return False
+        return None
 
     @commands.Cog.listener()
     async def on_message(self, msg: discord.Message):
@@ -207,13 +205,18 @@ class DMEnlistmentCog(commands.Cog):
                         if ask:
                             if not ctx.responded:
                                 await ctx.respond(ninja_mode=True)
-                            success = await self.enlist_questionair(war, ctx)
+                            user = await self.enlist_questionair(war, ctx)
+                            success = user is not None
+                            if success:
+                                self.state.users.add_user(user)
                         else:
                             success = True
                         del self.users_enlisting[ctx.author]
                         print('Enlistment Ended! ', len(self.users_enlisting))
 
                         if success:
+                            war.add_enlistment(ctx.author.display_name)
+                            self.state.save_war_data()
                             if msg is not None:
                                 await msg.edit(
                                     content=f'You have successfully been enlisted for the war **{war.location}**\n'

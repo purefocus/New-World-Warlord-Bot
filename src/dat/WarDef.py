@@ -82,12 +82,16 @@ class WarDef:
         # self.war_board[str(msg.guild.id)] = {'cid': msg.channel.id, 'mid': msg.id}
 
     def add_enlistment(self, enlisted) -> bool:
-        name = self.enlisted.is_enlisted(enlisted)
-        self.enlisted.enlist(enlisted)
-        if enlisted.username not in self.roster:
-            self.roster.append(enlisted.username)
+        # name = self.enlisted.is_enlisted(enlisted)
+        # self.enlisted.enlist(enlisted)
+        if isinstance(enlisted, Enlistment):
+            enlisted = enlisted.username
 
-        return name is not None
+        if enlisted not in self.roster:
+            self.roster.append(enlisted)
+            return False
+
+        return True
 
     def get_embeded(self):
         embed = discord.Embed(title=f':exclamation: __War Signup!__ :exclamation: ')
