@@ -31,4 +31,4 @@ async def ask_confirm(state: BotState, ctx: discord_ui.SlashedCommand, question:
         return result, msg
 
     except asyncio.TimeoutError as e:
-        await ctx.send(f'You took too long to respond\nDefault Response={default_response}')
+        await ctx.send(f'You took too long to respond\nDefault Response={default_response}', hidden=True)
