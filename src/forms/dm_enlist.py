@@ -10,6 +10,8 @@ from utils.details import WAR_ROLES, WEAPON_CHOICES, FACTIONS
 
 from dat.UserSignup import UserSignup
 
+from views.view_confirm import ask_confirm
+
 import asyncio
 
 question_list = [
@@ -194,7 +196,15 @@ class DMEnlistmentCog(commands.Cog):
                     if war is not None:
                         print('Enlistment Started!')
                         self.users_enlisting[ctx.author] = True
-                        success = await self.enlist_questionair(war, ctx)
+
+                        ask = True
+                        if self.state.users.has_user(ctx.author.display_name):
+                            ask = await ask_confirm(self.state, ctx,
+                                                    'You have enlisted in a previous war! Would you like to update your information?')
+                        if ask:
+                            success = await self.enlist_questionair(war, ctx)
+                        else:
+                            success = True
                         del self.users_enlisting[ctx.author]
                         print('Enlistment Ended! ', len(self.users_enlisting))
 
