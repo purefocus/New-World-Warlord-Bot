@@ -19,11 +19,11 @@ async def cmd_get_enlisted(state, ctx):
     war, _ = await select_war(state, ctx, 'Select the war to get the enlistment roster for', allow_multiple=False)
     if war is not None:
 
-        embed = discord.Embed(title='Enlistment Roster')
-        embed.set_author(name=war.location)
-        roster = create_text_war_roster(war, state.users)
-        print(len(roster))
-        embed.add_field(name='roster', value=f'```{roster}```')
+        # embed = discord.Embed(title='Enlistment Roster')
+        # embed.set_author(name=war.location)
+        # roster = create_text_war_roster(war, state.users)
+        # print(len(roster))
+        # embed.add_field(name='roster', value=f'```{roster}```')
 
         embed = create_enlistment_embed(war, state, 'roles')
         await ctx.send(content='Here\'s the roster.', embed=embed)
