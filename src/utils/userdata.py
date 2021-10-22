@@ -39,9 +39,8 @@ class UserData:
         except Exception as e:
             print(e)
 
-    def __getattr__(self, name):
-        print('name: ', name)
-        if name in self.users[name.lower()]:
+    def __getitem__(self, name):
+        if name.lower() in self.users:
             return self.users[name.lower()]
         return None
 
