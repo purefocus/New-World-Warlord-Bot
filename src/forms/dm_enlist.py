@@ -180,6 +180,8 @@ class DMEnlistmentCog(commands.Cog):
     async def on_interaction(self, ctx: Interaction):
         try:
             data = ctx.data
+            if 'custom_id' not in data:
+                return
             id: str = data['custom_id']
             if id.startswith('btn:enlist:'):
                 id = id[11:]
