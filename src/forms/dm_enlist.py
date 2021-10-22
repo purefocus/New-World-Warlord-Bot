@@ -223,4 +223,6 @@ class DMEnlistmentCog(commands.Cog):
                         await ctx.author.send(
                             content='Sorry, This war is no longer active!\nIf this is a mistake, please contact an admin!')
         except:
-            pass
+            import traceback
+            import sys
+            traceback.print_exception(*sys.exc_info())
