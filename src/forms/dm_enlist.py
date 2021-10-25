@@ -195,22 +195,27 @@ class DMEnlistmentCog(commands.Cog):
                     if war is not None:
                         print('Enlistment Started!')
                         self.users_enlisting[ctx.author] = True
-                        msg = None
-                        ask = True
-                        user = self.state.users[ctx.author.display_name]
-                        if user is not None:
-                            ask, msg = await ask_confirm(self.state, ctx,
-                                                         'You have enlisted in a previous war, so we can just reuse that information! \nWould you like to update your information instead? \n\n*Note: Select **Yes** if you are enlisting someone else!*',
-                                                         ret_msg=True)
-                        if ask:
-                            if not ctx.responded:
-                                await ctx.respond(ninja_mode=True)
-                            user = await self.enlist_questionair(war, ctx)
-                            # success = user is not None
-                            # if success:
-                            #     self.state.users.add_user(user.to_enlistment())
-                        else:
-                            success = True
+                        try:
+                            msg = None
+                            ask = True
+                            user = self.state.users[ctx.author.display_name]
+                            if user is not None:
+                                ask, msg = await ask_confirm(self.state, ctx,
+                                                             'You have enlisted in a previous war, so we can just reuse that information! \nWould you like to update your information instead? \n\n*Note: Select **Yes** if you are enlisting someone else!*',
+                                                             ret_msg=True)
+                            if ask:
+                                if not ctx.responded:
+                                    await ctx.respond(ninja_mode=True)
+                                user = await self.enlist_questionair(war, ctx)
+                                # success = user is not None
+                                # if success:
+                                #     self.state.users.add_user(user.to_enlistment())
+                            else:
+                                success = True
+                        except:
+                            import traceback
+                            import sys
+                            traceback.print_exception(*sys.exc_info())
                         del self.users_enlisting[ctx.author]
                         print('Enlistment Ended! ', len(self.users_enlisting))
 
