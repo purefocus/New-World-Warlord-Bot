@@ -46,10 +46,10 @@ def get_enlisted_by_roles(war: WarDef, users: UserData):
 
         for enl in war.roster:
             en: Enlistment = users[enl]
+            if en is None:
+                print(f'User not found: {enl}')
             if en is not None and role in en.roles:
                 lst.append(en)
-            else:
-                print(f'User not found: {enl}')
 
         result[role] = lst
 
