@@ -2,7 +2,8 @@ import discord
 
 
 def create_embed():
-    embed = discord.Embed(title='War Creation and Management')
+    embed = discord.Embed(title='War Creation and Management', colour=discord.Colour(0x470000),
+                          description='This post will explain how to create and manage wars using the Warlord Bot!')
 
     embed.add_field(name='War Creation',
                     inline=False,
