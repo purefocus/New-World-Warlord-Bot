@@ -139,7 +139,7 @@ class DMEnlistmentCog(commands.Cog):
             user = UserProfile(ctx.author)
 
             await ctx.author.send(
-                f'Hello **{user.username}**, you have chosen to enlist in the war for **{war.location}**'
+                f'Hello **{user}**, you have chosen to enlist in the war for **{war.location}**'
                 f'\n*This information will be saved to make it faster to sign up in the future!*\n'
                 f'\nPlease answer the following questions:\n')
             responses = {}
@@ -169,7 +169,7 @@ class DMEnlistmentCog(commands.Cog):
             user.company = responses['company']
             user.role = responses['role']
             user.username = responses['name']
-            if 'gearscore' in responses['gearscore']:
+            if 'gearscore' in responses:
                 user.level = responses['gearscore']
             else:
                 user.level = responses['level']
@@ -214,13 +214,22 @@ class DMEnlistmentCog(commands.Cog):
                 await msg.edit(content='**Please check your private messages!**', components=None, embed=None)
                 if not ctx.responded:
                     await ctx.respond(ninja_mode=True)
-                user = await self.enlist_questionair(war, ctx)
+                correct = False
+                while not correct:
+                    try:
+                        user = await self.enlist_questionair(war, ctx)
+                    except:
+                        break
 
-                if user is not None:
-                    ask, msg = await ask_confirm(self.state, ctx, 'Is this information correct?',
-                                                 embed=user.embed(), ret_msg=True)
-            else:
-                success = True
+                    if user is not None:
+                        correct, msg = await ask_confirm(self.state, ctx, 'Is this information correct?',
+                                                         embed=user.embed(), ret_msg=True)
+
+                    else:
+                        break
+
+                else:
+                    await ctx.author.send(content=STR_ENLIST_FAILED)
 
             # del self.users_enlisting[ctx.author]
             print('Enlistment Ended! ', len(self.users_enlisting))

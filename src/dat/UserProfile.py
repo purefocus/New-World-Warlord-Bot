@@ -15,6 +15,12 @@ class UserProfile:
 
     def __str__(self):
         if self.company is not None:
-            return f'{self.username} ("{self.company}") [{self.discord_user}]'
+            return f'{self.username} ("{self.company}")'
         else:
-            return f'{self.username} [{self.discord_user}]'
+            return f'{self.username}'
+
+    def embed(self):
+        embed = discord.Embed()
+        embed.add_field(name='Username', value=self.username)
+        embed.add_field(name='Company', value=self.company)
+        return embed
