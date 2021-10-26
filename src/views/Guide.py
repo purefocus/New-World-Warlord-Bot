@@ -5,6 +5,7 @@ def create_embed():
     embed = discord.Embed(title='War Creation and Management')
 
     embed.add_field(name='War Creation',
+                    inline=False,
                     value='Post the following template into __#war-boards__'
                           '```'
                           '@Warlord'
@@ -24,6 +25,7 @@ def create_embed():
                     )
 
     embed.add_field(name='Group Assignments',
+                    inline=False,
                     value='Add the following to the end of the __original post__ from *War Creation*'
                           '```'
                           'Group 1: <Group Name>'
@@ -37,6 +39,7 @@ def create_embed():
                           'The players listed here do not have to be signed up as it is handled differently.'
                     )
     embed.add_field(name='Group Assignments',
+                    inline=False,
                     value='To get the list of people who are signed up for a war, use the command:'
                           ' `/get_enlisted` (posts in channel) *or*'
                           '`/download_enlisted` (creates a downloadable PDF)'
