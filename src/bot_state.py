@@ -102,6 +102,8 @@ class BotState:
         else:
             if war.location in self.wars:
                 best_match = self.wars[war.location]
+                if not best_match.active:
+                    best_match = None
             else:
                 best_match = None
 
