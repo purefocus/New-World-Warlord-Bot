@@ -55,7 +55,7 @@ async def create_war(ctx, attacking, defending, location, time, owner):
 
 @ui.slash.command(description='Flags a war as ended, disabling the ability to sign up for it', **config.cmd_cfg_elev)
 async def end_war(ctx):
-    user : discord.User= ctx.author
+    user: discord.User = ctx.author
     await cmd_end_war(state, ctx)
 
 
@@ -151,11 +151,14 @@ async def on_ready():
 
         # await ui.slash.sync_commands(delete_unused=True)
 
+        for war in state.wars:
+            if war.active:
+                await state.update_war_boards(war)
+
     except Exception as e:
         import traceback
         import sys
         traceback.print_exception(*sys.exc_info())
-
 
 
 state.load_war_data()
