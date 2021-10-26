@@ -30,8 +30,7 @@ question_list = {
     'gearscore': {
         'question': 'What level is your Gear Score?',
         'response_type': int,
-        'askif': lambda answers: answers['level'] == 60,
-        'check': lambda response, answers: None if 0 < response <= 60 else 'Your answer must be between 0-60'
+        'askif': lambda answers: answers['level'] == 60
     },
     'faction': {
         'question': 'What Faction are you?',
@@ -153,7 +152,6 @@ class DMEnlistmentCog(commands.Cog):
             for q in question_list:
                 if q in responses:
                     continue
-                print_dict(responses)
 
                 ques = question_list[q]
                 if 'askif' in ques and not ques['askif'](responses):
@@ -171,7 +169,11 @@ class DMEnlistmentCog(commands.Cog):
             user.company = responses['company']
             user.role = responses['role']
             user.username = responses['name']
-            user.level = responses['level']
+            if 'gearscore' in responses['gearscore']:
+                user.level = responses['gearscore']
+            else:
+                user.level = responses['level']
+
             user.primary_weapon = f"{responses['primary_weapon']} ({responses['primary_level']})"
             user.secondary_weapon = f"{responses['secondary_weapon']} ({responses['secondary_level']})"
             user.preferred_group = responses['group']
