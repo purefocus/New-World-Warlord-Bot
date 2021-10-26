@@ -273,6 +273,10 @@ class DMEnlistmentCog(commands.Cog):
 
             self.users_enlisting[ctx.author] = self.do_enlist(war, ctx)
             await self.users_enlisting[ctx.author]
+            try:
+                del self.users_enlisting[ctx.author]
+            except:
+                pass
         except:
             import traceback
             import sys
