@@ -145,7 +145,7 @@ class DMEnlistmentCog(commands.Cog):
                 f'\nPlease answer the following questions:\n')
             responses = {}
 
-            responses['username'] = user.username
+            responses['name'] = user.username
             if user.company is not None:
                 responses['faction'] = 'Syndicate'
                 responses['company'] = user.company
