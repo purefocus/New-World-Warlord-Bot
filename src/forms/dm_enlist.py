@@ -223,7 +223,7 @@ class DMEnlistmentCog(commands.Cog):
                         break
 
                     if user is not None:
-                        correct = await ask_confirm(self.state, ctx, 'Is this information correct?',
+                        correct = await ask_confirm(self.state, ctx.author, 'Is this information correct?',
                                                     embed=user.embed())
 
                     else:
