@@ -68,7 +68,7 @@ def parse_war_info(state: BotState, lines) -> WarDef:
         war.location = get_location(result['location'])
         war.war_time = result['time']
         war.owners = result['owner']
-        if 'looking_for' in result:
+        if 'looking_for' in result and result['looking_for'] is not None:
             war.looking_for = result['looking_for'].replace(';', '\n')
 
         return war
