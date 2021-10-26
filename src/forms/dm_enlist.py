@@ -228,7 +228,7 @@ class DMEnlistmentCog(commands.Cog):
                     else:
                         break
 
-                else:
+                if not correct:
                     await ctx.author.send(content=STR_ENLIST_FAILED)
 
             # del self.users_enlisting[ctx.author]
