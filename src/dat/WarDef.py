@@ -94,11 +94,12 @@ class WarDef:
         return True
 
     def get_embeded(self):
-        embed = discord.Embed(title=f':exclamation: __War Signup Test!__ :exclamation: ')
+        embed = discord.Embed(title=f':exclamation: __War Signup Test!__ :exclamation: ',
+                              description='<@&894698039774679060>')
         # embed.set_author(name='Test')
         if self.attacking is not None:
             embed.add_field(name='Details',
-                            value=f'<@&894698039774679060>\nLocation: `{self.location}`\nTime: `{self.war_time}`\nContact: {self.owners}',
+                            value=f'Location: `{self.location}`\nTime: `{self.war_time}`\nContact: {self.owners}',
                             inline=False)
             embed.add_field(name='Attackers', value=self.attacking, inline=True)
             embed.add_field(name='Defenders', value=self.defending, inline=True)
