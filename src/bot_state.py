@@ -173,6 +173,7 @@ class BotState:
 
     def create_board(self, war: WarDef, btn=False):
         ret = {
+            'content': '<@&894698039774679060>',
             'embed': war.embeds(),
         }
         if btn:
