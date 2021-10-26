@@ -196,7 +196,7 @@ class DMEnlistmentCog(commands.Cog):
         # war = self.state.wars[id]
         if war is not None:
             print('Enlistment Started!')
-            self.users_enlisting[ctx.author] = True
+            # self.users_enlisting[ctx.author] = True
 
             msg = None
             ask = True
@@ -218,7 +218,7 @@ class DMEnlistmentCog(commands.Cog):
             else:
                 success = True
 
-            del self.users_enlisting[ctx.author]
+            # del self.users_enlisting[ctx.author]
             print('Enlistment Ended! ', len(self.users_enlisting))
 
             if user is not None:
