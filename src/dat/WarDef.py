@@ -94,7 +94,7 @@ class WarDef:
         return True
 
     def get_embeded(self):
-        embed = discord.Embed(title=f':exclamation: __War Signup Test!__ :exclamation: ')
+        embed = discord.Embed(title=f':exclamation: __<@&894698039774679060> Signup Test!__ :exclamation: ')
         # embed.set_author(name='Test')
         if self.attacking is not None:
             embed.add_field(name='Details',
@@ -106,7 +106,7 @@ class WarDef:
             self.groups.embed(embed)
 
         embed.add_field(name='Enlisted',
-                        value=f'{str(len(self.roster))}\n**Test:** <@198526201374048256>',
+                        value=f'{str(len(self.roster))}',
                         inline=False)
 
         if self.looking_for is not None:
