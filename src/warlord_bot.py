@@ -152,6 +152,7 @@ async def on_ready():
         # await ui.slash.sync_commands(delete_unused=True)
 
         for war in state.wars:
+            war = state.wars[war]
             if war.active:
                 await state.update_war_boards(war)
 
