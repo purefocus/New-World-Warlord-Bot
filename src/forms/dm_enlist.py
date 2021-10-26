@@ -202,7 +202,7 @@ class DMEnlistmentCog(commands.Cog):
             ask = True
             user = self.state.users[ctx.author.display_name]
             if user is not None:
-                ask, msg = ask_confirm(self.state, ctx,
+                ask, msg = await ask_confirm(self.state, ctx,
                                        'You have enlisted in a previous war, so we can just reuse that information! '
                                        '\nWould you like to update your information instead? '
                                        '\n\n*Note: Select **Yes** if you are enlisting someone else!*',
