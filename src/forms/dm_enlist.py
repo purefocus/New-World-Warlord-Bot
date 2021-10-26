@@ -9,68 +9,65 @@ from utils.colorprint import *
 from utils.details import WAR_ROLES, WEAPON_CHOICES, FACTIONS
 
 from dat.UserSignup import UserSignup
+from dat.UserProfile import UserProfile
 
 from views.view_confirm import ask_confirm
 
 import asyncio
 
-question_list = [
-    {
+question_list = {
+    'name': {
         'question': 'What is your character name?',
         'response_type': str,
-        'key': 'name'
     },
-    {
+    'level': {
         'question': 'What level is your character?',
         'response_type': int,
-        'key': 'level',
         'check': lambda response, answers: None if 0 < response <= 60 else 'Your answer must be between 0-60'
     },
-    {
+    'gearscore': {
+        'question': 'What level is your Gear Score?',
+        'response_type': int,
+        'askif': lambda answers: answers['level'] == 60,
+        'check': lambda response, answers: None if 0 < response <= 60 else 'Your answer must be between 0-60'
+    },
+    'faction': {
         'question': 'What Faction are you?',
         'choices': FACTIONS,
-        'key': 'faction'
     },
-    {
+    'company': {
         'question': 'What Company are you in?',
         'response_type': str,
-        'key': 'company'
     },
-    {
+    'role': {
         'question': 'What is your desired role?',
         'choices': WAR_ROLES,
-        'key': 'role'
     },
-    {
+    'primary_weapon': {
         'question': 'What is your Primary Weapon?',
         'choices': WEAPON_CHOICES,
-        'key': 'primary_weapon'
     },
-    {
+    'primary_level': {
         'followup': lambda x: f"What is your Mastery Level for your {x['primary_weapon']}",
         'response_type': int,
-        'key': 'primary_level',
         'check': lambda response, answers: None if 0 < response <= 20 else 'Your answer must be between 0-20'
     },
-    {
+    'secondary_weapon': {
         'question': 'What is your Secondary Weapon?',
         'choices': WEAPON_CHOICES,
-        'key': 'secondary_weapon',
         'check': lambda response, answers: None if response != answers[
             'primary_weapon'] else 'You must select a different weapon from your primary!'
     },
-    {
+    'secondary_level': {
         'followup': lambda x: f"What is your Mastery Level for your {x['secondary_weapon']}",
         'response_type': int,
-        'key': 'secondary_level',
         'check': lambda response, answers: None if 0 < response <= 20 else 'Your answer must be between 0-20'
     },
-    {
+    'group': {
         'question': 'Do you have a preferred group? Enter `None` if you do not have one.',
         'response_type': str,
-        'key': 'group'
-    },
-]
+    }
+}
 
 
 async def question(client: commands.Bot, ctx, answers,
@@ -134,14 +131,29 @@ class DMEnlistmentCog(commands.Cog):
 
     async def enlist_questionair(self, war, ctx):
         try:
-            await ctx.author.send(
-                f'Hello, you have chosen to enlist in the war for {war.location}\nPlease answer the following questions:\n')
-            responses = {}
-            for q in question_list:
+            user = UserProfile(ctx.author)
 
+            await ctx.author.send(
+                f'Hello **{user.username}**, you have chosen to enlist in the war for **{war.location}**'
+                f'\nThis information will be saved to make it faster to sign up in the future!\n'
+                f'\nPlease answer the following questions:\n')
+            responses = {}
+
+            responses['username'] = user.username
+            if user.company is not None:
+                responses['faction'] = 'Syndicate'
+                responses['company'] = user.company
+
+            for q in question_list:
+                if q in responses:
+                    continue
+
+                ques = question_list[q]
+                if 'askif' in ques and not ques['askif'](responses):
+                    continue
                 key, response = None, None
                 while response is None:
-                    key, response = await question(self.client, ctx, responses, **q)
+                    key, response = await question(self.client, ctx, responses, key=q, **ques)
                     if key is None:
                         return False
                 responses[key] = response
@@ -202,7 +214,7 @@ class DMEnlistmentCog(commands.Cog):
                             if user is not None:
                                 ask, msg = await ask_confirm(self.state, ctx,
                                                              'You have enlisted in a previous war, so we can just reuse that information! \nWould you like to update your information instead? \n\n*Note: Select **Yes** if you are enlisting someone else!*',
-                                                             ret_msg=True)
+                                                             embed=user.embed(), ret_msg=True)
                             if ask:
                                 if not ctx.responded:
                                     await ctx.respond(ninja_mode=True)

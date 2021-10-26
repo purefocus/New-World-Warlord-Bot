@@ -7,13 +7,14 @@ import discord_ui
 from discord_ui import Button
 
 
-async def ask_confirm(state: BotState, ctx: discord_ui.SlashedCommand, question: str, default_response=False, ret_msg=False):
+async def ask_confirm(state: BotState, ctx: discord_ui.SlashedCommand, question: str, embed: discord.Embed = None,
+                      default_response=False, ret_msg=False):
     try:
         comps = [
             Button('btn:confirm_yes', 'Yes'),
             Button('btn:confirm_no', 'No')
         ]
-        msg = await ctx.send(content=question, components=comps, hidden=True)
+        msg = await ctx.send(content=question, components=comps, embed=embed, hidden=True)
 
         response = await msg.wait_for(event_name='button', client=state.client, timeout=60)
         result = default_response

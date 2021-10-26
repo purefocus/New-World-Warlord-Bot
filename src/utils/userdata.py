@@ -39,7 +39,7 @@ class UserData:
         except Exception as e:
             print(e)
 
-    def __getitem__(self, name):
+    def __getitem__(self, name) -> Enlistment:
         if name.lower() in self.users:
             return self.users[name.lower()]
         return None

@@ -83,6 +83,7 @@ class AdminCog(commands.Cog):
                         f'Role {faction} Added!\n *Don\'t forget to change the role\'s position in the server role list!*',
                         hidden=True)
 
+
         except Exception as e:
             await ctx.send(str(e), hidden=True)
 
