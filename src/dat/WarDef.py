@@ -22,7 +22,7 @@ class WarDef:
         self.location = None
         self.war_time = None
         self.owners = None
-        self.enlisted = Enlisted()
+        # self.enlisted = Enlisted()
         self.roster = []
         # self.war_board = []
         self.boards = []
