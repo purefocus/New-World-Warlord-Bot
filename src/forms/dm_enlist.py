@@ -153,6 +153,7 @@ class DMEnlistmentCog(commands.Cog):
             for q in question_list:
                 if q in responses:
                     continue
+                print_dict(responses)
 
                 ques = question_list[q]
                 if 'askif' in ques and not ques['askif'](responses):
