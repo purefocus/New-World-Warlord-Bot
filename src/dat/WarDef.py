@@ -106,7 +106,7 @@ class WarDef:
             self.groups.embed(embed)
 
         embed.add_field(name='Enlisted',
-                        value=f'{str(len(self.roster))}',
+                        value=f'{str(len(self.roster))}\n**Test:** @purefocus#3061',
                         inline=False)
 
         if self.looking_for is not None:
