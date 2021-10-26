@@ -3,6 +3,8 @@ from discord.ext import commands
 from discord_ui.cogs import slash_cog, subslash_cog, listening_component_cog
 from bot_state import BotState
 
+from dat.datadef import *
+
 from discord_ui import *
 
 from utils.colorprint import *
@@ -68,6 +70,10 @@ question_list = {
         'response_type': str,
     }
 }
+STR_ENLIST_FAILED = 'Something went wrong and you have not been enlisted.'
+STR_NO_ACTIVE_WAR = 'Sorry, This war is no longer active!\nIf this is a mistake, please contact an admin!'
+STR_ENLIST_SUCCESS = 'You have successfully been enlisted for the war **{}**\n ' \
+                     'You can update you enlistment by clicking the \'Enlist Now!\' button again.'
 
 
 async def question(client: commands.Bot, ctx, answers,
@@ -186,6 +192,48 @@ class DMEnlistmentCog(commands.Cog):
         if channel.type != discord.ChannelType.private:
             return
 
+    async def do_enlist(self, war: WarDef, ctx: Interaction):
+        # war = self.state.wars[id]
+        if war is not None:
+            print('Enlistment Started!')
+            self.users_enlisting[ctx.author] = True
+
+            msg = None
+            ask = True
+            user = self.state.users[ctx.author.display_name]
+            if user is not None:
+                ask, msg = ask_confirm(self.state, ctx,
+                                       'You have enlisted in a previous war, so we can just reuse that information! '
+                                       '\nWould you like to update your information instead? '
+                                       '\n\n*Note: Select **Yes** if you are enlisting someone else!*',
+                                       embed=user.embed(), ret_msg=True)
+            if ask:
+                if not ctx.responded:
+                    await ctx.respond(ninja_mode=True)
+                user = await self.enlist_questionair(war, ctx)
+
+                if user is not None:
+                    ask, msg = await ask_confirm(self.state, ctx, 'Is this information correct?',
+                                                 embed=user.embed(), ret_msg=True)
+            else:
+                success = True
+
+            del self.users_enlisting[ctx.author]
+            print('Enlistment Ended! ', len(self.users_enlisting))
+
+            if user is not None:
+                await self.state.add_enlistment(war, user, announce=ask)
+                if msg is not None:
+                    await msg.edit(content=STR_ENLIST_SUCCESS % war.location, components=None)
+                else:
+
+                    await ctx.author.send(content=STR_ENLIST_SUCCESS % war.location)
+            else:
+                await ctx.author.send(content=STR_ENLIST_FAILED)
+
+        else:
+            await ctx.author.send(content=STR_NO_ACTIVE_WAR)
+
     @commands.Cog.listener('on_interaction_received')
     async def on_interaction(self, ctx: Interaction):
         try:
@@ -201,68 +249,18 @@ class DMEnlistmentCog(commands.Cog):
                     if w.id == id:
                         war = w
                         break
-                if ctx.author in self.users_enlisting:
-                    proc = self.users_enlisting[ctx.author]
-                    if proc is not None:
-                        proc.close()
-                    del self.users_enlisting[ctx.author]
+            else:
+                return
 
-                if ctx.author not in self.users_enlisting:
-                    # war = self.state.wars[id]
-                    if war is not None:
-                        print('Enlistment Started!')
-                        self.users_enlisting[ctx.author] = True
-                        try:
-                            msg = None
-                            ask = True
-                            user = self.state.users[ctx.author.display_name]
-                            if user is not None:
-                                ask, msg = await ask_confirm(self.state, ctx,
-                                                             'You have enlisted in a previous war, so we can just reuse that information! \nWould you like to update your information instead? \n\n*Note: Select **Yes** if you are enlisting someone else!*',
-                                                             embed=user.embed(), ret_msg=True)
-                            if ask:
-                                if not ctx.responded:
-                                    await ctx.respond(ninja_mode=True)
-                                self.users_enlisting[ctx.author] = self.enlist_questionair(war, ctx)
-                                user = await self.users_enlisting[ctx.author]
+            if ctx.author in self.users_enlisting:
+                proc = self.users_enlisting[ctx.author]
+                if proc is not None:
+                    proc.close()
+                    print('Proc killed')
+                del self.users_enlisting[ctx.author]
 
-                                if user is not None:
-                                    ask, msg = await ask_confirm(self.state, ctx, 'Is this information correct?',
-                                                                 embed=user.embed(), ret_msg=True)
-
-                                # success = user is not None
-                                # if success:
-                                #     self.state.users.add_user(user.to_enlistment())
-                            else:
-                                success = True
-                        except:
-                            import traceback
-                            import sys
-                            traceback.print_exception(*sys.exc_info())
-                        del self.users_enlisting[ctx.author]
-                        print('Enlistment Ended! ', len(self.users_enlisting))
-
-                        if user is not None:
-                            await self.state.add_enlistment(war, user, announce=ask)
-                            # war.add_enlistment(ctx.author.display_name)
-                            # self.state.save_war_data()
-                            if msg is not None:
-                                await msg.edit(
-                                    content=f'You have successfully been enlisted for the war **{war.location}**\n'
-                                            f'You can update you enlistment by clicking the \'Enlist Now!\' button again.',
-                                    components=None
-                                )
-                            else:
-                                await ctx.author.send(
-                                    content=f'You have successfully been enlisted for the war **{war.location}**\n'
-                                            f'You can update you enlistment by clicking the \'Enlist Now!\' button again.')
-                        else:
-                            await ctx.author.send(
-                                content=f'Something went wrong and you have not been enlisted.')
-
-                    else:
-                        await ctx.author.send(
-                            content='Sorry, This war is no longer active!\nIf this is a mistake, please contact an admin!')
+            self.users_enlisting[ctx.author] = self.do_enlist(war, ctx)
+            await self.users_enlisting[ctx.author]
         except:
             import traceback
             import sys

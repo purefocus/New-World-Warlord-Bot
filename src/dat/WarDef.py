@@ -119,7 +119,7 @@ class WarDef:
         return embed
 
     def __len__(self):
-        return len(self.enlisted)
+        return len(self.roster)
 
     def __repr__(self):
         return f'{self.location}'

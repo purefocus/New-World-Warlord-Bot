@@ -7,7 +7,7 @@ import discord_ui
 from discord_ui import Button
 
 
-async def ask_confirm(state: BotState, ctx: discord_ui.SlashedCommand, question: str, embed: discord.Embed = None,
+async def ask_confirm(state: BotState, ctx, question: str, embed: discord.Embed = None,
                       default_response=False, ret_msg=False):
     try:
         comps = [
