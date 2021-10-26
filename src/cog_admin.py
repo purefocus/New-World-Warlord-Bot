@@ -82,6 +82,10 @@ class AdminCog(commands.Cog):
                     await ctx.send(
                         f'Role {faction} Added!\n *Don\'t forget to change the role\'s position in the server role list!*',
                         hidden=True)
+            elif args[0] == 'guide':
+                from views.Guide import create_embed
+                embed = create_embed()
+                await ctx.send(embed=embed)
 
 
         except Exception as e:
