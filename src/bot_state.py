@@ -92,6 +92,8 @@ class BotState:
             best_score = 0
             for w in self.wars:
                 w = self.wars[w]
+                if not w.active:
+                    continue
                 score = _compare_wars(war, w)
                 if score > best_score:
                     best_match = w
