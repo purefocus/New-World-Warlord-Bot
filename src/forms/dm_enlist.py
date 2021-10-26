@@ -86,7 +86,7 @@ async def question(client: commands.Bot, ctx, answers,
             SelectMenu(custom_id='question_select', options=options, min_values=1, max_values=1, placeholder=question)
         ]
 
-    msg = await ctx.author.send(content=question, components=components)
+    msg = await ctx.author.send(content=f'**{question}**', components=components)
 
     if choices is not None:
         selection: SelectedMenu = await msg.wait_for('select', client=client, by=ctx.author, timeout=120)
@@ -135,7 +135,7 @@ class DMEnlistmentCog(commands.Cog):
 
             await ctx.author.send(
                 f'Hello **{user.username}**, you have chosen to enlist in the war for **{war.location}**'
-                f'\nThis information will be saved to make it faster to sign up in the future!\n'
+                f'\n*This information will be saved to make it faster to sign up in the future!*\n'
                 f'\nPlease answer the following questions:\n')
             responses = {}
 
@@ -201,6 +201,11 @@ class DMEnlistmentCog(commands.Cog):
                     if w.id == id:
                         war = w
                         break
+                if ctx.author in self.users_enlisting:
+                    proc = self.users_enlisting[ctx.author]
+                    if proc is not None:
+                        proc.close()
+                    del self.users_enlisting[ctx.author]
 
                 if ctx.author not in self.users_enlisting:
                     # war = self.state.wars[id]
@@ -218,7 +223,13 @@ class DMEnlistmentCog(commands.Cog):
                             if ask:
                                 if not ctx.responded:
                                     await ctx.respond(ninja_mode=True)
-                                user = await self.enlist_questionair(war, ctx)
+                                self.users_enlisting[ctx.author] = self.enlist_questionair(war, ctx)
+                                user = await self.users_enlisting[ctx.author]
+
+                                if user is not None:
+                                    ask, msg = await ask_confirm(self.state, ctx, 'Is this information correct?',
+                                                                 embed=user.embed(), ret_msg=True)
+
                                 # success = user is not None
                                 # if success:
                                 #     self.state.users.add_user(user.to_enlistment())
