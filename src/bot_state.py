@@ -173,9 +173,11 @@ class BotState:
 
     def create_board(self, war: WarDef, btn=False):
         ret = {
-            'content': '<@&894698039774679060>',
+
             'embed': war.embeds(),
         }
+        if self.config.tag_war:
+            ret['content'] = '<@&894698039774679060>'
         if btn:
             ret['components'] = [
                 Button(custom_id=f'btn:enlist:{war.id}', label='Enlist Now!')

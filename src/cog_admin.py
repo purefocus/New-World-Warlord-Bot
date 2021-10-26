@@ -86,6 +86,8 @@ class AdminCog(commands.Cog):
                 from views.Guide import create_embed
                 embed = create_embed()
                 await ctx.send(embed=embed)
+            elif args[0] == 'tag':
+                self.state.config.tag_war = args[1] == 'en'
 
 
         except Exception as e:

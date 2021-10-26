@@ -91,6 +91,7 @@ class Config:
 
     def __init__(self):
         self.bot_token = None
+        self.tag_war = True
 
         # self.war_notice_channels = {
         #     '897098434153185290': '897161705333858346',  # Test server: wars
