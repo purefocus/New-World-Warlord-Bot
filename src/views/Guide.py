@@ -43,15 +43,15 @@ def create_embed():
                     value='To get the list of people who are signed up for a war, use the command:\n'
                           ' `/get_enlisted` (posts in channel) *or*\n'
                           '`/download_enlisted` (creates a downloadable PDF)\n'
-                          ''
+                          '\n'
                           'Once the war has been completed, you can use the command:\n'
                           '`/end_war` (cannot be undone)\n'
-                          ''
+                          '\n'
                           'To repost the war:\n'
-                          '/repost_war\n'
-                          ''
+                          '`/repost_war`\n'
+                          '\n'
                           'To create a new war announcement outside of #war-boards\n'
-                          '/post_war\n'
+                          '`/post_war`\n'
                     )
 
     return embed
