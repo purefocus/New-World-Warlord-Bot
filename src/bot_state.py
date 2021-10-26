@@ -153,14 +153,19 @@ class BotState:
         self.war_selection[userid] = war
 
     async def update_war_boards(self, war: WarDef):
-        for board in war.boards:
-            try:
-                msg: discord.Message = await board.get_message(client=self.client)
-                if msg is not None:
-                    await msg.edit(**self.create_board(war))
-            except discord.NotFound as e:
-                print('Message Not Found!')
-                board.valid = False
+        try:
+            for board in war.boards:
+                try:
+                    msg: discord.Message = await board.get_message(client=self.client)
+                    if msg is not None:
+                        await msg.edit(**self.create_board(war))
+                except discord.NotFound as e:
+                    print('Message Not Found!')
+                    board.valid = False
+        except Exception as e:
+            import traceback
+            import sys
+            traceback.print_exception(*sys.exc_info())
 
     def create_board(self, war: WarDef, btn=False):
         ret = {
