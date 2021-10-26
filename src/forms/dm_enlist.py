@@ -210,10 +210,11 @@ class DMEnlistmentCog(commands.Cog):
                                              '\nWould you like to update your information instead? '
                                              '\n\n*Note: Select **Yes** if you are enlisting someone else!*',
                                              embed=user.embed(), ret_msg=True)
+                if ask:
+                    await msg.edit(content='**Please check your private messages!**', components=None, embed=None)
             if ask:
-                await msg.edit(content='**Please check your private messages!**', components=None, embed=None)
                 if not ctx.responded:
-                    await ctx.respond(ninja_mode=True)
+                    await ctx.respond(content='**Please check your private messages!**', ninja_mode=True)
                 correct = False
                 while not correct:
                     try:
@@ -222,8 +223,8 @@ class DMEnlistmentCog(commands.Cog):
                         break
 
                     if user is not None:
-                        correct, msg = await ask_confirm(self.state, ctx, 'Is this information correct?',
-                                                         embed=user.embed(), ret_msg=True)
+                        correct = await ask_confirm(self.state, ctx, 'Is this information correct?',
+                                                    embed=user.embed())
 
                     else:
                         break
@@ -239,7 +240,6 @@ class DMEnlistmentCog(commands.Cog):
                 if msg is not None:
                     await msg.edit(content=STR_ENLIST_SUCCESS % war.location, components=None)
                 else:
-
                     await ctx.author.send(content=STR_ENLIST_SUCCESS % war.location)
             else:
                 await ctx.author.send(content=STR_ENLIST_FAILED)
