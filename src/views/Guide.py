@@ -55,4 +55,11 @@ def create_embed():
                           '`/post_war`\n'
                     )
 
+    embed.add_field(name='Feedback',
+                    inline=False,
+                    value='I am always looking for feedback on the Warlord bot!\n'
+                          'If you have any suggestions and feature requests, please @purefocus#3061 know!\n'
+                          'Also report any bugs you find as well! (enlistment issues, war creation issues, etc..)'
+                    )
+
     return embed
