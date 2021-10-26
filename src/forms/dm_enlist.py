@@ -213,7 +213,10 @@ class DMEnlistmentCog(commands.Cog):
                     await msg.edit(content='**Please check your private messages!**', components=None, embed=None)
             if ask:
                 if not ctx.responded:
-                    await ctx.respond(content='**Please check your private messages!**')
+                    try:
+                        await ctx.respond(content='**Please check your private messages!**', hidden=True)
+                    except:
+                        pass
                 correct = False
                 while not correct:
                     try:
