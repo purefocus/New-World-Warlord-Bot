@@ -26,7 +26,7 @@ async def ask_confirm(state: BotState, ctx, question: str, embed: discord.Embed 
         await response.respond(ninja_mode=True)
 
         if not ret_msg:
-            await msg.edit(content=f'{question}\n **You responded: {"Yes" if result else "No"}**', components=None)
+            await msg.edit(content=f'{question}\n **You responded: {"Yes" if result else "No"}**', components=None, embed=None)
 
             return result
         return result, msg
