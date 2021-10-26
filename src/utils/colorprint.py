@@ -219,7 +219,7 @@ def print_dict_item(data: dict, ind=''):
         elif isinstance(value, Exception):
             cprint(colors.red(str(value)), ',\n')
         elif isinstance(value, str):
-            cprint('\'', colors.red(str(value)), '\',\n')
+            cprint('\'', colors.light_green(str(value)), '\',\n')
         else:
             try:
                 dct = value.__dict__()

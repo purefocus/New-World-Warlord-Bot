@@ -78,7 +78,7 @@ STR_ENLIST_SUCCESS = 'You have successfully been enlisted for the war **{}**\n '
 
 async def question(client: commands.Bot, ctx, answers,
                    question=None, followup=None, response_type=None, choices=None,
-                   check=None, key=None) -> (str, object):
+                   check=None, key=None, **kwargs) -> (str, object):
     if followup is not None:
         question = followup(answers)
 
