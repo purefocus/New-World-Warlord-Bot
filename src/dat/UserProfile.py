@@ -15,7 +15,7 @@ class UserProfile:
 
     def __str__(self):
         if self.company is not None:
-            return f'{self.username} ("{self.company}")'
+            return f'{self.username} ({self.company})'
         else:
             return f'{self.username}'
 
