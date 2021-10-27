@@ -47,3 +47,9 @@ class UserData:
     def __contains__(self, item):
         if isinstance(item, str):
             return item.lower() in self.users
+
+    def __repr__(self):
+        return self.__str__()
+
+    def __str__(self):
+        return f'Enlisted: {len(self.users)}'

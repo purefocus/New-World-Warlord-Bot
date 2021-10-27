@@ -32,7 +32,7 @@ async def set_selected_war(state, ctx: SlashedCommand):
 async def select_war(state, ctx: SlashedCommand, question, allow_multiple=False, allow_overall=False):
     select_options = []
     if allow_overall:
-        select_options.append(SelectOption(value='global_roster', label='Global Roster'))
+        select_options.append(SelectOption(value='global_roster', label='Global Roster', description=str(state.users)))
 
     for w in state.wars:
         war = state.wars[w]
@@ -56,7 +56,7 @@ async def select_war(state, ctx: SlashedCommand, question, allow_multiple=False,
     selected_wars = []
     for selected in menu.selected_values:
         if selected == 'global_roster':
-            selected_wars.append('global_roster')
+            selected_wars.append('Global Roster')
         else:
             selected_wars.append(state.wars[selected])
 
