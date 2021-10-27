@@ -29,12 +29,15 @@ async def set_selected_war(state, ctx: SlashedCommand):
     return None
 
 
-async def select_war(state, ctx: SlashedCommand, question, allow_multiple=False):
+async def select_war(state, ctx: SlashedCommand, question, allow_multiple=False, allow_overall=False):
     select_options = []
+    if allow_overall:
+        select_options.append(SelectOption(value='global_roster', label='Global Roster'))
 
     for w in state.wars:
-        if state.wars[w].active:
-            select_options.append(SelectOption(value=w, label=state.wars[w].location))
+        war = state.wars[w]
+        if war.active:
+            select_options.append(SelectOption(value=w, label=war.location, description=war.make_description()))
 
     if len(select_options) == 0:
         await ctx.send(content='There are no active wars!', hidden=True)
@@ -44,7 +47,7 @@ async def select_war(state, ctx: SlashedCommand, question, allow_multiple=False)
                          components=[
                              SelectMenu('war',
                                         options=select_options,
-                                        placeholder='War',
+                                        placeholder='Select a War',
                                         max_values=len(select_options) if allow_multiple else 1)
                          ], hidden=True)
 
@@ -52,7 +55,10 @@ async def select_war(state, ctx: SlashedCommand, question, allow_multiple=False)
 
     selected_wars = []
     for selected in menu.selected_values:
-        selected_wars.append(state.wars[selected])
+        if selected == 'global_roster':
+            selected_wars.append('global_roster')
+        else:
+            selected_wars.append(state.wars[selected])
 
     await menu.respond(ninja_mode=True)
     if len(selected_wars) > 0:
@@ -98,7 +104,6 @@ async def add_war_board_to(war: WarDef, state, channel):
 
 async def update_war_boards(war, state):
     await state.update_war_boards(war)
-
 
 # def load_message_references(self, data: dict, key: str):
 #

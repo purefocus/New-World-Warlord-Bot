@@ -124,6 +124,9 @@ class WarDef:
     def __repr__(self):
         return f'{self.location}'
 
+    def make_description(self):
+        return f'{len(self.roster)} enlisted  |  {self.attacking} vs. {self.defending}  |  {self.war_time}'
+
     def create_table(self, users, filter=None):
 
         table = []

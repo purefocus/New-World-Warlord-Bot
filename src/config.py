@@ -92,19 +92,8 @@ class Config:
     def __init__(self):
         self.bot_token = None
         self.tag_war = True
+        self.unsaved = False
 
-        # self.war_notice_channels = {
-        #     '897098434153185290': '897161705333858346',  # Test server: wars
-        #     '894675526776676382': '896290527622869003'  # Syndicate Server #war-boards
-        # }
-        # self.war_signup_channels = {
-        #     '897098434153185290': '897114437553647636',  # Test server: war-signup
-        #     '894675526776676382': '896289677164822578'  # Syndicate Server #war-signup
-        # }
-        # self.war_management_channels = {
-        #     '897098434153185290': '898221091372298250',  # Test server: war-management
-        #     '894675526776676382': '896290527622869003'  # Syndicate Server #war-boards
-        # }
         self.question_timeout = int(60 * 5)
 
         guild_ids = [897098434153185290, 894675526776676382]
@@ -145,22 +134,23 @@ class Config:
         for guild_key in gdict:
             self.guilds[guild_key] = GuildConfig(guild_key, gdict[guild_key])
 
-        if 'config' not in self.config:
-            self.config['config'] = {
-                'announce_war': True,
-                'announce_signup': True
-            }
+        cfg = self._get(self.config, 'config', {})
+        self.announce_signup = self._get(cfg, 'announce_signup', True)
+        self.announce_war = self._get(cfg, 'announce_war', True)
+        self.tag_war = self._get(cfg, 'tag_war', False)
 
-        cfg = self.config['config']
-        if 'announce_signup' in cfg:
-            self.announce_signup = cfg['announce_signup']
-        else:
-            self.announce_signup = cfg['announce_signup'] = True
-        if 'announce_war' in cfg:
-            self.announce_war = cfg['announce_war']
-        else:
-            self.announce_war = cfg['announce_war'] = True
-        self.save()
+        if self.unsaved:
+            self.save()
+
+    def _get(self, cfg: dict, key: str, default):
+        if cfg is None:
+            cfg = self.config
+
+        if key in cfg:
+            return cfg[key]
+        cfg[key] = default
+        self.unsaved = True
+        return default
 
     def add_guild(self, guild: discord.Guild):
         gc = self.guilds[guild.id] = GuildConfig(str(guild.id), guild=guild)
@@ -225,6 +215,7 @@ class Config:
             for g in self.guilds:
                 self.config['guilds'][g] = self.guilds[g].__dict__()
             json.dump(self.config, open(CFG_FILE, 'w+'), indent=2)
+            self.unsaved = False
         except Exception as e:
             print(e)
 
