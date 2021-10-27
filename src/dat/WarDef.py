@@ -125,7 +125,7 @@ class WarDef:
         return f'{self.location}'
 
     def make_description(self):
-        return f'{self.war_time}  |  {len(self.roster)} enlisted'
+        return f'Enlisted: {len(self.roster)}  |  {self.war_time}'
 
     def create_table(self, users, filter=None):
 
