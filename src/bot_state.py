@@ -160,6 +160,7 @@ class BotState:
 
     async def update_war_boards(self, war: WarDef):
         try:
+            need_save = False
             for board in war.boards:
                 try:
                     msg: discord.Message = await board.get_message(client=self.client)
@@ -168,6 +169,9 @@ class BotState:
                 except discord.NotFound as e:
                     print('Message Not Found!')
                     board.valid = False
+                    need_save = True
+            if need_save:
+                self.save_war_data()
         except Exception as e:
             import traceback
             import sys
@@ -182,7 +186,7 @@ class BotState:
             ret['content'] = '<@&894698039774679060>'
         if btn:
             ret['components'] = [
-                Button(custom_id=f'btn:enlist:{war.id}', label='Enlist Now!')
+                Button(custom_id=f'btn:enlist:{war.id}', label='Click here to Enlist!')
             ]
         return ret
 

@@ -71,7 +71,7 @@ async def cmd_post_btn(state, ctx: SlashedCommand):
         btns.append(
             Button(
                 custom_id=f'btn:enlist:{war.id}',
-                label=f'({war.location})',
+                label=f'Enlist for {war.location}',
                 new_line=True
             )
         )
