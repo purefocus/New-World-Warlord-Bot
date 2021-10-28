@@ -7,6 +7,7 @@ WAR_ROLES = ['DPS', 'Healer', 'Tank', 'Siege', 'Sharpshooter']
 
 FACTIONS = ['Syndicate', 'Covenant', 'Marauders']
 
+
 def add_mapping(mappings, name: str, aliases: list):
     fort_name = f'{name}'
     mappings[name.lower()] = fort_name
@@ -44,6 +45,8 @@ add_mapping(location_mappings, 'Fort Windsward', ['Windsward', 'WW'])
 
 
 def get_location(loc):
+    if loc is None:
+        return None
     _loc = loc.lower()
     if _loc in location_mappings:
         return location_mappings[_loc]
@@ -51,6 +54,8 @@ def get_location(loc):
 
 
 def role_emoji(role):
+    if role is None:
+        return None
     _loc = role.lower()
     if _loc in role_emoji_mappings:
         return role_emoji_mappings[_loc]
@@ -58,6 +63,8 @@ def role_emoji(role):
 
 
 def replace_emojis(txt: str):
+    if txt is None:
+        return None
     _txt = txt.lower()
     for emoji in role_emoji_mappings:
         _txt = _txt.replace(emoji, role_emoji_mappings[emoji])

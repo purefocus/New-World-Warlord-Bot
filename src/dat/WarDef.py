@@ -15,6 +15,7 @@ class WarDef:
 
         self.name = None
         self.active = False
+        self.is_fake = False
 
         self.attacking = None
         self.defending = None

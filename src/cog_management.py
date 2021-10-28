@@ -17,6 +17,8 @@ war_fields = {
     'looking for': 'looking_for'
 }
 
+war_required_fields = ['attacking faction', 'defending faction', 'war time', 'location']
+
 signup_fields = {
     'name': 'name',
     'faction': 'faction',
@@ -43,33 +45,63 @@ def parse_line(line: str):
     return None, None
 
 
-def get_field(line: str, fields):
-    key, value = parse_line(line)
+def get_field(key: str, value: str, fields: dict):
     if key is not None and key in fields:
         return fields[key], value
     return None, None
 
 
+def parse_text_block(line: str, lines: list, idx: int):
+    if '---' in line:
+        text = ''
+        for line in lines[idx + 1:]:
+            if '---' in line:
+                break
+            text += line + '\n'
+        return text
+    return None
+
+
+def _gf(data, key):
+    if key in data:
+        return data[key]
+    return None
+
+
 def parse_war_info(state: BotState, lines) -> WarDef:
     result = {}
+    is_fake = False
     for i in range(len(lines)):
         line = lines[i]
+        key, value = parse_line(line)
+        field, info = get_field(key, value, war_fields)
 
-        field, info = get_field(line, war_fields)
+        if '[Fake]' in line:
+            is_fake = True
+
+        text_block = parse_text_block(line, lines, i)
+        print('text: \n', text_block)
 
         if field is not None:
             result[field] = info
 
-    if len(result) > len(war_fields) - 1:
+    has_fields = True
+    for field in war_required_fields:
+        if field not in result:
+            has_fields = False
+
+    if has_fields:
         # print_dict(result)
         war = WarDef()
-        war.attacking = result['attacking']
-        war.defending = result['defending']
-        war.location = get_location(result['location'])
-        war.war_time = result['time']
-        war.owners = result['owner']
-        if 'looking_for' in result and result['looking_for'] is not None:
-            war.looking_for = result['looking_for'].replace(';', '\n')
+        war.is_fake = is_fake
+        war.attacking = _gf(result, 'attacking')
+        war.defending = _gf(result, 'defending')
+        war.location = get_location(_gf(result, 'location'))
+        war.war_time = _gf(result, 'time')
+        war.owners = _gf(result, 'owner')
+        lf = _gf(result, 'looking_for')
+        if lf is not None:
+            war.looking_for = lf.replace(';', '\n')
 
         return war
 
@@ -79,7 +111,10 @@ def parse_war_info(state: BotState, lines) -> WarDef:
 def parse_signup_info(state: BotState, lines):
     result = {}
     for line in lines:
-        field, info = get_field(line, signup_fields)
+
+        key, value = parse_line(line)
+        field, info = get_field(key, value, signup_fields)
+
         if field is not None:
             result[field] = info
 
@@ -134,8 +169,12 @@ async def handle_management_message(state: BotState, msg: discord.Message, edite
 
     if war is not None:
         war.active = True
-        # await msg.reply(embed=war.get_embeded())
         parse_group_info(war.groups, lines)
+
+        if war.is_fake:
+            await msg.reply(embed=war.get_embeded())
+            return True
+
         existed = state.add_war(war, edit=edited)
         if existed and edited:
             try:
@@ -199,6 +238,7 @@ class WarManagementCog(commands.Cog):
         self.state = state
 
     async def process_messages(self, msg: discord.Message, edited):
+        # Only process if the bot was mentioned
         if self.client.user.mentioned_in(msg):
 
             try:
