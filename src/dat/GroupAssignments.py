@@ -63,8 +63,8 @@ class GroupAssignments:
                 if role is not None:
                     value += replace_emojis(role.replace(',', ''))
 
-
-            for i in range(len(members), 5):
+            if len(members) == 0:
+            # for i in range(len(members), 5):
                 value += '\n - '
 
             embed.add_field(name=f'__{name}__', value=value)

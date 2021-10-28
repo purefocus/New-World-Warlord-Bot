@@ -68,6 +68,10 @@ async def repost_war(ctx):
 async def post_war(ctx):
     await cmd_post_war(state, ctx)
 
+@ui.slash.command(description='posts a war enlistment button in your current channel', **config.cmd_cfg_elev)
+async def post_enlist(ctx):
+    await cmd_post_btn(state, ctx)
+
 
 @ui.slash.command(description='Replies with a table of all the users enlisted for a specific war',
                   **config.cmd_cfg_elev)

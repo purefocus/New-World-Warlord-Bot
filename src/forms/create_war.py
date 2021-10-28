@@ -62,3 +62,16 @@ async def cmd_post_war(state, ctx):
     for war in wars:
         await add_war_board_to(war, state, ctx.channel)
         state.save_war_data()
+
+
+async def cmd_post_btn(state, ctx):
+    wars, _ = await select_war(state, ctx, 'Select war', allow_multiple=True)
+    btns = []
+    for war in wars:
+        btns.append(
+            Button(
+                custom_id=f'btn:enlist:{war.id}',
+                label=f'Click here to enlist! ({war.location})',
+                new_line=True)
+        )
+    await ctx.reply(components=btns)
