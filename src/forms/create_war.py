@@ -65,14 +65,15 @@ async def cmd_post_war(state, ctx):
 
 
 async def cmd_post_btn(state, ctx: SlashedCommand):
-    wars, _ = await select_war(state, ctx, 'Select war', allow_multiple=True)
+    wars, msg = await select_war(state, ctx, 'Select war', allow_multiple=True)
     btns = []
     for war in wars:
         btns.append(
             Button(
                 custom_id=f'btn:enlist:{war.id}',
-                label=f'Click here to enlist! ({war.location})',
+                label=f'({war.location})',
                 new_line=True
             )
         )
-    await ctx.respond(content='Enlist today!', components=btns)
+    await msg.edit(content='Done!', components=None)
+    await ctx.respond(content='**Click buttons to enlist!**', components=btns)
