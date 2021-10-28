@@ -37,7 +37,7 @@ class GuildConfig:
                 'channels': {
                     'signup': None,
                     'notice': None,
-                    'management': None
+                    'management': None,
                 }
             }
         self.channels: dict = {

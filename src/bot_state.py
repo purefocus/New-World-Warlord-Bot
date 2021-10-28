@@ -86,6 +86,8 @@ class BotState:
                 await ch.send(embed=user.embed())
 
     def add_war(self, war: WarDef, edit=False):
+        if war.is_fake:
+            return False
         exists = False
         if edit:
             best_match = None

@@ -29,6 +29,7 @@ class WarDef:
         self.boards = []
 
         self.looking_for = None
+        self.additional_info = None
 
         self.groups = GroupAssignments(None, self)
 
@@ -46,6 +47,7 @@ class WarDef:
             'wartime': self.war_time,
             'owners': self.owners,
             'roster': self.roster,
+            'additional': self.additional_info,
             # 'enlisted': self.enlisted.as_dict(),
             # 'boards': self.war_board,
             'boards': store_message_references(self.boards),
@@ -68,6 +70,8 @@ class WarDef:
             self.name = dic['name']
         if 'roster' in dic:
             self.roster = dic['roster']
+        if 'additional' in dic:
+            self.additional_info = dic['additional']
 
         self.boards = parse_message_references(dic['boards'])
 
@@ -106,12 +110,15 @@ class WarDef:
 
             self.groups.embed(embed)
 
+        if self.looking_for is not None:
+            embed.add_field(name='Looking for', value=self.looking_for, inline=False)
+
+        if self.additional_info is not None:
+            embed.add_field(name='Additional Info', value=f'```{self.additional_info}```', inline=False)
+
         embed.add_field(name='Enlisted',
                         value=f'{str(len(self.roster))}',
                         inline=False)
-
-        if self.looking_for is not None:
-            embed.add_field(name='Looking for', value=self.looking_for)
 
         embed.set_footer(text='Use /enlist to sign up!')
 

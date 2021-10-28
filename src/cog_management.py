@@ -17,7 +17,7 @@ war_fields = {
     'looking for': 'looking_for'
 }
 
-war_required_fields = ['attacking faction', 'defending faction', 'war time', 'location']
+war_required_fields = ['attacking', 'defending', 'time', 'location']
 
 signup_fields = {
     'name': 'name',
@@ -56,9 +56,10 @@ def parse_text_block(line: str, lines: list, idx: int):
         text = ''
         for line in lines[idx + 1:]:
             if '---' in line:
-                break
+                if len(text.strip()) < 5:
+                    return None
+                return text
             text += line + '\n'
-        return text
     return None
 
 
@@ -71,6 +72,7 @@ def _gf(data, key):
 def parse_war_info(state: BotState, lines) -> WarDef:
     result = {}
     is_fake = False
+    additional_info = None
     for i in range(len(lines)):
         line = lines[i]
         key, value = parse_line(line)
@@ -80,7 +82,8 @@ def parse_war_info(state: BotState, lines) -> WarDef:
             is_fake = True
 
         text_block = parse_text_block(line, lines, i)
-        print('text: \n', text_block)
+        if text_block is not None:
+            additional_info = text_block
 
         if field is not None:
             result[field] = info
@@ -88,6 +91,8 @@ def parse_war_info(state: BotState, lines) -> WarDef:
     has_fields = True
     for field in war_required_fields:
         if field not in result:
+            print(f'does not have {field}')
+            print_dict(result)
             has_fields = False
 
     if has_fields:
@@ -99,6 +104,7 @@ def parse_war_info(state: BotState, lines) -> WarDef:
         war.location = get_location(_gf(result, 'location'))
         war.war_time = _gf(result, 'time')
         war.owners = _gf(result, 'owner')
+        war.additional_info = additional_info
         lf = _gf(result, 'looking_for')
         if lf is not None:
             war.looking_for = lf.replace(';', '\n')
@@ -166,12 +172,15 @@ async def handle_management_message(state: BotState, msg: discord.Message, edite
     content: str = msg.content
     lines = content.splitlines()
     war = parse_war_info(state, lines)
+    print(war)
 
     if war is not None:
         war.active = True
+        print('1')
         parse_group_info(war.groups, lines)
-
+        print('2')
         if war.is_fake:
+            print('Fake!')
             await msg.reply(embed=war.get_embeded())
             return True
 
