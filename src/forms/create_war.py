@@ -75,4 +75,4 @@ async def cmd_post_btn(state, ctx: SlashedCommand):
                 new_line=True
             )
         )
-    await ctx.respond(components=btns)
+    await ctx.respond(content='Enlist today!', components=btns)
