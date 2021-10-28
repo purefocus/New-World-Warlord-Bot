@@ -114,7 +114,10 @@ class WarDef:
             embed.add_field(name='Looking for', value=self.looking_for, inline=False)
 
         if self.additional_info is not None:
-            embed.add_field(name='Additional Info', value=f'```{self.additional_info}```', inline=False)
+            info = self.additional_info
+            if len(info) >= 1018:
+                info = self.additional_info[:1018]
+            embed.add_field(name='Additional Info', value=f'```{info}```', inline=False)
 
         embed.add_field(name='Enlisted',
                         value=f'{str(len(self.roster))}',
