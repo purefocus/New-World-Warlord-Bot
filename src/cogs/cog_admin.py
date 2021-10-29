@@ -6,7 +6,7 @@ from bot_state import BotState
 import discord_ui
 from discord_ui import SlashOption, SlashPermission, SlashedCommand
 from discord_ui import Interaction
-
+from views.weapon_selection import ask_weapon_mastery
 from views.view_confirm import ask_confirm
 
 admin_permissions = SlashPermission(
@@ -88,6 +88,9 @@ class AdminCog(commands.Cog):
                 await ctx.send(embed=embed)
             elif args[0] == 'tag':
                 self.state.config.tag_war = args[1] == 'en'
+            elif args[0] == 'weap':
+                selected = await ask_weapon_mastery(self.state, ctx)
+                print('Selected: ', selected)
 
 
         except Exception as e:

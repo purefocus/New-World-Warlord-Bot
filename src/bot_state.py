@@ -38,21 +38,10 @@ class BotState:
     async def update_presence(self):
         start_time = int(1000 * time.time())
         end_time = int(1000 * (time.time() + 60 * 5))
-        print(end_time)
         await self.client.change_presence(
-            status=discord.Status.idle,
-            activity=discord.Activity(
-                name='New World',
-                details='Test Details',
-                type=discord.ActivityType.playing,
-                timestamps={
-                    # 'start': int(1000 * time.time()),
-                    'end': int(1000 * (time.time() + 60 * 5))
-                },
-                assets={
-                    'large_image': 'new_world',
-                    'large_text': 'New World!'
-                }
+            status=self.config.status,
+            activity=discord.Game(
+                name=self.config.game_status
             )
         )
 

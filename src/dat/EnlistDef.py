@@ -86,6 +86,16 @@ class Enlistment:
             'group': self.group
         }
 
+    def data(self):
+        return [
+            self.username,
+            self.level,
+            self.roles,
+            self.faction,
+            self.company,
+            self.group
+        ]
+
     def embed(self):
         embed = discord.Embed(title='War Enlistment')
         user_data = f'*name*: {self.username} (level {self.level})\n*Faction*: {self.faction}\n*Company*: {self.company}'

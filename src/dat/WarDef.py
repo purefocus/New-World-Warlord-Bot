@@ -156,3 +156,4 @@ class WarDef:
         # if self.groups is not None and len(self.groups) > 0:
         #     ret.append(self.groups.embed())
         return self.get_embeded()
+

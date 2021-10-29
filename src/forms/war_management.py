@@ -7,10 +7,11 @@ from discord_ui import *
 
 from config import *
 from utils.botutil import *
-from utils.pdfgen import generate_enlistment_pdf
+from utils.pdfgen import *
 # from utils.enlistment_utils import *
 from bot_state import BotState
 from views.roster import create_roster_embed
+from views.select_menu import selection
 
 
 async def cmd_war_select(state, ctx):
@@ -49,7 +50,25 @@ async def cmd_get_enlisted(state: BotState, ctx):
 async def cmd_dl_enlisted(state, ctx):
     war, _ = await select_war(state, ctx, 'Select the war to get the enlistment roster for', allow_multiple=False)
     if war is not None:
-        file = generate_enlistment_pdf(war, state.users)
+
+        method, msg = await selection(state, ctx, 'What format would you like to download the roster in?',
+                                      choices=['PDF', 'CSV', 'Excel'], allow_multiple=False)
+
+        if len(method) == 1:
+            method = method[0]
+
+        print(method)
+
+        if method == 'PDF':
+            file = generate_enlistment_pdf(war, state.users)
+        elif method == 'CSV':
+            file = generate_enlistment_csv(war, state.users)
+            return
+        elif method == 'Excel':
+            file = generate_enlistment_excel(war, state.users)
+            # elif method == 'json':
+        #     file = generate_enlistment_json(war, state.users)
+
         await ctx.send(content='Here\'s the roster.', file=discord.File(file), hidden=True)
         # file = create_war_roster(war)
         # await ctx.send(content='Here\'s the roster.', file=discord.File(file), hidden=True)

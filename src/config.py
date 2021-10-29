@@ -138,6 +138,8 @@ class Config:
         self.announce_signup = self._get(cfg, 'announce_signup', True)
         self.announce_war = self._get(cfg, 'announce_war', True)
         self.tag_war = self._get(cfg, 'tag_war', False)
+        self.status = self._get(cfg, 'status', 'online')
+        self.game_status = self._get(cfg, 'status_text', 'New World')
 
         if self.unsaved:
             self.save()

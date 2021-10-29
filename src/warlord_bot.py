@@ -6,9 +6,10 @@ from forms.enlist_form import cmd_enlist
 from forms.war_management import *
 from forms.bot_configure import *
 from utils.botutil import *
-from forms.dm_enlist import *
-from cog_management import WarManagementCog
-from cog_admin import AdminCog
+from cogs.cog_enlistment import *
+from cogs.cog_management import WarManagementCog
+from cogs.cog_admin import AdminCog
+from cogs.cog_extras import ExtrasCog
 
 client = commands.Bot(" ")
 
@@ -17,11 +18,11 @@ config = Config()
 config.load()
 state = BotState(client, config)
 state.load_war_data()
-state.save_war_data()
 
 client.add_cog(WarManagementCog(client, state))
 client.add_cog(DMEnlistmentCog(client, state))
 client.add_cog(AdminCog(client, state, ui))
+client.add_cog(ExtrasCog(client, state))
 
 
 ####################
@@ -67,6 +68,7 @@ async def repost_war(ctx):
 @ui.slash.command(description='posts a war notification in your current channel', **config.cmd_cfg_elev)
 async def post_war(ctx):
     await cmd_post_war(state, ctx)
+
 
 @ui.slash.command(description='posts a war enlistment button in your current channel', **config.cmd_cfg_elev)
 async def post_enlist(ctx):
@@ -155,6 +157,7 @@ async def on_ready():
 
         # await ui.slash.sync_commands(delete_unused=True)
 
+        await state.update_presence()
         for war in state.wars:
             war = state.wars[war]
             if war.active:

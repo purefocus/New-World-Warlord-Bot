@@ -4,6 +4,8 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, 
 from config import tmpfile
 from dat.WarDef import *
 
+import pandas as pd
+
 
 def generate_enlistment_pdf(war: WarDef, users):
     file = tmpfile('roster.pdf')
@@ -34,7 +36,7 @@ def generate_enlistment_pdf(war: WarDef, users):
     for i in range(1, len(table_data)):
         if last_role != table_data[i][1]:
             last_role = table_data[i][1]
-            style_data.append(('LINEBELOW', (0, i-1), (-1, i-1), 1.5, colors.black))
+            style_data.append(('LINEBELOW', (0, i - 1), (-1, i - 1), 1.5, colors.black))
 
     table = Table(table_data)
     table.setStyle(TableStyle(style_data))
@@ -43,4 +45,33 @@ def generate_enlistment_pdf(war: WarDef, users):
     ]
 
     document.build(contents)
+    return file
+
+
+def generate_enlistment_pandas(war: WarDef, users):
+    data = war.create_table(users)
+
+    data = sorted(data, key=lambda x: x.sort_key(), reverse=True)
+
+    data = [entry.data() for entry in data]
+
+    data = pd.DataFrame(data, columns=['name', 'level', 'role', 'faction', 'company', 'preferred group'])
+
+    return data
+
+def generate_enlistment_csv(war: WarDef, users):
+    file = tmpfile('roster.csv')
+
+    data = generate_enlistment_pandas(war, users)
+
+    table_data = [['Name', 'Role', 'Weapons', 'Company']]
+    print(data)
+
+
+def generate_enlistment_excel(war: WarDef, users):
+    file = tmpfile('roster.xlsx')
+
+    data = generate_enlistment_pandas(war, users)
+
+    data.to_excel(file, index=True, header=True)
     return file

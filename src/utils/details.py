@@ -3,6 +3,11 @@ WEAPON_CHOICES = ['Sword & Shield', 'Rapier', 'Hatchet',  # One handed
                   'Bow', 'Musket',  # Ranged
                   'Fire Staff', 'Life Staff', 'Ice Gauntlet']  # Magic
 
+WEAPON_CHOICES_ABRV = ['SS', 'Ra', 'Ha',  # One handed
+                       'Sp', 'GA', 'WH',  # 2 handed
+                       'Bo', 'Mu',  # Ranged
+                       'FS', 'LS', 'IG']  # Magic
+
 WAR_ROLES = ['DPS', 'Healer', 'Tank', 'Siege', 'Sharpshooter']
 
 FACTIONS = ['Syndicate', 'Covenant', 'Marauders']
