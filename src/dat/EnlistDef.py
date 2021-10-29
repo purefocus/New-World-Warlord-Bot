@@ -87,11 +87,18 @@ class Enlistment:
         }
 
     def data(self):
+        role = None
+        weapons = None
+        for r in self.roles:
+            role = r
+            weapons = self.roles[r]
+        weapons = weapons.split('/')
         return [
             self.username,
             self.level,
-            self.roles,
-            self.faction,
+            role,
+            weapons[0],
+            weapons[1],
             self.company,
             self.group
         ]

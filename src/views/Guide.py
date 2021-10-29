@@ -44,7 +44,7 @@ def create_embed():
                           'You can do it on a group-by-group basis (Don\'t need to include all 10 groups)\n'
                           'The players listed here do not have to be signed up as it is handled differently.\n'
                     )
-    embed.add_field(name='Group Assignments',
+    embed.add_field(name='Enlistment',
                     inline=False,
                     value='To get the list of people who are signed up for a war, use the command:\n'
                           ' `/get_enlisted` (posts in channel) *or*\n'
@@ -56,8 +56,11 @@ def create_embed():
                           'To repost the war:\n'
                           '`/repost_war`\n'
                           '\n'
-                          'To create a new war announcement outside of #war-boards\n'
+                          'To create a new war announcement outside of #war-boards use:\n'
                           '`/post_war`\n'
+                          '\n'
+                          'To post an Enlistment button in your current channel, use:\n'
+                          '`/post_enlist`\n'
                     )
 
     embed.add_field(name='Feedback',
