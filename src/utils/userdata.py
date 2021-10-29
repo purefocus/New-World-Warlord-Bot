@@ -2,6 +2,8 @@ import json
 from dat.EnlistDef import Enlistment
 import config as cfg
 
+from utils.google_forms import post_enlistment
+
 import json
 
 
@@ -17,25 +19,36 @@ class UserData:
 
     def add_user(self, user: Enlistment):
         self.users[user.username.lower()] = user
+        post_enlistment(user)
 
     def has_user(self, username: str):
         return username.lower() in self.users
 
-    def load(self):
+    def load(self, file=None):
         try:
-            data = json.load(open(cfg.USER_DATA, 'r'))
+            if file is None:
+                file = cfg.USER_DATA
+            data = json.load(open(file, 'r'))
+            need_update = False
             for key in data:
                 entry: dict = data[key]
-                self.users[key] = Enlistment(**entry)
+                enl = self.users[key] = Enlistment(**entry)
+                if enl.edit_key is None:
+                    post_enlistment(enl)
+                    need_update = True
+            if need_update:
+                self.save()
         except Exception as e:
             print(e)
 
-    def save(self):
+    def save(self, file=None):
         try:
+            if file is None:
+                file = cfg.USER_DATA
             data = {}
             for key in self.users:
                 data[key] = self.users[key].__dict__()
-            json.dump(data, open(cfg.USER_DATA, 'w+'), indent=2)
+            json.dump(data, open(file, 'w+'), indent=2)
         except Exception as e:
             print(e)
 

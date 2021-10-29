@@ -49,10 +49,12 @@ class Enlisted:
 
 class Enlistment:
 
-    def __init__(self, username=None, level=None, faction=None, company=None, group=None, roles=None, **args):
+    def __init__(self, username=None, level=None, faction=None, company=None, group=None, roles=None, edit_key=None,
+                 **args):
         self.username = username
         self.faction = faction
         self.company = company
+        self.edit_key = edit_key
 
         try:
             self.level = int(level)
@@ -74,7 +76,8 @@ class Enlistment:
                           faction=self.faction,
                           company=self.company,
                           roles=self.roles,
-                          group=self.group)
+                          group=self.group,
+                          edit_key=self.edit_key)
 
     def __dict__(self):
         return {
@@ -83,7 +86,8 @@ class Enlistment:
             'faction': self.faction,
             'company': self.company,
             'roles': self.roles,
-            'group': self.group
+            'group': self.group,
+            'edit_key': self.edit_key
         }
 
     def data(self):
