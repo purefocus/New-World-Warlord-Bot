@@ -146,7 +146,7 @@ class WarDef:
 
         for enlisted in self.roster:
             entry = users[enlisted]
-            if filter is None or filter(entry):
+            if entry is not None and (filter is None or filter(entry)):
                 table.append(entry)
 
         return table
