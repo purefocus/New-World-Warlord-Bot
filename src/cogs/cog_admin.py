@@ -107,3 +107,10 @@ class AdminCog(commands.Cog):
         except Exception as e:
             await ctx.respond(content=str(e), hidden=True)
         print('Done')
+
+    @slash_cog(name='warlord_reboot', guild_ids=[894675526776676382], guild_permissions=guild_permissions)
+    async def warlord_reboot(self, ctx: SlashedCommand):
+        if ctx.author.name == 'purefocus#3061':
+            await ctx.respond(ninja_mode=True)
+            import sys
+            sys.exit(1)
