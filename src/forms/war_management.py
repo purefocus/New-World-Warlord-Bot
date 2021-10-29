@@ -52,21 +52,21 @@ async def cmd_dl_enlisted(state, ctx):
     if war is not None:
 
         method, msg = await selection(state, ctx, 'What format would you like to download the roster in?',
-                                      choices=['PDF', 'CSV', 'Excel'], allow_multiple=False)
+                                      choices=['PDF', 'Excel'], allow_multiple=False)
 
-        if len(method) == 1:
-            method = method[0]
+        # if len(method) == 1:
+        #     method = method[0]
+        #
+        # print(method)
 
-        print(method)
-
-        if method == 'PDF':
-            file = generate_enlistment_pdf(war, state.users)
-        elif method == 'CSV':
-            file = generate_enlistment_csv(war, state.users)
-            return
-        elif method == 'Excel':
-            file = generate_enlistment_excel(war, state.users)
-            # elif method == 'json':
+        # if method == 'PDF':
+        #     file = generate_enlistment_pdf(war, state.users)
+        # elif method == 'CSV':
+        #     file = generate_enlistment_csv(war, state.users)
+        #     return
+        # elif method == 'Excel':
+        file = generate_enlistment_excel(war, state.users)
+        # elif method == 'json':
         #     file = generate_enlistment_json(war, state.users)
 
         await ctx.send(content='Here\'s the roster.', file=discord.File(file), hidden=True)
