@@ -18,6 +18,9 @@ class UserData:
         self.users = {}
 
     def add_user(self, user: Enlistment):
+        if user.username.lower() in self.users:
+            u = self.users[user.username.lower()]
+            user.edit_key = u.edit_key
         self.users[user.username.lower()] = user
         post_enlistment(user)
 
