@@ -55,9 +55,12 @@ def generate_enlistment_pandas(war: WarDef, users):
 
     data = [entry.data() for entry in data]
 
-    data = pd.DataFrame(data, columns=['name', 'level', 'role', 'faction', 'company', 'preferred group'])
+    data = pd.DataFrame(data,
+                        columns=['Name', 'Level', 'Role', 'Primary Weapon', 'Secondary Weapon', 'Faction', 'Company',
+                                 'Preferred Group'])
 
     return data
+
 
 def generate_enlistment_csv(war: WarDef, users):
     file = tmpfile('roster.csv')
