@@ -56,8 +56,16 @@ def generate_enlistment_pandas(war: WarDef, users):
     data = [entry.data() for entry in data]
 
     data = pd.DataFrame(data,
-                        columns=['Name', 'Level', 'Role', 'Primary Weapon', 'Secondary Weapon', 'Faction', 'Company',
-                                 'Preferred Group'])
+                        columns=[
+                            'Name',
+                            'Level',
+                            'Role',
+                            'Primary Weapon',
+                            'Secondary Weapon',
+                            'Preferred Group',
+                            'Company',
+                            'Faction',
+                        ])
 
     return data
 

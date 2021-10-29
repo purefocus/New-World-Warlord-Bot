@@ -99,8 +99,9 @@ class Enlistment:
             role,
             weapons[0],
             weapons[1],
+            self.group,
             self.company,
-            self.group
+            self.faction
         ]
 
     def embed(self):
