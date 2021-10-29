@@ -51,8 +51,8 @@ async def cmd_dl_enlisted(state, ctx):
     war, _ = await select_war(state, ctx, 'Select the war to get the enlistment roster for', allow_multiple=False)
     if war is not None:
 
-        method, msg = await selection(state, ctx, 'What format would you like to download the roster in?',
-                                      choices=['PDF', 'Excel'], allow_multiple=False)
+        # method, msg = await selection(state, ctx, 'What format would you like to download the roster in?',
+        #                               choices=['PDF', 'Excel'], allow_multiple=False)
 
         # if len(method) == 1:
         #     method = method[0]
