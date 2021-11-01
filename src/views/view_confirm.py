@@ -7,12 +7,14 @@ import discord_ui
 from discord_ui import Button
 
 
-async def ask_confirm(state: BotState, ctx, question: str, embed: discord.Embed = None,
+async def ask_confirm(state: BotState, ctx, question: str, embed: discord.Embed = None, text=None,
                       default_response=False, ret_msg=False, hidden=True):
     try:
+        if text is None:
+            text = ['Yes', 'No']
         comps = [
-            Button('btn:confirm_yes', 'Yes'),
-            Button('btn:confirm_no', 'No')
+            Button('btn:confirm_yes', text[0]),
+            Button('btn:confirm_no', text[1])
         ]
         if hidden:
             msg = await ctx.send(content=question, components=comps, embed=embed, hidden=hidden)

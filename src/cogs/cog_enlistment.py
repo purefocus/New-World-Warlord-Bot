@@ -208,7 +208,7 @@ class DMEnlistmentCog(commands.Cog):
                 ask, msg = await ask_confirm(self.state, ctx,
                                              'You have enlisted in a previous war, so we can just reuse that information! '
                                              '\nWould you like to update your information instead? ',
-                                             embed=user.embed(), ret_msg=True)
+                                             embed=user.embed(), ret_msg=True, text=['Update Information', 'Enlist'])
                 if ask:
                     await msg.edit(content='**Please check your private messages!**', components=None, embed=None)
             if ask:
