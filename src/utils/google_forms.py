@@ -41,12 +41,10 @@ def post_enlistment(enl: Enlistment):
             "fvv": 1, "partialResponse": '[]', "pageHistory": 0, "fbzx": -6893020537148369068
         }
         for i in range(len(fields)):
-            dat = str(data[i])
+            dat = data[i]
             post_key = field2post[fields[i]]
-            # if dat is None:
-            #     req[post_key] = None
-            # else:
-            req[f'entry.{post_key}'] = str(dat)  # .replace(' ', '+')
+
+            req[f'entry.{post_key}'] = dat
 
         params = {}
         if enl.edit_key is not None:
