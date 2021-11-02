@@ -88,9 +88,8 @@ class UserSignup:
 
         embed.add_field(name='Role', value=self.role, inline=True)
         embed.add_field(name='Weapons', value=f'{self.primary_weapon}\n{self.secondary_weapon}', inline=True)
-        if self.preferred_group is None or len(self.preferred_group) == 0:
-            self.preferred_group = 'None'
-        embed.add_field(name='Preferred Group', value=self.preferred_group, inline=False)
+        if self.preferred_group is not None:
+            embed.add_field(name='Preferred Group', value=self.preferred_group, inline=False)
 
         return embed
 

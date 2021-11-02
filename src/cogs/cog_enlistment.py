@@ -163,7 +163,7 @@ class DMEnlistmentCog(commands.Cog):
                         return False
                 responses[key] = response
 
-            # print_dict(responses)
+            print_dict(responses)
             user = UserSignup()
             user.faction = responses['faction']
             user.company = responses['company']
