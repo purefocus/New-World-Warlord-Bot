@@ -176,7 +176,10 @@ class DMEnlistmentCog(commands.Cog):
 
             user.primary_weapon = f"{responses['primary_weapon']} ({responses['primary_level']})"
             user.secondary_weapon = f"{responses['secondary_weapon']} ({responses['secondary_level']})"
-            user.preferred_group = responses['group']
+            pref_group = responses['group']
+            if pref_group is not None and pref_group.lower() == 'none':
+                pref_group = None
+            user.preferred_group = pref_group
 
             return user
 
