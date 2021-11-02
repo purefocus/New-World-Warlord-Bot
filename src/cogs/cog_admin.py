@@ -62,17 +62,16 @@ class AdminCog(commands.Cog):
             if len(args) == 0:
                 await ctx.respond('test!', hidden=True)
             elif args[0] == 'new' and args[1] == 'faction':
-                await ctx.respond('Changed to `new company <company name>`', hidden=True)
-            elif args[0] == 'new' and args[1] == 'company':
-                faction = ' '.join(args[2:])
-
+                await ctx.respond('Changed to `/admin company create <company name>`', hidden=True)
 
             elif args[0] == 'guide':
                 from views.Guide import create_embed
                 embed = create_embed()
                 await ctx.send(embed=embed)
+
             elif args[0] == 'tag':
                 self.state.config.tag_war = args[1] == 'en'
+
             elif args[0] == 'weap':
                 selected = await ask_weapon_mastery(self.state, ctx)
                 print('Selected: ', selected)
