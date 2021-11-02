@@ -13,8 +13,8 @@ class ExtrasCog(commands.Cog):
         self.client = client
         self.state = state
 
-    @slash_cog(name='/whelp')
-    async def cmd_help(self, ctx: discord_ui.SlashedCommand):
-        from views.Guide import create_embed
-        embed = create_embed()
-        await ctx.send(embed=embed)
+    # @slash_cog(name='/whelp')
+    # async def cmd_help(self, ctx: discord_ui.SlashedCommand):
+    #     from views.Guide import create_embed
+    #     embed = create_embed()
+    #     await ctx.send(embed=embed)

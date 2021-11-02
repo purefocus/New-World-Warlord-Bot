@@ -38,6 +38,11 @@ class GuildConfig:
                     'signup': None,
                     'notice': None,
                     'management': None,
+                },
+                'permissions': {
+                    'verified_roless': [895466455766802442],
+                    'privileged_roles': [895471923134341200, 895472067850424370],
+                    'admin_roles': [894677353479942154, 895490018246815776]
                 }
             }
         self.channels: dict = {
@@ -105,11 +110,21 @@ class Config:
                                                          '894677353479942154': SlashPermission.ROLE,  # Admin
                                                          '198526201374048256': SlashPermission.USER})  # purefocus
         }
+        mod_guild_permissions = {
+            897098434153185290: SlashPermission(allowed={"897191745060745297": SlashPermission.ROLE}),
+            894675526776676382: SlashPermission(allowed={'894677353479942154': SlashPermission.ROLE,  # Admin
+                                                         '198526201374048256': SlashPermission.USER})  # purefocus
+        }
 
         self.cmd_cfg_elev = {
             'guild_ids': guild_ids,
             'default_permission': False,
             'guild_permissions': guild_permissions
+        }
+        self.cmd_cfg_mod = {
+            'guild_ids': guild_ids,
+            'default_permission': False,
+            'guild_permissions': mod_guild_permissions
         }
         self.cmd_cfg = {
             'guild_ids': guild_ids

@@ -95,17 +95,13 @@ async def download_enlisted(ctx):
 @client.event
 async def on_command_error(ctx, error):
     print(colors.red('[ERROR] Comand ', ctx.name, ': ', error))
-    import traceback
-    import sys
-    traceback.print_exception(*sys.exc_info())
+    print_stack_trace()
 
 
 @client.event
 async def on_error(event_method, *args, **kwargs):
     print(colors.red('[ERROR] ', event_method, ': ', str(args), str(kwargs)))
-    import traceback
-    import sys
-    traceback.print_exception(*sys.exc_info())
+    print_stack_trace()
 
 
 #####################

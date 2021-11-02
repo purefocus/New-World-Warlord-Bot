@@ -7,6 +7,12 @@ import csv
 from config import tmpfile
 
 from tabulate import tabulate
+import traceback
+import sys
+
+
+def print_stack_trace():
+    traceback.print_exception(*sys.exc_info())
 
 
 async def get_def_war(state, ctx: SlashedCommand):
