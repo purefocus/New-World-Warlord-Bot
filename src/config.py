@@ -40,7 +40,7 @@ class GuildConfig:
                     'management': None,
                 },
                 'permissions': {
-                    'verified_roless': [895466455766802442],
+                    'verified_roles': [895466455766802442],
                     'privileged_roles': [895471923134341200, 895472067850424370],
                     'admin_roles': [894677353479942154, 895490018246815776]
                 }

@@ -15,9 +15,9 @@ field2post = {
     'company': 1177546279,
     'level': 1402936126,
     'gearscore': 983521405,
-    'primary_weapon': 107020616,
-    'secondary_weapon': 306341460,
-    'preferred_group': 74838911,
+    'primary weapon': 107020616,
+    'secondary weapon': 306341460,
+    'preferred group': 74838911,
     'faction': 324917347,
     'role': 184378169,
 }
@@ -26,7 +26,7 @@ field2post = {
 def post_enlistment(enl: Enlistment):
     try:
         data = enl.data()
-        fields = ['username', 'level', 'role', 'primary_weapon', 'secondary_weapon', 'preferred_group', 'company',
+        fields = ['username', 'level', 'role', 'primary weapon', 'secondary weapon', 'preferred group', 'company',
                   'faction']
         # self.username,
         # self.level,
@@ -43,7 +43,8 @@ def post_enlistment(enl: Enlistment):
         for i in range(len(fields)):
             dat = data[i]
             post_key = field2post[fields[i]]
-
+            if dat is None or dat == 'none':
+                dat = ''
             req[f'entry.{post_key}'] = dat
 
         params = {}
@@ -63,13 +64,40 @@ def post_enlistment(enl: Enlistment):
         traceback.print_exception(*sys.exc_info())
 
 
+def _process_html(inp):
+    inp = str(inp, 'UTF-8')
+    inp = inp.replace('&quot;', '\"')
+    inp = inp.replace('\\u003c', '<').replace('\\u003e', '>')
+    inp = inp.replace('<div', '\n<div')
+    return inp
+
+
+def parse_google_form(url: str):
+    sess = requests.Session()
+    form = sess.get(url, params={'usp': 'sf_link'})
+    regex = r'data-params="%\.@\.\[[0-9]*,"(?P<name>[\w ]*)",(?P<desc>".*?"|null),[0-9],\[\[(?P<entry_id>[0-9]*)'
+    choices_regex = r'\["(.*?)",null,null,null,\w*\]'
+    matcher = re.compile(regex)
+    choices_matcher = re.compile(choices_regex)
+    content = _process_html(form.content)
+    # print(content)
+    # print('Matched: ', matcher.search(content))
+    dict = {}
+    for name, desc, code in matcher.findall(content):
+        print(f'Name: {name}, desc: {desc}, code: {code}')
+        dict[name.lower()] = code
+    print_dict(dict)
+
+
 if __name__ == '__main__':
+    parse_google_form(
+        'https://docs.google.com/forms/d/e/1FAIpQLSfYNr3uLqLKoXKuY6PmHsugpEn4H6QjL84dY6-KgDabq_gGtA/viewform?usp=sf_link')
 
-    from utils.userdata import UserData
-
-    users = UserData()
-    users.load('../../files/user_data.json')
-    for user in users.users:
-        user = users[user]
-        post_enlistment(user)
-    users.save('../../files/user_data2.json')
+    # from utils.userdata import UserData
+    #
+    # users = UserData()
+    # users.load('../../files/user_data.json')
+    # for user in users.users:
+    #     user = users[user]
+    #     post_enlistment(user)
+    # users.save('../../files/user_data2.json')

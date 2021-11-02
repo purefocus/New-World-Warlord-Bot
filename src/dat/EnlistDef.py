@@ -110,7 +110,7 @@ class Enlistment:
 
     def embed(self):
         embed = discord.Embed(title='War Enlistment')
-        user_data = f'*name*: {self.username} (level {self.level})\n*Faction*: {self.faction}\n*Company*: {self.company}'
+        user_data = f'*Name*: {self.username} (level {self.level})\n*Faction*: {self.faction}\n*Company*: {self.company}'
 
         embed.add_field(name='User', value=user_data, inline=False)
 
