@@ -184,9 +184,13 @@ class DMEnlistmentCog(commands.Cog):
             return user
 
         except asyncio.TimeoutError as e:
-            import traceback
-            import sys
-            traceback.print_exception(*sys.exc_info())
+            # import traceback
+            # import sys
+            # traceback.print_exception(*sys.exc_info())
+
+            print(colors.red(f'Failed to enlist {ctx.author.display_name}!'))
+            print(colors.red(f'\t-> {str(e)}'))
+
         return None
 
     @commands.Cog.listener()

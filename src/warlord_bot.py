@@ -11,7 +11,10 @@ from cogs.cog_management import WarManagementCog
 from cogs.cog_admin import AdminCog
 from cogs.cog_extras import ExtrasCog
 
-client = commands.Bot(" ")
+
+intents = discord.Intents.all()
+
+client = commands.Bot(" ", intents=intents)
 
 ui = UI(client, slash_options={'auto_sync': False, "wait_sync": 2, "delete_unused": False})
 config = Config()

@@ -1,4 +1,5 @@
 import discord
+import utils.botutil as bu
 
 _COMPANY_ROLE_COLOR_ = discord.Colour(0xb9adff)
 _COMPANY_RANK_NAMES_ = ['Governor', 'Consul', 'Officer']
@@ -27,3 +28,45 @@ def get_rank(user: discord.Member):
         if role.name in _COMPANY_RANK_NAMES_:
             return role.name
     return 'Settler'
+
+
+async def get_verified_users(guild: discord.Guild):
+    users = []
+    # members = guild.fetch_members()
+    role: discord.Role = guild.get_role(895466455766802442)
+    # members = guild.members
+    members = role.members
+    for user in members:
+        name = user.display_name
+        company = get_company_role(user)
+        rank = None if company is None else get_rank(user)
+        users.append([name, company, rank])
+
+    users = sorted(users, key=lambda x: x[0])
+
+    return users
+
+
+async def get_companies(guild: discord.Guild):
+    companies = {
+        '': {'members': [], 'Consul': [], 'Officer': [], 'Governor': [], 'Settler': []}
+    }
+    try:
+
+        for user in guild.members:
+            if not is_verified(user):
+                continue
+
+            company = get_company_role(user)
+            if company is None:
+                companies['']['members'].append(user)
+            else:
+                if company not in companies:
+                    companies[company] = {'members': [], 'Consul': [], 'Officer': [], 'Governor': [], 'Settler': []}
+                companies[company]['members'].append(user.display_name)
+                rank = get_rank(user)
+                companies[company][rank].append(user.display_name)
+    except Exception as e:
+        bu.print_stack_trace()
+
+    return companies

@@ -10,6 +10,12 @@ from views.weapon_selection import ask_weapon_mastery
 from views.view_confirm import ask_confirm
 
 from utils.botutil import print_stack_trace
+from utils.discord_utils import *
+import pandas as pd
+import os
+from utils.colorprint import *
+
+import config
 
 admin_permissions = SlashPermission(
     allowed={
@@ -72,13 +78,68 @@ class AdminCog(commands.Cog):
             elif args[0] == 'tag':
                 self.state.config.tag_war = args[1] == 'en'
 
-            elif args[0] == 'weap':
-                selected = await ask_weapon_mastery(self.state, ctx)
-                print('Selected: ', selected)
+            elif args[0] == 'verified':
+                hidden = True
+                if len(args) == 2:
+                    hidden = not args[1] == 'show'
+                await ctx.defer(hidden=hidden)
+                data = await get_verified_users(ctx.guild)
+
+                data = pd.DataFrame(data, columns=['Name', 'Company', 'Rank'])
+
+                file = os.path.join(config.TMP_DIR, 'verified.xlsx')
+
+                data.to_excel(file, index=True, header=True)
+
+                await ctx.respond(f'Here is a full list of *verified* users!\nFound {len(data)} verified users!',
+                                  file=discord.File(file), hidden=hidden)
+            elif args[0] == 'companies':
+                hidden = True
+                if len(args) == 2:
+                    hidden = not args[1] == 'show'
+                await ctx.defer(hidden=hidden)
+                data = await get_companies(ctx.guild)
+
+                table = []
+                for name in data:
+                    try:
+                        company = data[name]
+                        members = len(company['members'])
+                        governor = company['Governor']
+                        officers = len(company['Officer'])
+                        consuls = len(company['Consul'])
+                        settlers = len(company['Settler'])
+                        lg = len(governor)
+                        if lg == 0:
+                            governor = None
+                        else:
+                            governor = ', '.join(governor)
+                        table.append([name, governor, members, consuls, officers, settlers])
+                    except:
+                        print_dict(company)
+                        return
+
+
+                table = sorted(table, key=lambda x: x[0])
+
+                headers = ['Company', 'Governor(s)', '# Members', '# Consuls', '# Officers', '# Settlers']
+                data = pd.DataFrame(table, columns=headers)
+
+                file = os.path.join(config.TMP_DIR, 'companies.xlsx')
+
+                data.to_excel(file, index=True, header=True)
+
+                await ctx.respond(f'Here is a full list of registered companies!\nFound {len(data) - 1} companies!',
+                                  file=discord.File(file), hidden=hidden)
+
+                # await ctx.respond(ninja_mode=True)
+
+
 
 
         except Exception as e:
             await ctx.send(str(e), hidden=True)
+            bu.print_stack_trace()
 
         # guild.create_role(name=faction)
 
@@ -86,7 +147,9 @@ class AdminCog(commands.Cog):
     async def warlord_cmd_sync(self, ctx: SlashedCommand):
         try:
             await ctx.defer(hidden=True)
+            print('Commands Before: ', self.state.client.commands)
             await self.ui.slash.sync_commands(delete_unused=False)
+            print('Commands After: ', self.state.client.commands)
             await ctx.respond('Done!', hidden=True)
         except Exception as e:
             print_stack_trace()

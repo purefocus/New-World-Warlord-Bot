@@ -53,5 +53,27 @@
     },
     "group": null,
     "edit_key": "2_ABaOnudBIhYLkjOzjNSU1rbxBUK4xGyO7R5wUPszTwLDE--8j-ER7CaTbFoMprt3a7Gr5Gs"
+  },
+  "slevin kelevra7": {
+    "username": "Slevin Kelevra7",
+    "level": 520,
+    "faction": "Syndicate",
+    "company": "East Ember Trading Co.",
+    "roles": {
+      "Healer": "Life Staff (20)/Great Axe (20)"
+    },
+    "group": "Main Assault, point, main zerg",
+    "edit_key": "2_ABaOnucI7HX2tZ1VxAcYUU4HE03jbauiUJeFGlP0eEyadglgOYpQsCAxf4klTMhbrRnWaO8"
+  },
+  "kelosia": {
+    "username": "Kelosia",
+    "level": 560,
+    "faction": "Syndicate",
+    "company": "Mythos",
+    "roles": {
+      "Healer": "Life Staff (20)/Ice Gauntlet (20)"
+    },
+    "group": null,
+    "edit_key": "2_ABaOnucIGPFq9_E4NlZvVpA5A-0aySC40oiSXxv9zBTWGDSx2h4qiBCb2TL_cyYqz5GP2rk"
   }
 }
