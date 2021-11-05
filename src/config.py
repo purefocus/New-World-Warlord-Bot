@@ -127,7 +127,10 @@ class Config:
             'guild_permissions': mod_guild_permissions
         }
         self.cmd_cfg = {
-            'guild_ids': guild_ids
+            'guild_ids': guild_ids,
+            'guild_permissions': {
+                894675526776676382: SlashPermission(allowed={'895466455766802442': SlashPermission.ROLE})  # Verified
+            }
         }
 
         self.config = {
@@ -155,6 +158,7 @@ class Config:
         self.tag_war = self._get(cfg, 'tag_war', False)
         self.status = self._get(cfg, 'status', 'online')
         self.game_status = self._get(cfg, 'status_text', 'New World')
+        self.verify_channel = self._get(cfg, 'verification_channel', 'verify-your-faction')
 
         if self.unsaved:
             self.save()

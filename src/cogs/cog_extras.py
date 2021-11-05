@@ -18,7 +18,7 @@ class ExtrasCog(commands.Cog):
     @slash_cog(name='channel_stats', guild_ids=[894675526776676382])
     async def cmd_war_stats(self, ctx: discord_ui.SlashedCommand):
         user: discord.Member = ctx.author
-        print(user.voice)
+
         if user.voice is None:
             await ctx.respond('You must be in a voice channel to use this command!', hidden=True)
             return

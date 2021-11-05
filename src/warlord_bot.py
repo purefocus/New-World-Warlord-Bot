@@ -10,11 +10,12 @@ from cogs.cog_enlistment import *
 from cogs.cog_management import WarManagementCog
 from cogs.cog_admin import AdminCog
 from cogs.cog_extras import ExtrasCog
-
+from cogs.cog_verification import VerificationCog
 
 intents = discord.Intents.all()
 
 client = commands.Bot(" ", intents=intents)
+
 
 ui = UI(client, slash_options={'auto_sync': False, "wait_sync": 2, "delete_unused": False})
 config = Config()
@@ -26,20 +27,21 @@ client.add_cog(WarManagementCog(client, state))
 client.add_cog(DMEnlistmentCog(client, state))
 client.add_cog(AdminCog(client, state, ui))
 client.add_cog(ExtrasCog(client, state))
+# client.add_cog(VerificationCog(client, state))
 
 
 ####################
 #  War Enlistment  #
 ####################
 
-@ui.slash.command(options=[
-    SlashOption(str, name='username', required=True),
-    SlashOption(int, name='level', required=True),
-    SlashOption(str, name='company', required=True),
-], description='Enlists you to participate in a war! (Do not forget to sign up at the war table too!)',
-    **config.cmd_cfg)
-async def enlist(ctx, username, level, company):
-    await cmd_enlist(state, ctx, username, level, company)
+# @ui.slash.command(options=[
+#     SlashOption(str, name='username', required=True),
+#     SlashOption(int, name='level', required=True),
+#     SlashOption(str, name='company', required=True),
+# ], description='Enlists you to participate in a war! (Do not forget to sign up at the war table too!)',
+#     **config.cmd_cfg)
+# async def enlist(ctx, username, level, company):
+#     await cmd_enlist(state, ctx, username, level, company)
 
 
 ####################
