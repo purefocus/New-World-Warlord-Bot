@@ -4,7 +4,7 @@ from discord_ui import SlashPermission
 from utils.colorprint import *
 import os
 
-FILES_DIR = '../files'
+FILES_DIR = '../../files'
 CFG_FILE = os.path.join(FILES_DIR, 'bot_config.json')
 TMP_DIR = os.path.join(FILES_DIR, '.tmp')
 WAR_DATA = os.path.join(FILES_DIR, 'wars.json')
