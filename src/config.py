@@ -41,7 +41,7 @@ guild_permissions = {
     FACTION_SERVER_ID: SlashPermission(allowed={"895472067850424370": SlashPermission.ROLE,  # Consul
                                                 '895471923134341200': SlashPermission.ROLE,  # Governor
                                                 '894677353479942154': SlashPermission.ROLE,  # Admin
-                                                '198526201374048256': SlashPermission.USER})  # purefocus
+                                                '198526201374048256': SlashPermission.USER}),  # purefocus
     LOTUS_SERVER_ID: SlashPermission(allowed={'868926287035662418': SlashPermission.ROLE,  # Consul
                                               '868926828235079743': SlashPermission.ROLE,  # Moderator
                                               '868925716736114749': SlashPermission.ROLE,
