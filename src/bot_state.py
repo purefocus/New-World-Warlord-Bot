@@ -171,7 +171,7 @@ class BotState:
             traceback.print_exception(*sys.exc_info())
 
     def create_board(self, war: WarDef, btn=False):
-        roster = create_roster_embed(war.roster, self, embed=war.embeds())
+        roster = create_roster_embed(war.roster, self, embed=war.embeds(), abrv_line=True)
         ret = {
             'embed': roster,
         }
