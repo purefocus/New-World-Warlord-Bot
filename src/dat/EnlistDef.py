@@ -176,7 +176,7 @@ class Enlistment:
             for role in self.roles:
                 roles = role
                 weapons = self.roles[role]
-            return f'*{self.username}* *[{weapons}]*'
+            return f'{self.level} {replace_emojis(roles)} **{self.username}** *[{weapons}]*'
 
         else:
             roles = ''
@@ -191,7 +191,7 @@ class Enlistment:
             for m in matches:
                 weapons = weapons.replace(m, '')
             # return f'{self.level} {replace_emojis(roles)} **{self.username}** *[{weapons}]*'
-            return f'{self.level} {replace_emojis(roles)} **{self.username}** *[{weapons}]*'
+            return f'*{self.username}* *[{weapons}]*'
 
     def sort_key(self):
 
