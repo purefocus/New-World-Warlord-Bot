@@ -104,7 +104,7 @@ class WarDef:
         # embed.set_author(name='Test')
         if self.attacking is not None:
             embed.add_field(name='Details',
-                            value=f'Location: {self.location}\nTime: {self.war_time}\nContact: {self.owners}',
+                            value=f'🏛️ {self.location}\n📆 {self.war_time}\n☎️ {self.owners}',
                             inline=False)
             embed.add_field(name='Attackers', value=self.attacking, inline=True)
             embed.add_field(name='Defenders', value=self.defending, inline=True)
