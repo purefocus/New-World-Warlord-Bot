@@ -163,7 +163,7 @@ class Enlistment:
         weapons = replace_weapons_abbrev(weapons)
         matches = regex.findall(weapons)
         for m in matches:
-            weapons.replace(m, '')
+            weapons = weapons.replace(m, '')
         # return f'{self.level} {replace_emojis(roles)} **{self.username}** *[{weapons}]*'
         return f'{self.level} **{self.username}** *[{weapons}]*'
 
