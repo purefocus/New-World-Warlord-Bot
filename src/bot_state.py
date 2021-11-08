@@ -5,7 +5,7 @@ import discord
 from discord.ext import commands
 from discord_ui import Button
 from utils.userdata import UserData
-
+from utils.world_status import get_status
 import time
 
 
@@ -35,24 +35,26 @@ class BotState:
 
         self.war_selection = {}
 
-    async def update_presence(self):
+        self.world_status = None
+
+    async def update_presence(self, status):
         start_time = int(1000 * time.time())
         end_time = int(1000 * (time.time() + 60 * 5))
         await self.client.change_presence(
             status=self.config.status,
             activity=discord.Game(
-                name=self.config.game_status
+                name=status
             )
         )
 
-    async def add_enlistment(self, war: WarDef, user: Enlistment, save=True, announce=True):
+    async def add_enlistment(self, disc_name, war: WarDef, user: Enlistment, save=True, announce=True):
         try:
             num_enlisted = len(war)
             if isinstance(user, UserSignup):
                 user = user.to_enlistment()
             war.add_enlistment(user)
 
-            self.users.add_user(user)
+            self.users.add_user(disc_name, user)
 
             if self.config.announce_signup and announce:
                 await self.announce_signup(user)

@@ -6,6 +6,8 @@ from utils.google_forms import post_enlistment
 
 import json
 
+from utils.colorprint import *
+
 
 class User:
 
@@ -17,12 +19,13 @@ class UserData:
     def __init__(self):
         self.users = {}
 
-    def add_user(self, user: Enlistment):
-        if user.username.lower() in self.users:
-            u = self.users[user.username.lower()]
+    def add_user(self, disc_name, user: Enlistment):
+        if disc_name in self.users:
+            u = self.users[disc_name]
             user.edit_key = u.edit_key
-        self.users[user.username.lower()] = user
-        post_enlistment(user)
+        self.users[disc_name] = user
+        # post_enlistment(user)
+
 
     def has_user(self, username: str):
         return username.lower() in self.users
@@ -35,6 +38,8 @@ class UserData:
             need_update = False
             for key in data:
                 entry: dict = data[key]
+                entry['disc_name'] = key
+                # print_dict(entry)
                 enl = self.users[key] = Enlistment(**entry)
                 if enl.edit_key is None:
                     post_enlistment(enl)

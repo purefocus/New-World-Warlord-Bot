@@ -40,7 +40,7 @@ async def cmd_enlist(state: BotState, ctx, username, level, company):
             else:
                 await sel_msg.edit(content=f'your enlistment application for **{war}** has been submitted!',
                                    components=None)
-            await state.add_enlistment(war, enlistment, save=False)
+            await state.add_enlistment(str(ctx.author), war, enlistment, save=False)
 
         if len(selected_wars) > 0:
             state.save_war_data()

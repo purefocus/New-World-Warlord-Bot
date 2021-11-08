@@ -2,6 +2,7 @@ import json
 import discord
 from discord_ui import SlashPermission
 from utils.colorprint import *
+from utils.data import *
 import os
 
 FILES_DIR = '../../files'
@@ -34,10 +35,12 @@ class GuildConfig:
             self.id = guild_key
             self.cfg = {
                 'name': self.name,
+                'name_enforcement': False,
+                'company_enforcement': False,
                 'channels': {
                     'signup': None,
                     'notice': None,
-                    'management': None,
+                    'management': None
                 },
                 'permissions': {
                     'verified_roles': [895466455766802442],
@@ -50,6 +53,8 @@ class GuildConfig:
             'notice': None,
             'management': None
         }
+        self.name_enforcement = self.cfg['name_enforcement']
+        self.company_enforcement = self.cfg['company_enforcement']
 
     def resolve(self, guild: discord.Guild):
         self.guild = guild
@@ -96,6 +101,7 @@ class Config:
 
     def __init__(self):
         self.bot_token = None
+        self.nws_token = None
         self.tag_war = True
         self.unsaved = False
 
@@ -140,7 +146,8 @@ class Config:
                     'channels': {
                         'signup': 'war-signup',
                         'notice': 'war-notice',
-                        'management': 'war-management'
+                        'management': 'war-management',
+                        'status': 'world-status'
                     }
                 }
             }
@@ -159,9 +166,31 @@ class Config:
         self.status = self._get(cfg, 'status', 'online')
         self.game_status = self._get(cfg, 'status_text', 'New World')
         self.verify_channel = self._get(cfg, 'verification_channel', 'verify-your-faction')
+        self.mod_verify_channel = self._get(cfg, 'mod_verification_channel', 'verify-requests')
+
+        self.msgs = self._get(self.config, 'messages', {})
+
+        for key in self.msgs:
+            msgs = self.msgs[key]
+            lst = []
+            for msg in msgs:
+                lst.append(MessageReference(**msg))
+            self.msgs[key] = lst
 
         if self.unsaved:
             self.save()
+
+    def get_messages(self, key):
+        if key in self.msgs:
+            return self.msgs[key]
+        return None
+
+    def register_message(self, key, msg: discord.Message):
+        if key not in self.msgs:
+            self.msgs[key] = []
+        ref = MessageReference(msg=msg)
+        self.msgs[key].append(ref)
+        self.save()
 
     def _get(self, cfg: dict, key: str, default):
         if cfg is None:
@@ -235,19 +264,31 @@ class Config:
         try:
             for g in self.guilds:
                 self.config['guilds'][g] = self.guilds[g].__dict__()
+
+            for key in self.msgs:
+                msgs = self.msgs[key]
+                lst = []
+                for msg in msgs:
+                    lst.append(msg.__dict__())
+                self.config['messages'][key] = lst
+
             json.dump(self.config, open(CFG_FILE, 'w+'), indent=2)
             self.unsaved = False
         except Exception as e:
-            print(e)
+            import traceback
+            import sys
+            traceback.print_exception(*sys.exc_info())
 
     def load(self):
         try:
             info = json.load(open(BOT_TOKEN_FILE, 'r'))
             self.bot_token = info['token']
+            self.nws_token = info['nws_token']
         except:
             json.dump({'token': '<token goes here'}, open(BOT_TOKEN_FILE, 'w+'))
             raise Exception(f'Need bot token! Add the token to {BOT_TOKEN_FILE}!')
         try:
             self.config = json.load(open(CFG_FILE, 'r'))
+
         except Exception as e:
             print(e)

@@ -10,12 +10,12 @@ from cogs.cog_enlistment import *
 from cogs.cog_management import WarManagementCog
 from cogs.cog_admin import AdminCog
 from cogs.cog_extras import ExtrasCog
+from cogs.cog_worldstatus import WorldStatusCog
 from cogs.cog_verification import VerificationCog
 
 intents = discord.Intents.all()
 
 client = commands.Bot(" ", intents=intents)
-
 
 ui = UI(client, slash_options={'auto_sync': False, "wait_sync": 2, "delete_unused": False})
 config = Config()
@@ -27,6 +27,9 @@ client.add_cog(WarManagementCog(client, state))
 client.add_cog(DMEnlistmentCog(client, state))
 client.add_cog(AdminCog(client, state, ui))
 client.add_cog(ExtrasCog(client, state))
+client.add_cog(WorldStatusCog(client, state))
+
+
 # client.add_cog(VerificationCog(client, state))
 
 
@@ -158,11 +161,18 @@ async def on_ready():
 
         # await ui.slash.sync_commands(delete_unused=True)
 
-        await state.update_presence()
+        # await state.update_presence()
         for war in state.wars:
             war = state.wars[war]
             if war.active:
                 await state.update_war_boards(war)
+        guild: discord.Guild = client.get_guild(894675526776676382)
+        user_map = state.users.users
+        new_users = UserData()
+        for user in guild.members:
+            if user.display_name.lower() in user_map:
+                new_users.add_user(str(user), user_map[user.display_name.lower()])
+        new_users.save('../../files/user_data_new.json')
 
     except Exception as e:
         import traceback

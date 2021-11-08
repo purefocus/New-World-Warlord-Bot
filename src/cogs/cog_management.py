@@ -222,7 +222,7 @@ async def handle_signup_message(state: BotState, message: discord.Message, edite
                 await test.respond(ninja_mode=True)
 
             if war is not None:
-                await state.add_enlistment(war, entry)
+                await state.add_enlistment(str(message.author), war, entry)
                 war.add_enlistment(entry.to_enlistment())
                 await resp.edit(
                     content='You have been signed up!\nDo not forget to sign up at the war board in-game too!',

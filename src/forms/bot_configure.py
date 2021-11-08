@@ -56,6 +56,11 @@ async def cmd_bot_configure(state: BotState, ctx: SlashedCommand, options: str):
                     state.config.add_guild(ctx.guild)
                     response = 'Guild Registered!'
 
+            if options[0] == 'status':
+                msg = await ctx.channel.send(content='World Status Here')
+                state.config.register_message('world-status', msg)
+                await ctx.respond(content='-', hidden=True)
+
         if response is not None:
             await ctx.respond(content=response, hidden=True)
 

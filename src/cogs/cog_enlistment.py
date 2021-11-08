@@ -142,18 +142,23 @@ class DMEnlistmentCog(commands.Cog):
 
     async def enlist_questionair(self, war, ctx):
         try:
-            user = UserProfile(ctx.author)
+            gcfg = self.state.config.guildcfg(ctx.guild_id)
+            if gcfg is None:
+                return
+            user = UserProfile(ctx.author, name_enforcement=gcfg.name_enforcement,
+                               company_enforcement=gcfg.company_enforcement)
 
             await ctx.author.send(
                 f'Hello **{user}**, you have chosen to enlist in the war for **{war.location}**'
                 f'\n*This information will be saved to make it faster to sign up in the future!*\n'
                 f'\nPlease answer the following questions:\n')
             responses = {}
+            if user.username is not None:
+                responses['name'] = user.username
 
-            responses['name'] = user.username
-            if user.company is not None:
-                responses['faction'] = 'Syndicate'
-                responses['company'] = user.company
+                if user.company is not None:
+                    responses['faction'] = 'Syndicate'
+                    responses['company'] = user.company
 
             for q in question_list:
                 if q in responses:
@@ -216,7 +221,7 @@ class DMEnlistmentCog(commands.Cog):
 
             msg = None
             ask = True
-            user = self.state.users[ctx.author.display_name]
+            user = self.state.users[str(ctx.author)]
             if user is not None:
                 ask, msg = await ask_confirm(self.state, ctx,
                                              'You have enlisted in a previous war, so we can just reuse that information! '
@@ -251,7 +256,7 @@ class DMEnlistmentCog(commands.Cog):
             print('Enlistment Ended! ', len(self.users_enlisting))
 
             if user is not None:
-                await self.state.add_enlistment(war, user, announce=ask)
+                await self.state.add_enlistment(str(ctx.author), war, user, announce=ask)
                 if msg is not None:
                     await msg.edit(content=STR_ENLIST_SUCCESS % war.location, components=None)
                 else:

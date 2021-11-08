@@ -49,8 +49,10 @@ class Enlisted:
 
 class Enlistment:
 
-    def __init__(self, username=None, level=None, faction=None, company=None, group=None, roles=None, edit_key=None,
+    def __init__(self, disc_name=None, username=None, level=None, faction=None, company=None, group=None, roles=None,
+                 edit_key=None,
                  **args):
+        self.disc_name = disc_name
         self.username = username
         self.faction = faction
         self.company = company
@@ -72,6 +74,7 @@ class Enlistment:
 
     def copy(self):
         return Enlistment(username=self.username,
+                          disc_name=self.disc_name,
                           level=self.level,
                           faction=self.faction,
                           company=self.company,
@@ -82,6 +85,7 @@ class Enlistment:
     def __dict__(self):
         return {
             'username': self.username,
+            'disc_name': self.disc_name,
             'level': self.level,
             'faction': self.faction,
             'company': self.company,
