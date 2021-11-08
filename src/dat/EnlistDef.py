@@ -1,6 +1,6 @@
 import discord
 
-from utils.details import replace_emojis
+from utils.details import replace_emojis, replace_weapons_abbrev
 
 
 class Enlisted:
@@ -158,6 +158,7 @@ class Enlistment:
             weapons = self.roles[role]
 
         # return f'[{replace_emojis(roles)} {self.level}] **{self.username}** *[{self.company} ({self.faction[0]})]*'
+        weapons = replace_weapons_abbrev(weapons)
         return f'{self.level} {replace_emojis(roles)} **{self.username}** *[{weapons}]*'
 
     def sort_key(self):

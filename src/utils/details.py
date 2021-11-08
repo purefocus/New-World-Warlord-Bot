@@ -77,4 +77,8 @@ def replace_emojis(txt: str):
         return _txt
     return txt
 
-# def replace_weapons_abbrev(txt: str):
+
+def replace_weapons_abbrev(txt: str):
+    for i in range(len(WEAPON_CHOICES)):
+        txt = txt.replace(WEAPON_CHOICES[i], WEAPON_CHOICES_ABRV[i])
+    return txt
