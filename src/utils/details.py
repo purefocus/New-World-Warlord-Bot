@@ -30,6 +30,7 @@ add_mapping(role_emoji_mappings, ':shield:', ['tank'])
 add_mapping(role_emoji_mappings, ':hammer_pick:', ['siege'])
 add_mapping(role_emoji_mappings, ':bow_and_arrow:', ['sharpshooter', 'ranged', 'musket'])
 add_mapping(role_emoji_mappings, ':crown:', ['leader', 'lead'])
+add_mapping(role_emoji_mappings, ':man_mage:', ['mage'])
 
 ##########################
 # Location Name Mappings #
