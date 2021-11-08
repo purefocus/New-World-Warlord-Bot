@@ -170,7 +170,7 @@ class Enlistment:
         # return f'*{self.username}* *[{weapons}]*'
 
     def roster_line(self, abrv_line):
-        if abrv_line:
+        if not abrv_line:
             roles = ''
             weapons = ''
             for role in self.roles:
