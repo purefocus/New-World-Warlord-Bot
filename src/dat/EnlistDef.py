@@ -2,6 +2,10 @@ import discord
 
 from utils.details import replace_emojis, replace_weapons_abbrev
 
+import re
+
+weapon_abrev_regex = re.compile(r'( ?\([0-9]*\))')
+
 
 class Enlisted:
 
@@ -158,14 +162,36 @@ class Enlistment:
             weapons = self.roles[role]
 
         # return f'[{replace_emojis(roles)} {self.level}] **{self.username}** *[{self.company} ({self.faction[0]})]*'
-        import re
-        regex = re.compile(r'( ?\([0-9]*\))')
         weapons = replace_weapons_abbrev(weapons)
-        matches = regex.findall(weapons)
+        matches = weapon_abrev_regex.findall(weapons)
         for m in matches:
             weapons = weapons.replace(m, '')
         # return f'{self.level} {replace_emojis(roles)} **{self.username}** *[{weapons}]*'
         return f'*{self.username}* *[{weapons}]*'
+
+    def roster_line(self, abrv_line):
+        if not abrv_line:
+            roles = ''
+            weapons = ''
+            for role in self.roles:
+                roles = role
+                weapons = self.roles[role]
+            return f'*{self.username}* *[{weapons}]*'
+
+        else:
+            roles = ''
+            weapons = ''
+            for role in self.roles:
+                roles = role
+                weapons = self.roles[role]
+
+            # return f'[{replace_emojis(roles)} {self.level}] **{self.username}** *[{self.company} ({self.faction[0]})]*'
+            weapons = replace_weapons_abbrev(weapons)
+            matches = weapon_abrev_regex.findall(weapons)
+            for m in matches:
+                weapons = weapons.replace(m, '')
+            # return f'{self.level} {replace_emojis(roles)} **{self.username}** *[{weapons}]*'
+            return f'{self.level} {replace_emojis(roles)} **{self.username}** *[{weapons}]*'
 
     def sort_key(self):
 
