@@ -166,13 +166,13 @@ async def on_ready():
             war = state.wars[war]
             if war.active:
                 await state.update_war_boards(war)
-        guild: discord.Guild = client.get_guild(894675526776676382)
-        user_map = state.users.users
-        new_users = UserData()
-        for user in guild.members:
-            if user.display_name.lower() in user_map:
-                new_users.add_user(str(user), user_map[user.display_name.lower()])
-        new_users.save('../../files/user_data_new.json')
+        # guild: discord.Guild = client.get_guild(894675526776676382)
+        # user_map = state.users.users
+        # new_users = UserData()
+        # for user in guild.members:
+        #     if user.display_name.lower() in user_map:
+        #         new_users.add_user(str(user), user_map[user.display_name.lower()])
+        # new_users.save('../../files/user_data.json')
 
     except Exception as e:
         import traceback

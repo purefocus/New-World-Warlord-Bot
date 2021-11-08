@@ -140,7 +140,7 @@ class DMEnlistmentCog(commands.Cog):
 
         self.users_enlisting = {}
 
-    async def enlist_questionair(self, war, ctx):
+    async def enlist_questionair(self, war, ctx, udata=None):
         try:
             gcfg = self.state.config.guildcfg(ctx.guild_id)
             if gcfg is None:
@@ -159,6 +159,11 @@ class DMEnlistmentCog(commands.Cog):
                 if user.company is not None:
                     responses['faction'] = 'Syndicate'
                     responses['company'] = user.company
+
+            if udata is not None:
+                responses['name'] = udata.username
+                responses['faction'] = udata.faction
+                responses['company'] = udata.company
 
             for q in question_list:
                 if q in responses:
@@ -221,12 +226,12 @@ class DMEnlistmentCog(commands.Cog):
 
             msg = None
             ask = True
-            user = self.state.users[str(ctx.author)]
-            if user is not None:
+            udata = self.state.users[str(ctx.author)]
+            if udata is not None:
                 ask, msg = await ask_confirm(self.state, ctx,
                                              'You have enlisted in a previous war, so we can just reuse that information! '
                                              '\nWould you like to update your information instead? ',
-                                             embed=user.embed(), ret_msg=True, text=['Update Information', 'Enlist'])
+                                             embed=udata.embed(), ret_msg=True, text=['Update Information', 'Enlist'])
                 if ask:
                     await msg.edit(content='**Please check your private messages!**', components=None, embed=None)
             if ask:
@@ -238,7 +243,7 @@ class DMEnlistmentCog(commands.Cog):
                 correct = False
                 while not correct:
                     try:
-                        user = await self.enlist_questionair(war, ctx)
+                        user = await self.enlist_questionair(war, ctx, udata)
                     except:
                         break
 

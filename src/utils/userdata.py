@@ -24,8 +24,7 @@ class UserData:
             u = self.users[disc_name]
             user.edit_key = u.edit_key
         self.users[disc_name] = user
-        # post_enlistment(user)
-
+        post_enlistment(user)
 
     def has_user(self, username: str):
         return username.lower() in self.users
