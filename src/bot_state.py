@@ -173,7 +173,7 @@ class BotState:
     def create_board(self, war: WarDef, btn=False):
         roster = create_roster_embed(war.roster, self, embed=war.embeds())
         ret = {
-            roster
+            'embed': roster,
         }
         if self.config.tag_war:
             ret['content'] = '<@&894698039774679060>'
