@@ -24,7 +24,7 @@ def _group_by_role(roster: list):
     return result
 
 
-def create_roster_embed(names, state, title=None, embed=None, abrv_line=True):
+def create_roster_embed(names, state, title=None, embed=None, abrv_line=False):
     roster = _get_users_from_names(names, state.users)
     groups = _group_by_role(roster)
     if embed is None:

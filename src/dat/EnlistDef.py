@@ -166,11 +166,11 @@ class Enlistment:
         matches = weapon_abrev_regex.findall(weapons)
         for m in matches:
             weapons = weapons.replace(m, '')
-        # return f'{self.level} {replace_emojis(roles)} **{self.username}** *[{weapons}]*'
-        return f'*{self.username}* *[{weapons}]*'
+        return f'{self.level} {replace_emojis(roles)} **{self.username}** *[{weapons}]*'
+        # return f'*{self.username}* *[{weapons}]*'
 
     def roster_line(self, abrv_line):
-        if not abrv_line:
+        if abrv_line:
             roles = ''
             weapons = ''
             for role in self.roles:
