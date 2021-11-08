@@ -25,7 +25,7 @@ class UserData:
             u = self.users[disc_name]
             user.edit_key = u.edit_key
         self.users[disc_name] = user
-        self.name_to_disc_map[disc_name] = user.username
+        self.name_to_disc_map[user.username] = disc_name
         post_enlistment(user)
 
     def has_user(self, username: str):
@@ -42,7 +42,7 @@ class UserData:
                 entry['disc_name'] = key
                 # print_dict(entry)
                 enl = self.users[key] = Enlistment(**entry)
-                self.name_to_disc_map[enl.disc_name] = enl.username
+                self.name_to_disc_map[enl.username] = enl.disc_name
                 if enl.edit_key is None:
                     post_enlistment(enl)
                     need_update = True
