@@ -50,15 +50,15 @@ client.add_cog(VerificationCog(client, state))
 #   War Creation   #
 ####################
 
-@ui.slash.command(options=[
-    SlashOption(str, name='attacking', description='Who is attacking? <faction> (<company>)', required=True),
-    SlashOption(str, name='defending', description='Who is Defending? <faction> (<company>)', required=True),
-    SlashOption(str, name='location', description='Where is this war?', required=True),
-    SlashOption(str, name='time', description='When is the war going to be held?', required=True),
-    SlashOption(str, name='owner', description='What company is running this war?', required=True),
-], description='Creates a new instance for a war that can be signed up for.', **cmd_cfg_elev)
-async def create_war(ctx, attacking, defending, location, time, owner):
-    await cmd_create_war(ctx, attacking, defending, location, time, owner, state)
+# @ui.slash.command(options=[
+#     SlashOption(str, name='attacking', description='Who is attacking? <faction> (<company>)', required=True),
+#     SlashOption(str, name='defending', description='Who is Defending? <faction> (<company>)', required=True),
+#     SlashOption(str, name='location', description='Where is this war?', required=True),
+#     SlashOption(str, name='time', description='When is the war going to be held?', required=True),
+#     SlashOption(str, name='owner', description='What company is running this war?', required=True),
+# ], description='Creates a new instance for a war that can be signed up for.', **cmd_cfg_elev)
+# async def create_war(ctx, attacking, defending, location, time, owner):
+#     await cmd_create_war(ctx, attacking, defending, location, time, owner, state)
 
 
 @ui.slash.command(description='Flags a war as ended, disabling the ability to sign up for it', **cmd_cfg_mod)
