@@ -108,7 +108,7 @@ class WarDef:
             embed.add_field(name='Attackers', value=self.attacking, inline=True)
             embed.add_field(name='Defenders', value=self.defending, inline=True)
 
-            self.groups.embed(embed)
+            # self.groups.embed(embed)
 
         if self.looking_for is not None:
             embed.add_field(name='Looking for', value=self.looking_for, inline=False)

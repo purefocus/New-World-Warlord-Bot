@@ -215,7 +215,7 @@ class DMEnlistmentCog(commands.Cog):
     async def do_enlist(self, war: WarDef, ctx: Interaction):
         # war = self.state.wars[id]
         if war is not None:
-            print('Enlistment Started!')
+            print('Enlistment Started! ', str(ctx.author))
             # self.users_enlisting[ctx.author] = True
 
             msg = None
@@ -258,7 +258,7 @@ class DMEnlistmentCog(commands.Cog):
                     await ctx.author.send(content=STR_ENLIST_FAILED)
 
             # del self.users_enlisting[ctx.author]
-            print('Enlistment Ended! ', len(self.users_enlisting))
+            print('Enlistment Ended! ', str(ctx.author), len(self.users_enlisting))
 
             if udata is not None:
                 await self.state.add_enlistment(str(ctx.author), war, udata, announce=ask)

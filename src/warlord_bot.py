@@ -17,7 +17,7 @@ intents = discord.Intents.all()
 
 client = commands.Bot(" ", intents=intents)
 
-ui = UI(client, slash_options={'auto_sync': True, "wait_sync": 2, "delete_unused": False})
+ui = UI(client, slash_options={'auto_sync': False, "wait_sync": 2, "delete_unused": False})
 config = Config()
 config.load()
 state = BotState(client, config)
@@ -166,6 +166,7 @@ async def on_ready():
             if war.active:
                 await state.update_war_boards(war)
         # guild: discord.Guild = client.get_guild(894675526776676382)
+
         # user_map = state.users.users
         # new_users = UserData()
         # for user in guild.members:
