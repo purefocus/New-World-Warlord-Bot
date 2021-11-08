@@ -233,7 +233,7 @@ class DMEnlistmentCog(commands.Cog):
                                              '\nWould you like to update your information instead? ',
                                              embed=udata.embed(), ret_msg=True,
                                              text=['Update Information', 'Enlist', "Cancel"],
-                                             colors=['orange', 'green', 'red'], cancel=True)
+                                             colors=['blurple', 'green', 'red'], cancel=True)
                 if ask:
                     await msg.edit(content='**Please check your private messages!**', components=None, embed=None)
             if ask is None:
