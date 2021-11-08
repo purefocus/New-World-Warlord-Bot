@@ -22,6 +22,47 @@ def tmpfile(file):
     return os.path.join(TMP_DIR, file)
 
 
+WARLORD_TEST_ID = 897098434153185290
+FACTION_SERVER_ID = 894675526776676382
+
+guild_ids = [WARLORD_TEST_ID, FACTION_SERVER_ID]
+# guild_ids_testing = [WARLORD_TEST_ID]
+guild_permissions_low = {
+    WARLORD_TEST_ID: SlashPermission(allowed={'897191745060745297': SlashPermission.ROLE,  # WarAdmin
+                                              '198526201374048256': SlashPermission.USER}),  # pureofoucs
+    FACTION_SERVER_ID: SlashPermission(allowed={'895466455766802442': SlashPermission.ROLE,
+                                                 '198526201374048256': SlashPermission.USER}),  # Verified
+}
+guild_permissions = {
+    WARLORD_TEST_ID: SlashPermission(allowed={"897191745060745297": SlashPermission.ROLE}),
+    FACTION_SERVER_ID: SlashPermission(allowed={"895472067850424370": SlashPermission.ROLE,  # Consul
+                                                 '895471923134341200': SlashPermission.ROLE,  # Governor
+                                                 '894677353479942154': SlashPermission.ROLE,  # Admin
+                                                 '198526201374048256': SlashPermission.USER})  # purefocus
+}
+mod_guild_permissions = {
+    WARLORD_TEST_ID: SlashPermission(allowed={"897191745060745297": SlashPermission.ROLE}),
+    FACTION_SERVER_ID: SlashPermission(allowed={'894677353479942154': SlashPermission.ROLE,  # Admin
+                                                 '198526201374048256': SlashPermission.USER})  # purefocus
+}
+
+cmd_cfg_elev = {
+    'guild_ids': guild_ids,
+    'default_permission': False,
+    'guild_permissions': guild_permissions
+}
+cmd_cfg_mod = {
+    'guild_ids': guild_ids,
+    'default_permission': False,
+    'guild_permissions': mod_guild_permissions
+}
+cmd_cfg = {
+    'guild_ids': guild_ids,
+    'default_permission': False,
+    'guild_permissions': guild_permissions_low
+}
+
+
 class GuildConfig:
 
     def __init__(self, guild_key, cfg=None, guild=None):
@@ -106,39 +147,6 @@ class Config:
         self.unsaved = False
 
         self.question_timeout = int(60 * 5)
-
-        guild_ids = [897098434153185290, 894675526776676382]
-        guild_ids_testing = [897098434153185290]
-        guild_permissions = {
-            897098434153185290: SlashPermission(allowed={"897191745060745297": SlashPermission.ROLE}),
-            894675526776676382: SlashPermission(allowed={"895472067850424370": SlashPermission.ROLE,  # Consul
-                                                         '895471923134341200': SlashPermission.ROLE,  # Governor
-                                                         '894677353479942154': SlashPermission.ROLE,  # Admin
-                                                         '198526201374048256': SlashPermission.USER})  # purefocus
-        }
-        mod_guild_permissions = {
-            897098434153185290: SlashPermission(allowed={"897191745060745297": SlashPermission.ROLE}),
-            894675526776676382: SlashPermission(allowed={'894677353479942154': SlashPermission.ROLE,  # Admin
-                                                         '198526201374048256': SlashPermission.USER})  # purefocus
-        }
-
-        self.cmd_cfg_elev = {
-            'guild_ids': guild_ids,
-            'default_permission': False,
-            'guild_permissions': guild_permissions
-        }
-        self.cmd_cfg_mod = {
-            'guild_ids': guild_ids,
-            'default_permission': False,
-            'guild_permissions': mod_guild_permissions
-        }
-        self.cmd_cfg = {
-            'guild_ids': guild_ids,
-            'guild_permissions': {
-                894675526776676382: SlashPermission(allowed={'895466455766802442': SlashPermission.ROLE,
-                                                             '198526201374048256': SlashPermission.USER})  # Verified
-            }
-        }
 
         self.config = {
             'guilds': {

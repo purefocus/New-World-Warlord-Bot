@@ -7,7 +7,7 @@ import discord_ui
 from discord_ui import Interaction
 
 from utils.discord_utils import *
-
+import config as cfg
 
 class ExtrasCog(commands.Cog):
 
@@ -15,7 +15,7 @@ class ExtrasCog(commands.Cog):
         self.client = client
         self.state = state
 
-    @slash_cog(name='channel_stats', guild_ids=[894675526776676382])
+    @slash_cog(name='channel_stats', **cfg.cmd_cfg)
     async def cmd_war_stats(self, ctx: discord_ui.SlashedCommand):
         user: discord.Member = ctx.author
 

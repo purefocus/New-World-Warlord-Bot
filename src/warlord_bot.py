@@ -17,7 +17,7 @@ intents = discord.Intents.all()
 
 client = commands.Bot(" ", intents=intents)
 
-ui = UI(client, slash_options={'auto_sync': False, "wait_sync": 2, "delete_unused": False})
+ui = UI(client, slash_options={'auto_sync': True, "wait_sync": 2, "delete_unused": False})
 config = Config()
 config.load()
 state = BotState(client, config)
@@ -29,8 +29,7 @@ client.add_cog(AdminCog(client, state, ui))
 client.add_cog(ExtrasCog(client, state))
 client.add_cog(WorldStatusCog(client, state))
 
-
-# client.add_cog(VerificationCog(client, state))
+client.add_cog(VerificationCog(client, state))
 
 
 ####################
@@ -57,41 +56,41 @@ client.add_cog(WorldStatusCog(client, state))
     SlashOption(str, name='location', description='Where is this war?', required=True),
     SlashOption(str, name='time', description='When is the war going to be held?', required=True),
     SlashOption(str, name='owner', description='What company is running this war?', required=True),
-], description='Creates a new instance for a war that can be signed up for.', **config.cmd_cfg_elev)
+], description='Creates a new instance for a war that can be signed up for.', **cmd_cfg_elev)
 async def create_war(ctx, attacking, defending, location, time, owner):
     await cmd_create_war(ctx, attacking, defending, location, time, owner, state)
 
 
-@ui.slash.command(description='Flags a war as ended, disabling the ability to sign up for it', **config.cmd_cfg_elev)
+@ui.slash.command(description='Flags a war as ended, disabling the ability to sign up for it', **cmd_cfg_mod)
 async def end_war(ctx):
     user: discord.User = ctx.author
     await cmd_end_war(state, ctx)
 
 
-@ui.slash.command(description='Reposts the war notification', **config.cmd_cfg_elev)
+@ui.slash.command(description='Reposts the war notification', **cmd_cfg_elev)
 async def repost_war(ctx):
     await cmd_repost_war(state, ctx)
 
 
-@ui.slash.command(description='posts a war notification in your current channel', **config.cmd_cfg_elev)
+@ui.slash.command(description='posts a war notification in your current channel', **cmd_cfg_elev)
 async def post_war(ctx):
     await cmd_post_war(state, ctx)
 
 
-@ui.slash.command(description='posts a war enlistment button in your current channel', **config.cmd_cfg_elev)
+@ui.slash.command(description='posts a war enlistment button in your current channel', **cmd_cfg_elev)
 async def post_enlist(ctx):
     await cmd_post_btn(state, ctx)
 
 
 @ui.slash.command(description='Replies with a table of all the users enlisted for a specific war',
-                  **config.cmd_cfg_elev)
+                  **cmd_cfg_elev)
 async def get_enlisted(ctx):
     await cmd_get_enlisted(state, ctx)
 
 
 @ui.slash.command(
     description='Generates a CSV file with a table of everyone who signed up (Can be imported into excel).',
-    **config.cmd_cfg_elev)
+    **cmd_cfg_elev)
 async def download_enlisted(ctx):
     await cmd_dl_enlisted(state, ctx)
 
@@ -118,7 +117,7 @@ async def on_error(event_method, *args, **kwargs):
 
 @ui.slash.command(name='warlord_cfg', options=[
     SlashOption(str, name='options', description='configuration options', required=True),
-], description='Allows configuring the bot', **config.cmd_cfg_elev)
+], description='Allows configuring the bot', **cmd_cfg_mod)
 async def warlord_config(ctx, options: str):
     await cmd_bot_configure(state, ctx, options)
 

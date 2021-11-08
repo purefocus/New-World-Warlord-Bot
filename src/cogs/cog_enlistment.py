@@ -16,13 +16,7 @@ from dat.UserProfile import UserProfile
 from views.view_confirm import ask_confirm
 
 import asyncio
-
-cmd_cfg = {
-    'guild_ids': [894675526776676382],
-    'guild_permissions': {
-        894675526776676382: SlashPermission(allowed={'895466455766802442': SlashPermission.ROLE})  # Verified
-    }
-}
+import config as cfg
 question_list = {
     'name': {
         'question': 'What is your character name?',
@@ -314,7 +308,7 @@ class DMEnlistmentCog(commands.Cog):
             import sys
             traceback.print_exception(*sys.exc_info())
 
-    @slash_cog(description='Enlist yourself to participate in wars!', **cmd_cfg)
+    @slash_cog(description='Enlist yourself to participate in wars!', **cfg.cmd_cfg)
     async def enlist(self, ctx: SlashedCommand):
         try:
             war = self.state.wars['General Enlistment']

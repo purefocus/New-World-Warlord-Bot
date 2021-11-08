@@ -15,7 +15,7 @@ import pandas as pd
 import os
 from utils.colorprint import *
 
-import config
+import config as cfg
 
 admin_permissions = SlashPermission(
     allowed={
@@ -87,7 +87,7 @@ class AdminCog(commands.Cog):
 
                 data = pd.DataFrame(data, columns=['Name', 'Company', 'Rank'])
 
-                file = os.path.join(config.TMP_DIR, 'verified.xlsx')
+                file = os.path.join(cfg.TMP_DIR, 'verified.xlsx')
 
                 data.to_excel(file, index=True, header=True)
 
@@ -119,13 +119,12 @@ class AdminCog(commands.Cog):
                         print_dict(company)
                         return
 
-
                 table = sorted(table, key=lambda x: x[0])
 
                 headers = ['Company', 'Governor(s)', '# Members', '# Consuls', '# Officers', '# Settlers']
                 data = pd.DataFrame(table, columns=headers)
 
-                file = os.path.join(config.TMP_DIR, 'companies.xlsx')
+                file = os.path.join(cfg.TMP_DIR, 'companies.xlsx')
 
                 data.to_excel(file, index=True, header=True)
 
@@ -143,7 +142,7 @@ class AdminCog(commands.Cog):
 
         # guild.create_role(name=faction)
 
-    @slash_cog(name='warlord_cmd_sync', guild_ids=[894675526776676382], guild_permissions=guild_permissions)
+    @slash_cog(name='warlord_cmd_sync', **cfg.cmd_cfg_mod)
     async def warlord_cmd_sync(self, ctx: SlashedCommand):
         try:
             await ctx.defer(hidden=True)
@@ -156,7 +155,7 @@ class AdminCog(commands.Cog):
             await ctx.respond(content=str(e), hidden=True)
         print('Done')
 
-    @slash_cog(name='warlord_reboot', guild_ids=[894675526776676382], guild_permissions=guild_permissions)
+    @slash_cog(name='warlord_reboot', **cfg.cmd_cfg_mod)
     async def warlord_reboot(self, ctx: SlashedCommand):
         # if ctx.author.name == 'purefocus':
         confirm = await ask_confirm(self.state, ctx, f'Are you sure you want to reboot Warlord?')

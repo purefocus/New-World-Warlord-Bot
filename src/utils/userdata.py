@@ -46,7 +46,7 @@ class UserData:
                 if enl.edit_key is None:
                     post_enlistment(enl)
                     need_update = True
-            print_dict(self.name_to_disc_map)
+            # print_dict(self.name_to_disc_map)
             if need_update:
                 self.save()
         except Exception as e:
@@ -64,10 +64,13 @@ class UserData:
             print(e)
 
     def __getitem__(self, name) -> Enlistment:
-        if '#' not in name:
-            name = self.name_to_disc_map[name.lower()]
-        if name in self.users:
-            return self.users[name]
+        try:
+            if '#' not in name:
+                name = self.name_to_disc_map[name.lower()]
+            if name in self.users:
+                return self.users[name]
+        except:
+            pass
         return None
 
     def __contains__(self, item):

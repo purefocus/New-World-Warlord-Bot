@@ -10,6 +10,8 @@ from utils.colorprint import *
 
 from utils.discord_utils import *
 
+import config as cfg
+
 
 class VerificationCog(commands.Cog):
 
