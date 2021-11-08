@@ -61,8 +61,8 @@ class BotState:
             if self.config.announce_signup and announce:
                 await self.announce_signup(user)
 
-            if num_enlisted != len(war):
-                await self.update_war_boards(war)
+            # if num_enlisted != len(war):
+            await self.update_war_boards(war)
 
             if save:
                 self.users.save()
