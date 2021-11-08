@@ -25,11 +25,11 @@ def _group_by_role(roster: list):
     return result
 
 
-def create_roster_embed(names, state: BotState, title):
+def create_roster_embed(names, state: BotState, title, embed=None):
     roster = _get_users_from_names(names, state.users)
     groups = _group_by_role(roster)
-
-    embed = Embed(title='War Enlistment', description=f'{title}')
+    if embed is None:
+        embed = Embed(title='War Enlistment', description=f'{title}')
 
     for key in groups:
         value = ''

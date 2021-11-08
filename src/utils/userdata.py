@@ -18,12 +18,14 @@ class User:
 class UserData:
     def __init__(self):
         self.users = {}
+        self.name_to_disc_map = {}
 
     def add_user(self, disc_name, user: Enlistment):
         if disc_name in self.users:
             u = self.users[disc_name]
             user.edit_key = u.edit_key
         self.users[disc_name] = user
+        self.name_to_disc_map[disc_name] = user.username
         post_enlistment(user)
 
     def has_user(self, username: str):
@@ -40,9 +42,11 @@ class UserData:
                 entry['disc_name'] = key
                 # print_dict(entry)
                 enl = self.users[key] = Enlistment(**entry)
+                self.name_to_disc_map[enl.disc_name] = enl.username
                 if enl.edit_key is None:
                     post_enlistment(enl)
                     need_update = True
+            print_dict(self.name_to_disc_map)
             if need_update:
                 self.save()
         except Exception as e:
@@ -60,13 +64,18 @@ class UserData:
             print(e)
 
     def __getitem__(self, name) -> Enlistment:
-        if name.lower() in self.users:
-            return self.users[name.lower()]
+        if '#' not in name:
+            name = self.name_to_disc_map[name.lower()]
+        if name in self.users:
+            return self.users[name]
         return None
 
     def __contains__(self, item):
         if isinstance(item, str):
+            if '#' not in item:
+                item = self.name_to_disc_map[item.lower()]
             return item.lower() in self.users
+        return False
 
     def __repr__(self):
         return self.__str__()

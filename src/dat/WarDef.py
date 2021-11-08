@@ -6,7 +6,7 @@ from dat.GroupAssignments import *
 from utils.data import *
 
 import uuid
-
+from utils.details import WAR_ROLES
 
 class WarDef:
 
@@ -156,4 +156,3 @@ class WarDef:
         # if self.groups is not None and len(self.groups) > 0:
         #     ret.append(self.groups.embed())
         return self.get_embeded()
-
