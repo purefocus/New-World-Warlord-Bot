@@ -232,11 +232,13 @@ class DMEnlistmentCog(commands.Cog):
                                              'You have enlisted in a previous war, so we can just reuse that information! '
                                              '\nWould you like to update your information instead? ',
                                              embed=udata.embed(), ret_msg=True,
-                                             text=['Update Information', 'Enlist', "Cancel"], cancel=True)
+                                             text=['Update Information', 'Enlist', "Cancel"],
+                                             colors=['orange', 'green', 'red'], cancel=True)
                 if ask:
                     await msg.edit(content='**Please check your private messages!**', components=None, embed=None)
             if ask is None:
-                print('Cancelled!')
+                await msg.edit(content='Enlistment Canceled', components=None, embed=None)
+                user = None
             elif ask:
                 if not ctx.responded:
                     try:

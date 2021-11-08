@@ -7,17 +7,19 @@ import discord_ui
 from discord_ui import Button
 
 
-async def ask_confirm(state: BotState, ctx, question: str, embed: discord.Embed = None, text=None,
+async def ask_confirm(state: BotState, ctx, question: str, embed: discord.Embed = None, text=None, colors=None,
                       default_response=False, ret_msg=False, hidden=True, cancel=False):
     try:
         if text is None:
             text = ['Yes', 'No', 'Cancel']
+        if colors is None:
+            colors = ['green', 'red', 'red']
         comps = [
-            Button('btn:confirm_yes', text[0]),
-            Button('btn:confirm_no', text[1])
+            Button('btn:confirm_yes', text[0], color=colors[0]),
+            Button('btn:confirm_no', text[1], color=colors[1])
         ]
         if cancel:
-            comps.append(Button('btn:confirm_cancel', text[2]))
+            comps.append(Button('btn:confirm_cancel', text[2], color=colors[2]))
 
         if hidden:
             msg = await ctx.send(content=question, components=comps, embed=embed, hidden=hidden)
