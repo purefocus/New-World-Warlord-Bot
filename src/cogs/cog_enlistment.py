@@ -238,8 +238,9 @@ class DMEnlistmentCog(commands.Cog):
                     await msg.edit(content='**Please check your private messages!**', components=None, embed=None)
             if ask is None:
                 await msg.edit(content='Enlistment Canceled', components=None, embed=None)
-                user = None
+                return
             elif ask:
+
                 if not ctx.responded:
                     try:
                         await ctx.respond(content='**Please check your private messages!**', hidden=True)
@@ -248,13 +249,13 @@ class DMEnlistmentCog(commands.Cog):
                 correct = False
                 while not correct:
                     try:
-                        user = await self.enlist_questionair(war, ctx, udata)
+                        udata = await self.enlist_questionair(war, ctx, udata)
                     except:
                         break
 
-                    if user is not None:
+                    if udata is not None:
                         correct = await ask_confirm(self.state, ctx.author, 'Is this information correct?',
-                                                    embed=user.embed(), hidden=False)
+                                                    embed=udata.embed(), hidden=False)
 
                     else:
                         break
@@ -265,8 +266,8 @@ class DMEnlistmentCog(commands.Cog):
             # del self.users_enlisting[ctx.author]
             print('Enlistment Ended! ', len(self.users_enlisting))
 
-            if user is not None:
-                await self.state.add_enlistment(str(ctx.author), war, user, announce=ask)
+            if udata is not None:
+                await self.state.add_enlistment(str(ctx.author), war, udata, announce=ask)
                 if msg is not None:
                     await msg.edit(content=STR_ENLIST_SUCCESS % war.location, components=None)
                 else:
