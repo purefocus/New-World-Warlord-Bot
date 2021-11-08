@@ -100,10 +100,11 @@ class WarDef:
 
     def get_embeded(self):
         embed = discord.Embed(title=f':exclamation: __War Signup!__ :exclamation: ')
+        embed.set_thumbnail(url='https://pbs.twimg.com/profile_images/1392124727976546307/vBwCWL8W_400x400.jpg')
         # embed.set_author(name='Test')
         if self.attacking is not None:
             embed.add_field(name='Details',
-                            value=f'Location: `{self.location}`\nTime: `{self.war_time}`\nContact: {self.owners}',
+                            value=f'Location: {self.location}\nTime: {self.war_time}\nContact: {self.owners}',
                             inline=False)
             embed.add_field(name='Attackers', value=self.attacking, inline=True)
             embed.add_field(name='Defenders', value=self.defending, inline=True)
@@ -123,7 +124,7 @@ class WarDef:
                         value=f'{str(len(self.roster))}',
                         inline=False)
 
-        embed.set_footer(text='Use /enlist to sign up!')
+        # embed.set_footer(text='Use /enlist to sign up!')
 
         # embed.set_footer(text=f'\nID: {self.id}')
 
