@@ -142,10 +142,6 @@ class DMEnlistmentCog(commands.Cog):
             user = UserProfile(ctx.author, name_enforcement=gcfg.name_enforcement,
                                company_enforcement=gcfg.company_enforcement)
 
-            await ctx.author.send(
-                f'Hello **{user}**, you have chosen to enlist in the war for **{war.location}**'
-                f'\n*This information will be saved to make it faster to sign up in the future!*\n'
-                f'\nPlease answer the following questions:\n')
             responses = {}
             if user.username is not None:
                 responses['name'] = user.username
@@ -155,9 +151,14 @@ class DMEnlistmentCog(commands.Cog):
                     responses['company'] = user.company
 
             if udata is not None:
-                responses['name'] = udata.username
-                responses['faction'] = udata.faction
-                responses['company'] = udata.company
+                user.username = responses['name'] = udata.username
+                user.faction = responses['faction'] = udata.faction
+                user.company = responses['company'] = udata.company
+
+            await ctx.author.send(
+                f'Hello **{user}**, you have chosen to enlist in the war for **{war.location}**'
+                f'\n*This information will be saved to make it faster to sign up in the future!*\n'
+                f'\nPlease answer the following questions:\n')
 
             for q in question_list:
                 if q in responses:

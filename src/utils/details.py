@@ -5,7 +5,7 @@ WEAPON_CHOICES = ['Sword & Shield', 'Rapier', 'Hatchet',  # One handed
 
 WEAPON_CHOICES_ABRV = ['SS', 'Ra', 'Ha',  # One handed
                        'Sp', 'GA', 'WH',  # 2 handed
-                       'Bo', 'Mu',  # Ranged
+                       'Bow', 'Musket',  # Ranged
                        'FS', 'LS', 'IG']  # Magic
 
 WAR_ROLES = ['Healer', 'Tank', 'Siege', 'DPS', 'Ranged DPS', 'Mage DPS']
@@ -76,3 +76,5 @@ def replace_emojis(txt: str):
     if _txt != txt.lower():
         return _txt
     return txt
+
+# def replace_weapons_abbrev(txt: str):
