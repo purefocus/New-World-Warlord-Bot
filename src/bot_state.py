@@ -8,6 +8,8 @@ from utils.userdata import UserData
 from utils.world_status import get_status
 import time
 
+from views.roster import create_roster_embed
+
 
 def _chsum(cond):
     return 1 if cond else 0
@@ -169,9 +171,9 @@ class BotState:
             traceback.print_exception(*sys.exc_info())
 
     def create_board(self, war: WarDef, btn=False):
+        roster = create_roster_embed(war.roster, self, embed=war.embeds())
         ret = {
-
-            'embed': war.embeds(),
+            roster
         }
         if self.config.tag_war:
             ret['content'] = '<@&894698039774679060>'
