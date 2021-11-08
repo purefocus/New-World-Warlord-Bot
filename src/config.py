@@ -135,7 +135,8 @@ class Config:
         self.cmd_cfg = {
             'guild_ids': guild_ids,
             'guild_permissions': {
-                894675526776676382: SlashPermission(allowed={'895466455766802442': SlashPermission.ROLE})  # Verified
+                894675526776676382: SlashPermission(allowed={'895466455766802442': SlashPermission.ROLE,
+                                                             '198526201374048256': SlashPermission.USER})  # Verified
             }
         }
 
