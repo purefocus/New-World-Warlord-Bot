@@ -158,8 +158,14 @@ class Enlistment:
             weapons = self.roles[role]
 
         # return f'[{replace_emojis(roles)} {self.level}] **{self.username}** *[{self.company} ({self.faction[0]})]*'
+        import re
+        regex = re.compile(r'( ?\([0-9]*\))')
         weapons = replace_weapons_abbrev(weapons)
-        return f'{self.level} {replace_emojis(roles)} **{self.username}** *[{weapons}]*'
+        matches = regex.findall(weapons)
+        for m in matches:
+            weapons.replace(m, '')
+        # return f'{self.level} {replace_emojis(roles)} **{self.username}** *[{weapons}]*'
+        return f'{self.level} **{self.username}** *[{weapons}]*'
 
     def sort_key(self):
 
