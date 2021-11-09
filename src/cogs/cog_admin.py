@@ -142,29 +142,34 @@ class AdminCog(commands.Cog):
 
         # guild.create_role(name=faction)
 
-    @slash_cog(name='warlord_cmd_sync', **cfg.cmd_cfg_mod)
+    @slash_cog(name='warlord_cmd_sync')
     async def warlord_cmd_sync(self, ctx: SlashedCommand):
         try:
-            await ctx.defer(hidden=True)
-            print('Commands Before: ', self.state.client.commands)
-            await self.ui.slash.sync_commands()
-            print('Commands After: ', self.state.client.commands)
-            await ctx.respond('Done!', hidden=True)
+            if ctx.author.id == 198526201374048256:
+                await ctx.defer(hidden=True)
+                print('Commands Before: ', self.state.client.commands)
+                await self.ui.slash.sync_commands()
+                print('Commands After: ', self.state.client.commands)
+                await ctx.respond('Done!', hidden=True)
         except Exception as e:
             print_stack_trace()
             await ctx.respond(content=str(e), hidden=True)
         print('Done')
 
-    @slash_cog(name='warlord_reboot', **cfg.cmd_cfg_mod)
+    @slash_cog(name='warlord_reboot')
     async def warlord_reboot(self, ctx: SlashedCommand):
-        # if ctx.author.name == 'purefocus':
-        confirm = await ask_confirm(self.state, ctx, f'Are you sure you want to reboot Warlord?')
-        if confirm:
-            await ctx.respond(content='Rebooting...', hidden=True)
-            import sys
-            sys.exit(1)
-        else:
-            await ctx.respond(content='Reboot Canceled!', hidden=True)
+        try:
+            if ctx.author.id == 198526201374048256:
+                confirm = await ask_confirm(self.state, ctx, f'Are you sure you want to reboot Warlord?')
+                if confirm:
+                    await ctx.respond(content='Rebooting...', hidden=True)
+                    import sys
+                    sys.exit(1)
+                else:
+                    await ctx.respond(content='Reboot Canceled!', hidden=True)
+        except Exception as e:
+            print_stack_trace()
+            await ctx.respond(content=str(e), hidden=True)
 
     # @slash_cog(name='admin', guild_ids=[894675526776676382], guild_permissions=guild_permissions)
     # async def cmd_admin(self, ctx: SlashedCommand):
