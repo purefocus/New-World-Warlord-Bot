@@ -96,20 +96,28 @@ class VerificationCog(commands.Cog):
             # print(msg.attachments)
             msg_link = f'https://discord.com/channels/{msg.guild.id}/{msg.channel.id}/{msg.id}'
 
-            await channel.send(
-                content=f"\n**Verification Request!** {time.strftime('%b %d, %I:%M %p %Z')}\n"
-                        f"{msg.author.mention}\n\n"
-                        f"> *Name*: **{data['username']}**\n\n"
-                        f"{links}\n"
-                # f"{original_text}"
-                        f"\n\n*Message Reference:* {msg_link}",
-                components=control
-            )  # ':green_circle'
+            embed = discord.Embed(title='Verification Request', color=discord.Color.dark_magenta(),
+                                  description=f'[Message Reference]({msg_link})')
+            embed.add_field(name='User', value=msg.author.mention)
+            embed.add_field(name='Character Name', value=data['username'])
+            embed.set_image(url=links)
+            embed.set_footer(text=time.strftime('%b %d, %I:%M %p %Z'))
+
+            await channel.send(content='', embed=embed, components=control)
+
+            # await channel.send(
+            #     content=f"\n**Verification Request!** {time.strftime('%b %d, %I:%M %p %Z')}\n"
+            #             f"{msg.author.mention}\n\n"
+            #             f"> *Name*: **{data['username']}**\n\n"
+            #             f"{links}\n"
+            #     # f"{original_text}"
+            #             f"\n\n*Message Reference:* {msg_link}",
+            #     components=control
+            # )  # ':green_circle'
 
             await msg.add_reaction(emoji='🟢')
 
-            print_dict(data)
-        else:
+        elif 'links' in data:
             await msg.add_reaction(emoji='❌')
             await msg.reply(content='__Please use the following template:__ \n'
                                     '> <username> \n'
@@ -160,7 +168,7 @@ class VerificationCog(commands.Cog):
                     await user.edit(nick=nickname)
 
                     await ctx.message.edit(
-                        content=ctx.message.content + f'\n**Nickname was set to {nickname}**', components=None)
+                        content=ctx.message.content + f'\n**Nickname was set to {nickname}**')
 
                 if func == 'verify':
                     if self.vrole is None:
