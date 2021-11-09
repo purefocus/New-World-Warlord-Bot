@@ -58,56 +58,47 @@ class VerificationCog(commands.Cog):
         if msg.author.id == self.client.user.id:
             return
 
-        # if has_role(msg.author, 'Verified'):
-        #     return
+        if has_role(msg.author, 'Verified'):
+            return
 
         # if not self._has_attachment(msg):
         #     return
 
-        keys = ['username', 'company', 'company rank', 'links']
-        data = {
-            'company': '---',
-            'company rank': '---',
-            'links': None
-        }
+        keys = ['username', 'links']
+        data = {}
+        if len(msg.attachments) > 0:
+            data['links'] = msg.attachments[0].url
         lines = msg.content.split('\n')
         original_text = ''
+        username = None
         for line in lines:
+            if username is None and len(line) > 0:
+                username = line
+                data['username'] = username
             if 'https://' in line:
                 data['links'] = line
                 continue
-            if ':' in line:
-                args = line.split(':', maxsplit=1)
-                key, value = args[0].lower().strip(), args[1].strip()
-                if key.lower() in keys:
-                    data[key.lower()] = value
-                    continue
             original_text += f'> {line}'
 
         if len(data) == len(keys):
             channel = self._get_mod_channel(msg.guild)
             ref = f"{msg.author.id}:{msg.id}"
             control = [
-                self._create_btn('Approve', 'yes', ref, 'green'),
+                self._create_btn('Set Name', 'name', ref, 'green'),
+                self._create_btn('Verify', 'verify', ref, 'green'),
                 self._create_btn('Deny', 'no', ref, 'red'),
-                self._create_btn('Manual', 'edit', ref, 'red')
             ]
 
             links = data['links'] or ''
-
-            if len(msg.attachments) > 0:
-                links = msg.attachments[0].url
 
             # print(msg.attachments)
             msg_link = f'https://discord.com/channels/{msg.guild.id}/{msg.channel.id}/{msg.id}'
             await channel.send(
                 content=f"{msg.author.mention}\n\n"
-                        f"> *Name*: **{data['username']}**\n"
-                        f"> *Company*: **{data['company']}**\n"
-                        f"> *Company Rank*: **{data['company rank']}**\n"
+                        f"> *Name*: **{data['username']}**\n\n"
                         f"{links}\n"
-                        f"{original_text}"
-                        f"\n*Message Reference:* {msg_link}",
+                # f"{original_text}"
+                        f"\n\n*Message Reference:* {msg_link}",
                 components=control
             )  # ':green_circle'
 
@@ -117,12 +108,11 @@ class VerificationCog(commands.Cog):
         else:
             await msg.add_reaction(emoji='❌')
             await msg.reply(content='__Please use the following template:__ \n'
-                                    '> Username: \n'
-                                    '> Company: \n'
-                                    '> Company Rank:\n'
+                                    '> <username> \n'
+                                    '> <Attachment/link>\n'
                                     '\n'
-                                    '*Your username and company must match Exactly as it shows on your bio page to get approval.*',
-                            hidden=True)
+                                    '*Your username must match __exactly__ as it shows on your bio page to get approval.*',
+                            )
 
     @commands.Cog.listener('on_interaction_received')
     async def on_interaction(self, ctx: Interaction):
@@ -145,9 +135,9 @@ class VerificationCog(commands.Cog):
                     args = line.split(':')
                     key, value = args[0], args[1]
                     if 'Name' in key:
+                        value = value.replace('*', '')
                         nickname = value.strip()
 
-            await ctx.respond(ninja_mode=True)
             user = await ctx.guild.fetch_member(int(author_id))
             if user is None:
                 await ctx.respond('Something went wrong! user wasn\'t found!')
@@ -156,22 +146,23 @@ class VerificationCog(commands.Cog):
             if msg is not None:
                 if func == 'no':
                     await msg.add_reaction(emoji='❌')
+                    await ctx.message.edit(
+                        content=ctx.message.content + f'\n**Verification Denied!**', components=None)
 
-                if func == 'yes':
-                    if self.vrole is None:
-                        self.vrole = discord.utils.get(ctx.guild.roles, name="Test1")
+                if func == 'name':
                     await user.edit(nick=nickname)
-                    await user.add_roles(self.vrole, reason='Verification')
-                    await msg.add_reaction(emoji='✅')
-                    await ctx.message.edit(
-                        content=ctx.message.content + '\n**Verified - Only verified role was added**', components=None)
 
-                if func == 'edit':
+                    await ctx.message.edit(
+                        content=ctx.message.content + f'\n**Nickname was set to {nickname}**', components=None)
+
+                if func == 'verify':
                     if self.vrole is None:
                         self.vrole = discord.utils.get(ctx.guild.roles, name="Test1")
-                    # user.edit(nick=)
                     await user.add_roles(self.vrole, reason='Verification')
                     await msg.add_reaction(emoji='✅')
                     await ctx.message.edit(
-                        content=ctx.message.content + '\n**Manual Edit - Only verified role was added**',
+                        content=ctx.message.content + '\n**Verified role was added and post was marked done.**',
                         components=None)
+
+            if not ctx.responded:
+                await ctx.respond(ninja_mode=True)

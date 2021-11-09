@@ -14,7 +14,7 @@ class WorldStatusCog(commands.Cog):
         self.state = state
         self.update_status.start()
 
-    @tasks.loop(minutes=2)
+    @tasks.loop(minutes=5)
     async def update_status(self):
 
         status = self.state.world_status = get_status(self.state.config.nws_token)
