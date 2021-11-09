@@ -145,8 +145,11 @@ class VerificationCog(commands.Cog):
             user = await ctx.guild.fetch_member(int(author_id))
             if user is None:
                 await ctx.respond('Something went wrong! user wasn\'t found!')
+            try:
+                msg = await vchannel.fetch_message(int(msg_id))
+            except:
+                msg = None
 
-            msg = await vchannel.fetch_message(int(msg_id))
             if msg is not None:
                 if func == 'no':
                     await msg.add_reaction(emoji='❌')
