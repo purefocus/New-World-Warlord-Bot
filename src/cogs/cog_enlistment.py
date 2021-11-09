@@ -23,15 +23,15 @@ question_list = {
         'response_type': str,
     },
     'level': {
-        'question': 'What level is your character?',
+        'question': 'What level is your character? *(Use your average gear score if above level 60)*',
         'response_type': int,
-        'check': lambda response, answers: None if 0 < response <= 60 else 'Your answer must be between 0-60'
+        # 'check': lambda response, answers: None if 0 < response <= 600 else 'Your answer must be between 0-60'
     },
-    'gearscore': {
-        'question': 'What level is your Gear Score?',
-        'response_type': int,
-        'askif': lambda answers: answers['level'] == 60
-    },
+    # 'gearscore': {
+    #     'question': 'What level is your Gear Score?',
+    #     'response_type': int,
+    #     'askif': lambda answers: answers['level'] == 60
+    # },
     'faction': {
         'question': 'What Faction are you?',
         'choices': FACTIONS,
@@ -48,22 +48,22 @@ question_list = {
         'question': 'What is your Primary Weapon?',
         'choices': WEAPON_CHOICES,
     },
-    'primary_level': {
-        'followup': lambda x: f"What is your Mastery Level for your {x['primary_weapon']}",
-        'response_type': int,
-        'check': lambda response, answers: None if 0 < response <= 20 else 'Your answer must be between 0-20'
-    },
+    # 'primary_level': {
+    #     'followup': lambda x: f"What is your Mastery Level for your {x['primary_weapon']}",
+    #     'response_type': int,
+    #     'check': lambda response, answers: None if 0 < response <= 20 else 'Your answer must be between 0-20'
+    # },
     'secondary_weapon': {
         'question': 'What is your Secondary Weapon?',
         'choices': WEAPON_CHOICES,
         'check': lambda response, answers: None if response != answers[
             'primary_weapon'] else 'You must select a different weapon from your primary!'
     },
-    'secondary_level': {
-        'followup': lambda x: f"What is your Mastery Level for your {x['secondary_weapon']}",
-        'response_type': int,
-        'check': lambda response, answers: None if 0 < response <= 20 else 'Your answer must be between 0-20'
-    },
+    # 'secondary_level': {
+    #     'followup': lambda x: f"What is your Mastery Level for your {x['secondary_weapon']}",
+    #     'response_type': int,
+    #     'check': lambda response, answers: None if 0 < response <= 20 else 'Your answer must be between 0-20'
+    # },
     'group': {
         'question': 'Do you have a preferred group? Enter `None` if you do not have one.',
         'response_type': str,
@@ -180,13 +180,12 @@ class DMEnlistmentCog(commands.Cog):
             user.company = responses['company']
             user.role = responses['role']
             user.username = responses['name']
-            if 'gearscore' in responses:
-                user.level = responses['gearscore']
-            else:
-                user.level = responses['level']
+            user.level = responses['level']
+            # if 'gearscore' in responses:
+            #     user.level = responses['gearscore']
 
-            user.primary_weapon = f"{responses['primary_weapon']} ({responses['primary_level']})"
-            user.secondary_weapon = f"{responses['secondary_weapon']} ({responses['secondary_level']})"
+            user.primary_weapon = f"{responses['primary_weapon']}"# ({responses['primary_level']})"
+            user.secondary_weapon = f"{responses['secondary_weapon']}"# ({responses['secondary_level']})"
             pref_group = responses['group']
             if pref_group is not None and pref_group.lower() == 'none':
                 pref_group = None
