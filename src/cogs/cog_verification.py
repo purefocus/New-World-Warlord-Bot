@@ -240,6 +240,9 @@ class VerificationCog(commands.Cog):
                         print('User Verified')
                         del self.awaiting_verifications[user.mention]
             else:
+                update = self._set_embed_status(post, '[Error]\nMessage Not Found!')
+
+                await post.edit(embed=update, components=None)
                 await post.edit(
                     content=post.content + '\n\n**[Error] Referenced message was unable to be found!.**\n',
                     components=None)
