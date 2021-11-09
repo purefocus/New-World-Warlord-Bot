@@ -207,6 +207,9 @@ class VerificationCog(commands.Cog):
                 components = post.components
                 if func == 'no':
                     await msg.add_reaction(emoji='❌')
+                    update = self._set_embed_status(post, '❌ Denied')
+
+                    await post.edit(embed=update, components=None)
                     await post.edit(
                         content=post.content + f'\n**Verification Denied!**', components=None
                     )
@@ -214,7 +217,7 @@ class VerificationCog(commands.Cog):
                 if func == 'name':
                     await user.edit(nick=nickname)
                     components[0].disabled = True
-                    update = self._set_embed_status(post, 'Name Set')
+                    update = self._set_embed_status(post, 'Renamed')
 
                     await post.edit(embed=update, components=None)
                     # await post.edit(
@@ -229,7 +232,7 @@ class VerificationCog(commands.Cog):
                     await msg.clear_reactions()
                     await msg.add_reaction(emoji='<:done_stamp:895817107797852190>')
 
-                    update = self._set_embed_status(post, 'Verified')
+                    update = self._set_embed_status(post, '✅ Verified')
 
                     await post.edit(embed=update, components=None)
 
