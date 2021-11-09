@@ -31,9 +31,9 @@ fguild_ids = [WARLORD_TEST_ID, FACTION_SERVER_ID]
 # guild_ids_testing = [WARLORD_TEST_ID]
 guild_permissions_low = {
     WARLORD_TEST_ID: SlashPermission(allowed={'897191745060745297': SlashPermission.ROLE,  # WarAdmin
-                                              '198526201374048256': SlashPermission.USER}),  # pureofoucs
-    FACTION_SERVER_ID: SlashPermission(allowed={'895466455766802442': SlashPermission.ROLE,
-                                                '198526201374048256': SlashPermission.USER}),  # Verified
+                                              '198526201374048256': SlashPermission.USER}),  # purefocus
+    FACTION_SERVER_ID: SlashPermission(allowed={'895466455766802442': SlashPermission.ROLE,  # Verified
+                                                '198526201374048256': SlashPermission.USER}),  # purefocus
     LOTUS_SERVER_ID: SlashPermission(allowed={'895466455766802442': SlashPermission.ROLE,
                                               '198526201374048256': SlashPermission.USER}),  # Verified
 }
@@ -59,7 +59,7 @@ mod_guild_permissions = {
 }
 fguild_permissions_low = {
     WARLORD_TEST_ID: SlashPermission(allowed={'897191745060745297': SlashPermission.Role,  # WarAdmin
-                                              '198526201374048256': SlashPermission.User}),  # pureofoucs
+                                              '198526201374048256': SlashPermission.User}),  # purefocus
     FACTION_SERVER_ID: SlashPermission(allowed={'895466455766802442': SlashPermission.Role,
                                                 '198526201374048256': SlashPermission.User}),  # Verified
     LOTUS_SERVER_ID: SlashPermission(allowed={'895466455766802442': SlashPermission.Role,
@@ -68,7 +68,7 @@ fguild_permissions_low = {
 
 cmd_cfg_elev = {
     'guild_ids': guild_ids,
-    'default_permission': False,
+    'default_permission': True,
     'guild_permissions': guild_permissions
 }
 cmd_cfg_mod = {
@@ -78,14 +78,14 @@ cmd_cfg_mod = {
 }
 cmd_cfg = {
     'guild_ids': guild_ids,
-    'default_permission': False,
+    'default_permission': True,
     'guild_permissions': guild_permissions_low
 }
-cmd_fcfg = {
-    'guild_ids': fguild_ids,
-    'default_permission': False,
-    'guild_permissions': fguild_permissions_low
-}
+# cmd_fcfg = {
+#     'guild_ids': fguild_ids,
+#     'default_permission': True,
+#     'guild_permissions': fguild_permissions_low
+# }
 
 
 class GuildConfig:
