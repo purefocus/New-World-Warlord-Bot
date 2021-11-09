@@ -56,7 +56,7 @@ class VerificationCog(commands.Cog):
 
         return embed
 
-    def _create_verification_embed(self, username, link, msg, status):
+    def _create_verification_embed(self, username, link, msg):
         ref = f"{msg.author.id}:{msg.id}"
 
         control = [
