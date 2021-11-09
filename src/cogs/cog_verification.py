@@ -50,7 +50,9 @@ class VerificationCog(commands.Cog):
         return Button(custom_id=f'btn:verify:{function}:{data}', label=label, color=color)
 
     def _set_embed_status(self, msg: Message, status: str):
-        embed = msg.embed
+        embed = msg.embeds
+        if len(embed) > 0:
+            embed = embed[0]
         if embed is not None:
             embed.set_field_at(2, name='Status', value=status)
 
