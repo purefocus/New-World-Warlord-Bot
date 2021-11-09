@@ -157,8 +157,7 @@ class VerificationCog(commands.Cog):
 
             msg_data = self._create_verification_embed(username, link, msg)
 
-            msg = await channel.send(**msg_data)
-            self.awaiting_verifications[msg.author.mention] = msg
+            self.awaiting_verifications[msg.author.mention] = await channel.send(**msg_data)
             await msg.add_reaction(emoji='🟢')
 
         elif link is not None:
