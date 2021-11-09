@@ -71,6 +71,7 @@ class VerificationCog(commands.Cog):
                               description=f'[Message Reference]({msg_link})')
         embed.add_field(name='User', value=msg.author.mention)
         embed.add_field(name='Character Name', value=username)
+        embed.add_field(name='Status', value='Unverified')
         embed.set_image(url=link)
         embed.set_footer(text=time.strftime('%b %d, %I:%M %p %Z'))
         return {
