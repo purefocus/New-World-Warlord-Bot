@@ -32,7 +32,7 @@ def create_roster_embed(names, state, title=None, embed=None, abrv_line=False):
     fc = 0
     for key in groups:
         if fc % 2 == 0:
-            embed.addField('\u200b', '\u200b')
+            embed.add_field(name='\u200b', value='\u200b')
         fc += 1
         value = ''
         enlisted = groups[key]

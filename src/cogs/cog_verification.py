@@ -159,6 +159,7 @@ class VerificationCog(commands.Cog):
                 msg = None
 
             if msg is not None:
+                components = ctx.message.components
                 if func == 'no':
                     await msg.add_reaction(emoji='❌')
                     await ctx.message.edit(
@@ -166,13 +167,14 @@ class VerificationCog(commands.Cog):
 
                 if func == 'name':
                     await user.edit(nick=nickname)
-
+                    components[0].disabled = True
                     await ctx.message.edit(
-                        content=ctx.message.content + f'\n**Nickname was set to {nickname}**')
+                        content=ctx.message.content + f'\n**Nickname was set to {nickname}**', components=components)
 
                 if func == 'verify':
                     if self.vrole is None:
                         self.vrole = discord.utils.get(ctx.guild.roles, name="Verified")
+
                     await user.add_roles(self.vrole, reason='Verification')
                     await msg.clear_reactions()
                     await msg.add_reaction(emoji='<:done_stamp:895817107797852190>')
