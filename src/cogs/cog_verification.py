@@ -49,7 +49,14 @@ class VerificationCog(commands.Cog):
     def _create_btn(self, label, function, data, color='blurple'):
         return Button(custom_id=f'btn:verify:{function}:{data}', label=label, color=color)
 
-    def _create_verification_embed(self, username, link, msg):
+    def _set_embed_status(self, msg: Message, status: str):
+        embed = msg.embed
+        if embed is not None:
+            embed.set_field_at(2, name='Status', value=status)
+
+        return embed
+
+    def _create_verification_embed(self, username, link, msg, status):
         ref = f"{msg.author.id}:{msg.id}"
 
         control = [
@@ -66,7 +73,6 @@ class VerificationCog(commands.Cog):
         embed.add_field(name='Character Name', value=username)
         embed.set_image(url=link)
         embed.set_footer(text=time.strftime('%b %d, %I:%M %p %Z'))
-
         return {
             'content': '',
             'embed': embed,
@@ -195,18 +201,24 @@ class VerificationCog(commands.Cog):
             except:
                 msg = None
 
+            post: Message = ctx.message
             if msg is not None:
-                components = ctx.message.components
+                components = post.components
                 if func == 'no':
                     await msg.add_reaction(emoji='❌')
-                    await ctx.message.edit(
-                        content=ctx.message.content + f'\n**Verification Denied!**', components=None)
+                    await post.edit(
+                        content=post.content + f'\n**Verification Denied!**', components=None
+                    )
 
                 if func == 'name':
                     await user.edit(nick=nickname)
                     components[0].disabled = True
-                    await ctx.message.edit(
-                        content=ctx.message.content + f'\n**Nickname was set to {nickname}**', components=components)
+                    update = self._set_embed_status(post, 'Name Set')
+
+                    await post.edit(embed=update, components=None)
+                    # await post.edit(
+                    #     content=post.content + f'\n**Nickname was set to {nickname}**', components=components
+                    # )
 
                 if func == 'verify':
                     if self.vrole is None:
@@ -215,15 +227,17 @@ class VerificationCog(commands.Cog):
                     await user.add_roles(self.vrole, reason='Verification')
                     await msg.clear_reactions()
                     await msg.add_reaction(emoji='<:done_stamp:895817107797852190>')
-                    await ctx.message.edit(
-                        content=ctx.message.content + '\n\n**Verified role was added and post was marked done.**\n',
-                        components=None)
+
+                    update = self._set_embed_status(post, 'Verified')
+
+                    await post.edit(embed=update, components=None)
+
                     if user in self.awaiting_verifications:
                         print('User Verified')
                         del self.awaiting_verifications[user.mention]
             else:
-                await ctx.message.edit(
-                    content=ctx.message.content + '\n\n**[Error] Referenced message was unable to be found!.**\n',
+                await post.edit(
+                    content=post.content + '\n\n**[Error] Referenced message was unable to be found!.**\n',
                     components=None)
 
             if not ctx.responded:
