@@ -211,6 +211,9 @@ class VerificationCog(commands.Cog):
                     await ctx.message.edit(
                         content=ctx.message.content + '\n\n**Verified role was added and post was marked done.**\n',
                         components=None)
+                    if user in self.awaiting_verifications:
+                        print('User Verified')
+                        del self.awaiting_verifications[user]
             else:
                 await ctx.message.edit(
                     content=ctx.message.content + '\n\n**[Error] Referenced message was unable to be found!.**\n',
