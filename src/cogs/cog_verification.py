@@ -72,12 +72,14 @@ class VerificationCog(commands.Cog):
         original_text = ''
         username = None
         for line in lines:
-            if username is None and len(line) > 0:
-                username = line
-                data['username'] = username
             if 'https://' in line:
                 data['links'] = line
                 continue
+
+            elif username is None and len(line) > 0:
+                username = line
+                data['username'] = username
+
             original_text += f'> {line}'
 
         if len(data) == len(keys):
@@ -157,7 +159,7 @@ class VerificationCog(commands.Cog):
 
                 if func == 'verify':
                     if self.vrole is None:
-                        self.vrole = discord.utils.get(ctx.guild.roles, name="Test1")
+                        self.vrole = discord.utils.get(ctx.guild.roles, name="Verified")
                     await user.add_roles(self.vrole, reason='Verification')
                     await msg.add_reaction(emoji='✅')
                     await ctx.message.edit(
