@@ -95,8 +95,10 @@ class VerificationCog(commands.Cog):
 
             # print(msg.attachments)
             msg_link = f'https://discord.com/channels/{msg.guild.id}/{msg.channel.id}/{msg.id}'
+
             await channel.send(
-                content=f"{msg.author.mention}\n\n"
+                content=f"\n**Verification Request!** {time.strftime('%b %d, %I:%M %p %Z')}\n"
+                        f"{msg.author.mention}\n\n"
                         f"> *Name*: **{data['username']}**\n\n"
                         f"{links}\n"
                 # f"{original_text}"
@@ -161,10 +163,15 @@ class VerificationCog(commands.Cog):
                     if self.vrole is None:
                         self.vrole = discord.utils.get(ctx.guild.roles, name="Verified")
                     await user.add_roles(self.vrole, reason='Verification')
-                    await msg.add_reaction(emoji='✅')
+                    await msg.clear_reactions()
+                    await msg.add_reaction(emoji='<:done_stamp:895817107797852190>')
                     await ctx.message.edit(
-                        content=ctx.message.content + '\n**Verified role was added and post was marked done.**',
+                        content=ctx.message.content + '\n\n**Verified role was added and post was marked done.**\n',
                         components=None)
+            else:
+                await ctx.message.edit(
+                    content=ctx.message.content + '\n\n**[Error] Referenced message was unable to be found!.**\n',
+                    components=None)
 
             if not ctx.responded:
                 await ctx.respond(ninja_mode=True)
