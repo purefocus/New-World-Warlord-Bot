@@ -114,7 +114,7 @@ async def on_ready():
             if war.active:
                 await state.update_war_boards(war)
 
-        await client.add_command(enl.enlistment_lookup)
+        # await client.add_command(enl.enlistment_lookup)
 
     except Exception as e:
         import traceback
