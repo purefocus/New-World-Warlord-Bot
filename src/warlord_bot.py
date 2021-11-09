@@ -129,11 +129,12 @@ async def on_ready():
             war = state.wars[war]
             if war.active:
                 await state.update_war_boards(war)
-
+        # await ui.slash.sync_commands()
     except Exception as e:
         import traceback
         import sys
         traceback.print_exception(*sys.exc_info())
+
 
 state.load_war_data()
 

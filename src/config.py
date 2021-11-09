@@ -70,17 +70,19 @@ fguild_permissions_low = {
 
 cmd_cfg_elev = {
     'guild_ids': guild_ids,
-    'default_permission': True,
+    'default_permission': False,
     'guild_permissions': guild_permissions
 }
+
 cmd_cfg_mod = {
     'guild_ids': guild_ids,
     'default_permission': False,
     'guild_permissions': mod_guild_permissions
 }
+
 cmd_cfg = {
     'guild_ids': guild_ids,
-    'default_permission': True,
+    'default_permission': False,
     'guild_permissions': guild_permissions_low
 }
 
@@ -90,6 +92,8 @@ cmd_cfg = {
 #     'default_permission': True,
 #     'guild_permissions': fguild_permissions_low
 # }
+
+# def has_permissions(user: discord.Member, level):
 
 
 class GuildConfig:
