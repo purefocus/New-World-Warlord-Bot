@@ -114,11 +114,15 @@ class VerificationCog(commands.Cog):
 
             msg_data = self._create_verification_embed(username, link, msg)
 
-            m = self.awaiting_verifications[msg.author]
-            if m is not None:
-                await m.edit(**msg_data)
-            else:
+            edited = False
+            if msg.author in self.awaiting_verifications:
+                m = self.awaiting_verifications[msg.author]
+                if m is not None:
+                    edited = True
+                    await m.edit(**msg_data)
+            if not edited:
                 msg = await channel.send(**msg_data)
+
             await msg.clear_reaction(emoji='❌')
             await msg.add_reaction(emoji='🟢')
 
