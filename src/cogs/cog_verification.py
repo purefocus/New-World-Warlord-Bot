@@ -211,9 +211,9 @@ class VerificationCog(commands.Cog):
                     update = self._set_embed_status(post, '❌ Denied')
 
                     await post.edit(embed=update, components=None)
-                    await post.edit(
-                        content=post.content + f'\n**Verification Denied!**', components=components
-                    )
+                    # await post.edit(
+                    #     content=post.content + f'\n**Verification Denied!**', components=components
+                    # )
 
                 if func == 'name':
                     await user.edit(nick=nickname)
