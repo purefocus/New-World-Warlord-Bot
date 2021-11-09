@@ -331,7 +331,7 @@ class DMEnlistmentCog(commands.Cog):
             import sys
             traceback.print_exception(*sys.exc_info())
 
-    @context_cog(type="user", name="Enlistment Lookup", **cfg.cmd_cfg)
+    @context_cog(type="user", name="Enlistment Lookup", **cfg.cmd_fcfg)
     async def enlistment_lookup(self, ctx, user: discord.Member):
         print('Enlistment Lookup! ', user.mention)
         await ctx.respond(ninja_mode=True)
