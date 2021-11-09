@@ -115,15 +115,18 @@ class VerificationCog(commands.Cog):
             msg_data = self._create_verification_embed(username, link, msg)
 
             edited = False
-            if msg.author in self.awaiting_verifications:
-                m = self.awaiting_verifications[msg.author]
+            sent = None
+            if msg.author.mention in self.awaiting_verifications:
+                m = self.awaiting_verifications[msg.author.mention]
                 if m is not None:
                     edited = True
-                    await m.edit(**msg_data)
+                    sent = await m.edit(**msg_data)
             if not edited:
-                msg = await channel.send(**msg_data)
+                sent = await channel.send(**msg_data)
 
-            await msg.clear_reaction(emoji='❌')
+            self.awaiting_verifications[msg.author.mention] = sent
+
+            await msg.clear_reactions()
             await msg.add_reaction(emoji='🟢')
 
     @commands.Cog.listener()
@@ -148,7 +151,7 @@ class VerificationCog(commands.Cog):
             msg_data = self._create_verification_embed(username, link, msg)
 
             msg = await channel.send(**msg_data)
-            self.awaiting_verifications[msg.author] = msg
+            self.awaiting_verifications[msg.author.mention] = msg
             await msg.add_reaction(emoji='🟢')
 
         elif link is not None:
@@ -217,7 +220,7 @@ class VerificationCog(commands.Cog):
                         components=None)
                     if user in self.awaiting_verifications:
                         print('User Verified')
-                        del self.awaiting_verifications[user]
+                        del self.awaiting_verifications[user.mention]
             else:
                 await ctx.message.edit(
                     content=ctx.message.content + '\n\n**[Error] Referenced message was unable to be found!.**\n',
