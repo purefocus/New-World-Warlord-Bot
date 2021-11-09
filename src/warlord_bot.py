@@ -26,7 +26,8 @@ state.load_war_data()
 
 # War Related Cogs
 client.add_cog(WarManagementCog(client, state))
-client.add_cog(DMEnlistmentCog(client, state))
+enl = DMEnlistmentCog(client, state)
+client.add_cog(enl)
 client.add_cog(RosterCog(client, state))
 
 # Utility Cogs
@@ -112,6 +113,8 @@ async def on_ready():
             war = state.wars[war]
             if war.active:
                 await state.update_war_boards(war)
+
+        await client.add_command(enl.enlistment_lookup)
 
     except Exception as e:
         import traceback

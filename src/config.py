@@ -26,7 +26,7 @@ WARLORD_TEST_ID = 897098434153185290
 FACTION_SERVER_ID = 894675526776676382
 LOTUS_SERVER_ID = 868924409115709480
 
-guild_ids = [WARLORD_TEST_ID, FACTION_SERVER_ID, LOTUS_SERVER_ID]
+guild_ids = [WARLORD_TEST_ID, LOTUS_SERVER_ID, FACTION_SERVER_ID]
 fguild_ids = [WARLORD_TEST_ID, FACTION_SERVER_ID]
 # guild_ids_testing = [WARLORD_TEST_ID]
 guild_permissions_low = {
@@ -58,12 +58,12 @@ mod_guild_permissions = {
                                               '198526201374048256': SlashPermission.USER})  # purefocus
 }
 fguild_permissions_low = {
-    WARLORD_TEST_ID: SlashPermission(allowed={'897191745060745297': SlashPermission.ROLE,  # WarAdmin
-                                              '198526201374048256': SlashPermission.USER}),  # pureofoucs
-    FACTION_SERVER_ID: SlashPermission(allowed={'895466455766802442': SlashPermission.ROLE,
-                                                '198526201374048256': SlashPermission.USER}),  # Verified
-    LOTUS_SERVER_ID: SlashPermission(allowed={'895466455766802442': SlashPermission.ROLE,
-                                              '198526201374048256': SlashPermission.USER}),  # Verified
+    WARLORD_TEST_ID: SlashPermission(allowed={'897191745060745297': SlashPermission.Role,  # WarAdmin
+                                              '198526201374048256': SlashPermission.User}),  # pureofoucs
+    FACTION_SERVER_ID: SlashPermission(allowed={'895466455766802442': SlashPermission.Role,
+                                                '198526201374048256': SlashPermission.User}),  # Verified
+    LOTUS_SERVER_ID: SlashPermission(allowed={'895466455766802442': SlashPermission.Role,
+                                              '198526201374048256': SlashPermission.User}),  # Verified
 }
 
 cmd_cfg_elev = {

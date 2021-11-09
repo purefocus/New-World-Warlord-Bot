@@ -17,6 +17,7 @@ from views.view_confirm import ask_confirm
 
 import asyncio
 import config as cfg
+
 question_list = {
     'name': {
         'question': 'What is your character name?',
@@ -184,8 +185,8 @@ class DMEnlistmentCog(commands.Cog):
             # if 'gearscore' in responses:
             #     user.level = responses['gearscore']
 
-            user.primary_weapon = f"{responses['primary_weapon']}"# ({responses['primary_level']})"
-            user.secondary_weapon = f"{responses['secondary_weapon']}"# ({responses['secondary_level']})"
+            user.primary_weapon = f"{responses['primary_weapon']}"  # ({responses['primary_level']})"
+            user.secondary_weapon = f"{responses['secondary_weapon']}"  # ({responses['secondary_level']})"
             pref_group = responses['group']
             if pref_group is not None and pref_group.lower() == 'none':
                 pref_group = None
@@ -334,4 +335,9 @@ class DMEnlistmentCog(commands.Cog):
     @context_cog(type="user", name="Enlistment Lookup", **cfg.cmd_fcfg)
     async def enlistment_lookup(self, ctx, user: discord.Member):
         print('Enlistment Lookup! ', user.mention)
-        await ctx.respond(ninja_mode=True)
+
+        data = self.state.users[str(user)]
+        if data is not None:
+            await ctx.respond(content=' ', embed=data.embed(), hidden=True)
+        else:
+            await ctx.respond(content='No enlistment data found for this user!', hidden=True)
