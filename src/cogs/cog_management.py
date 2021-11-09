@@ -176,11 +176,11 @@ async def handle_management_message(state: BotState, msg: discord.Message, edite
 
     if war is not None:
         war.active = True
-        print('1')
+        # print('1')
         parse_group_info(war.groups, lines)
-        print('2')
+        # print('2')
         if war.is_fake:
-            print('Fake!')
+            # print('Fake!')
             await msg.reply(embed=war.get_embeded())
             return True
 
@@ -286,6 +286,9 @@ class WarManagementCog(commands.Cog):
                 return
 
             data = payload.data
+            if 'author' not in data:
+                return
+
             if data['author']['id'] == str(self.client.user.id):
                 return
 

@@ -23,6 +23,8 @@ class VerificationCog(commands.Cog):
         self.verify_channel = None
         self.vrole = None
 
+        self.awaiting_verifications = {}
+
     def _has_attachment(self, msg: discord.Message):
         return len(msg.attachments) > 0 or 'https://' in msg.content
 
@@ -47,6 +49,54 @@ class VerificationCog(commands.Cog):
     def _create_btn(self, label, function, data, color='blurple'):
         return Button(custom_id=f'btn:verify:{function}:{data}', label=label, color=color)
 
+    def _create_verification_embed(self, username, link, msg):
+        ref = f"{msg.author.id}:{msg.id}"
+
+        control = [
+            self._create_btn('Set Name', 'name', ref, 'green'),
+            self._create_btn('Verify', 'verify', ref, 'green'),
+            self._create_btn('Deny', 'no', ref, 'red'),
+        ]
+
+        msg_link = f'https://discord.com/channels/{msg.guild.id}/{msg.channel.id}/{msg.id}'
+
+        embed = discord.Embed(title='Verification Request', color=discord.Color.dark_magenta(),
+                              description=f'[Message Reference]({msg_link})')
+        embed.add_field(name='User', value=msg.author.mention)
+        embed.add_field(name='Character Name', value=username)
+        embed.set_image(url=link)
+        embed.set_footer(text=time.strftime('%b %d, %I:%M %p %Z'))
+
+        return {
+            'content': '',
+            'embed': embed,
+            'components': control
+        }
+
+    def _parse_data(self, msg: discord.Message):
+        link = None
+        username = None
+        if len(msg.attachments) > 0:
+            link = msg.attachments[0].url
+
+        lines = msg.content.split('\n')
+        original_text = ''
+        for line in lines:
+            if 'https://' in line:
+                link = line
+                continue
+
+            elif username is None and len(line) > 0:
+                username = line
+
+            original_text += f'> {line}'
+
+        return username, link, original_text
+
+    @commands.Cog.listener()
+    async def on_message_edit(self, msg: discord.Message):
+        print('test')
+
     @commands.Cog.listener()
     async def on_message(self, msg: discord.Message):
         if msg.channel.type != discord.ChannelType.text:
@@ -61,63 +111,18 @@ class VerificationCog(commands.Cog):
         if has_role(msg.author, 'Verified'):
             return
 
-        # if not self._has_attachment(msg):
-        #     return
+        username, link, otext = self._parse_data(msg)
 
-        keys = ['username', 'links']
-        data = {}
-        if len(msg.attachments) > 0:
-            data['links'] = msg.attachments[0].url
-        lines = msg.content.split('\n')
-        original_text = ''
-        username = None
-        for line in lines:
-            if 'https://' in line:
-                data['links'] = line
-                continue
-
-            elif username is None and len(line) > 0:
-                username = line
-                data['username'] = username
-
-            original_text += f'> {line}'
-
-        if len(data) == len(keys):
+        if username is not None and link is not None:
             channel = self._get_mod_channel(msg.guild)
-            ref = f"{msg.author.id}:{msg.id}"
-            control = [
-                self._create_btn('Set Name', 'name', ref, 'green'),
-                self._create_btn('Verify', 'verify', ref, 'green'),
-                self._create_btn('Deny', 'no', ref, 'red'),
-            ]
 
-            links = data['links'] or ''
+            msg_data = self._create_verification_embed(username, link, msg)
 
-            # print(msg.attachments)
-            msg_link = f'https://discord.com/channels/{msg.guild.id}/{msg.channel.id}/{msg.id}'
-
-            embed = discord.Embed(title='Verification Request', color=discord.Color.dark_magenta(),
-                                  description=f'[Message Reference]({msg_link})')
-            embed.add_field(name='User', value=msg.author.mention)
-            embed.add_field(name='Character Name', value=data['username'])
-            embed.set_image(url=links)
-            embed.set_footer(text=time.strftime('%b %d, %I:%M %p %Z'))
-
-            await channel.send(content='', embed=embed, components=control)
-
-            # await channel.send(
-            #     content=f"\n**Verification Request!** {time.strftime('%b %d, %I:%M %p %Z')}\n"
-            #             f"{msg.author.mention}\n\n"
-            #             f"> *Name*: **{data['username']}**\n\n"
-            #             f"{links}\n"
-            #     # f"{original_text}"
-            #             f"\n\n*Message Reference:* {msg_link}",
-            #     components=control
-            # )  # ':green_circle'
-
+            msg = await channel.send(**msg_data)
+            self.awaiting_verifications[msg.author] = msg
             await msg.add_reaction(emoji='🟢')
 
-        elif 'links' in data:
+        elif link is not None:
             await msg.add_reaction(emoji='❌')
             await msg.reply(content='__Please use the following template:__ \n'
                                     '> <username> \n'
