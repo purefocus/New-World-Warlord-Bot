@@ -94,8 +94,33 @@ class VerificationCog(commands.Cog):
         return username, link, original_text
 
     @commands.Cog.listener()
-    async def on_message_edit(self, msg: discord.Message):
-        print('test')
+    async def on_message_edit(self, before: discord.Message, msg: discord.Message):
+        if msg.channel.type != discord.ChannelType.text:
+            return
+
+        if msg.channel.name != self.channel_name:
+            return
+
+        if msg.author.id == self.client.user.id:
+            return
+
+        if has_role(msg.author, 'Verified'):
+            return
+
+        username, link, otext = self._parse_data(msg)
+
+        if username is not None and link is not None:
+            channel = self._get_mod_channel(msg.guild)
+
+            msg_data = self._create_verification_embed(username, link, msg)
+
+            m = self.awaiting_verifications[msg.author]
+            if m is not None:
+                await m.edit(**msg_data)
+            else:
+                msg = await channel.send(**msg_data)
+            await msg.clear_reaction(emoji='❌')
+            await msg.add_reaction(emoji='🟢')
 
     @commands.Cog.listener()
     async def on_message(self, msg: discord.Message):
