@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from discord_ui.cogs import slash_cog, subslash_cog, listening_component_cog
+from discord_ui.cogs import slash_cog, subslash_cog, listening_component_cog, context_cog
 from bot_state import BotState
 
 from dat.datadef import *
@@ -330,3 +330,8 @@ class DMEnlistmentCog(commands.Cog):
             import traceback
             import sys
             traceback.print_exception(*sys.exc_info())
+
+    @context_cog(type="user", name="Enlistment Lookup", **cfg.cmd_cfg)
+    async def enlistment_lookup(self, ctx, user: discord.Member):
+        print('Enlistment Lookup! ', user.mention)
+        await ctx.respond(ninja_mode=True)
