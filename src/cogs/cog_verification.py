@@ -211,7 +211,7 @@ class VerificationCog(commands.Cog):
 
                     await post.edit(embed=update, components=None)
                     await post.edit(
-                        content=post.content + f'\n**Verification Denied!**', components=None
+                        content=post.content + f'\n**Verification Denied!**', components=components
                     )
 
                 if func == 'name':
@@ -219,7 +219,7 @@ class VerificationCog(commands.Cog):
                     components[0].disabled = True
                     update = self._set_embed_status(post, 'Renamed')
 
-                    await post.edit(embed=update, components=None)
+                    await post.edit(embed=update, components=components)
                     # await post.edit(
                     #     content=post.content + f'\n**Nickname was set to {nickname}**', components=components
                     # )
