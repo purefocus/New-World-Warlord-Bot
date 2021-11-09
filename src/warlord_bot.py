@@ -67,40 +67,6 @@ async def create_war(ctx, attacking, defending, location, time, owner):
     await cmd_create_war(ctx, attacking, defending, location, time, owner, state)
 
 
-# @ui.slash.command(description='Flags a war as ended, disabling the ability to sign up for it', **cmd_cfg_mod)
-# async def end_war(ctx):
-#     user: discord.User = ctx.author
-#     await cmd_end_war(state, ctx)
-#
-#
-# @ui.slash.command(description='Reposts the war notification', **cmd_cfg_elev)
-# async def repost_war(ctx):
-#     await cmd_repost_war(state, ctx)
-#
-#
-# @ui.slash.command(description='posts a war notification in your current channel', **cmd_cfg_elev)
-# async def post_war(ctx):
-#     await cmd_post_war(state, ctx)
-#
-#
-# @ui.slash.command(description='posts a war enlistment button in your current channel', **cmd_cfg_elev)
-# async def post_enlist(ctx):
-#     await cmd_post_btn(state, ctx)
-
-#
-# @ui.slash.command(description='Replies with a table of all the users enlisted for a specific war',
-#                   **cmd_cfg_elev)
-# async def get_enlisted(ctx):
-#     await cmd_get_enlisted(state, ctx)
-#
-#
-# @ui.slash.command(
-#     description='Generates a CSV file with a table of everyone who signed up (Can be imported into excel).',
-#     **cmd_cfg_elev)
-# async def download_enlisted(ctx):
-#     await cmd_dl_enlisted(state, ctx)
-
-
 #####################
 #  Error Handling   #
 #####################
@@ -126,6 +92,7 @@ async def on_error(event_method, *args, **kwargs):
 ], description='Allows configuring the bot', **cmd_cfg_mod)
 async def warlord_config(ctx, options: str):
     await cmd_bot_configure(state, ctx, options)
+
 
 ####################
 #    Bot Events    #

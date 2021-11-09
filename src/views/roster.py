@@ -29,9 +29,9 @@ def create_roster_embed(names, state, title=None, embed=None, abrv_line=False):
     groups = _group_by_role(roster)
     if embed is None:
         embed = Embed(title='War Enlistment', description=f'{title}')
-    fc = 0
+    fc = 1
     for key in groups:
-        if fc % 2 == 0:
+        if fc % 3 == 0:
             embed.add_field(name='\u200b', value='\u200b')
         fc += 1
         value = ''
