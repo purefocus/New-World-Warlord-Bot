@@ -147,7 +147,7 @@ class AdminCog(commands.Cog):
         try:
             await ctx.defer(hidden=True)
             print('Commands Before: ', self.state.client.commands)
-            await self.ui.slash.sync_commands(delete_unused=False)
+            await self.ui.slash.sync_commands()
             print('Commands After: ', self.state.client.commands)
             await ctx.respond('Done!', hidden=True)
         except Exception as e:

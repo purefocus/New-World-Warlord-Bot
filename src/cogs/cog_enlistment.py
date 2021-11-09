@@ -334,7 +334,7 @@ class DMEnlistmentCog(commands.Cog):
 
     @context_cog(type="user", name="Enlistment Lookup", **cfg.cmd_cfg)
     async def enlistment_lookup(self, ctx, user: discord.Member):
-        print('Enlistment Lookup! ', user.mention)
+        print('Enlistment Lookup! ', str(user))
 
         data = self.state.users[str(user)]
         if data is not None:

@@ -18,26 +18,45 @@ intents = discord.Intents.all()
 
 client = commands.Bot(" ", intents=intents)
 
-ui = UI(client, slash_options={'auto_sync': False, "wait_sync": 2, "delete_unused": False})
+ui = UI(client, slash_options={'auto_sync': False, "wait_sync": 2, "delete_unused": None})
+ui.logger.setLevel(10)
+ui.logger.disabled = False
 config = Config()
 config.load()
 state = BotState(client, config)
 state.load_war_data()
 
-# War Related Cogs
-client.add_cog(WarManagementCog(client, state))
-enl = DMEnlistmentCog(client, state)
-client.add_cog(enl)
-client.add_cog(RosterCog(client, state))
+cogs = [
+    WarManagementCog(client, state),
+    DMEnlistmentCog(client, state),
+    RosterCog(client, state),
 
-# Utility Cogs
-client.add_cog(ExtrasCog(client, state))
-client.add_cog(WorldStatusCog(client, state))
+    ExtrasCog(client, state),
+    WorldStatusCog(client, state),
 
-# Administrative Cogs
-client.add_cog(AdminCog(client, state, ui))
-client.add_cog(VerificationCog(client, state))
+    AdminCog(client, state, ui),
+    VerificationCog(client, state)
+]
 
+for cog in cogs:
+    client.add_cog(cog)
+
+
+# # War Related Cogs
+# client.add_cog(WarManagementCog(client, state))
+# enl = DMEnlistmentCog(client, state)
+# client.add_cog(enl)
+# client.add_cog(RosterCog(client, state))
+#
+# # Utility Cogs
+# client.add_cog(ExtrasCog(client, state))
+# client.add_cog(WorldStatusCog(client, state))
+#
+# # Administrative Cogs
+# client.add_cog(AdminCog(client, state, ui))
+# client.add_cog(VerificationCog(client, state))
+#
+# enl.walk_commands()
 
 ####################
 #  War Enlistment  #
@@ -106,22 +125,15 @@ async def on_ready():
         print('------')
         config.resolve(client)
 
-        # await ui.slash.sync_commands(delete_unused=True)
-
-        # await state.update_presence()
         for war in state.wars:
             war = state.wars[war]
             if war.active:
                 await state.update_war_boards(war)
 
-        # # await client.add_command(enl.enlistment_lookup)
-        # for guild in client.guilds:
-        #     await ui.slash.add_guild_command(enl.enlistment_lookup, guild.id)
     except Exception as e:
         import traceback
         import sys
         traceback.print_exception(*sys.exc_info())
-
 
 state.load_war_data()
 
