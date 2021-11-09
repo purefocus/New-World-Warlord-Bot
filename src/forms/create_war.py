@@ -36,10 +36,13 @@ async def cmd_end_war(state, ctx):
         war.active = False
         await msg.edit(content=f'War \'{war.location}\' has been ended!', components=None)
         for board in war.boards:
-            m = await board.get_message(state.client)
-            if m is not None:
-                await m.delete()
-        # state.save_war_data()
+            try:
+                m = await board.get_message(state.client)
+                if m is not None:
+                    await m.delete()
+            except:
+                pass
+        state.save_war_data()
 
 
 async def cmd_repost_war(state, ctx):
