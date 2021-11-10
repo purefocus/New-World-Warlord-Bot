@@ -49,30 +49,48 @@ class VerificationCog(commands.Cog):
     def _create_btn(self, label, function, data, color='blurple'):
         return Button(custom_id=f'btn:verify:{function}:{data}', label=label, color=color)
 
-    def _set_embed_status(self, msg: Message, status: str):
+    def _set_embed_status(self, msg: Message, status: str, error=None):
         embed = msg.embeds
         if len(embed) > 0:
             embed = embed[0]
         if embed is not None:
-            embed.set_field_at(2, name='Status', value=status)
+            # embed.set_field_at(2, name='Status', value=status)
+
+            for field in embed.fields:
+                if field.name == 'Status':
+                    field.value = status
+
+            if error is not None:
+                has_err_field = False
+                for field in embed.fields:
+                    if field.name == 'Error':
+                        field.value = f'{field.value}\n{error}'
+                        has_err_field = True
+                        break
+                if not has_err_field:
+                    embed.add_field(name='Error', value=error)
 
         return embed
 
-    def _create_verification_embed(self, username, link, msg, otext):
+    def _create_verification_embed(self, username, company, link, msg, otext):
         ref = f"{msg.author.id}:{msg.id}"
-
-        control = [
-            self._create_btn('Set Name', 'name', ref, 'green'),
-            self._create_btn('Verify', 'verify', ref, 'green'),
-            self._create_btn('Deny', 'no', ref, 'red'),
-        ]
+        control = []
+        control.append(self._create_btn('Set Name', 'name', ref, 'green'))
+        if company is not None:
+            control.append(self._create_btn('Set Company', 'company', ref, 'green'))
+        control.append(self._create_btn('Verify', 'verify', ref, 'green'))
+        control.append(self._create_btn('Deny', 'no', ref, 'red'))
 
         msg_link = f'https://discord.com/channels/{msg.guild.id}/{msg.channel.id}/{msg.id}'
 
-        embed = discord.Embed(title='Verification Request', color=discord.Color.dark_magenta(),
+        embed = discord.Embed(title='Verification Request',
+                              color=discord.Color.dark_magenta(),
                               description=f'[Message Reference]({msg_link})')
         embed.add_field(name='User', value=msg.author.mention)
         embed.add_field(name='Character Name', value=username)
+        if company is not None:
+            embed.add_field(name='Company', value=company)
+
         embed.add_field(name='Status', value='Unverified')
         embed.add_field(name='Original Message', value=otext, inline=False)
 
@@ -94,6 +112,7 @@ class VerificationCog(commands.Cog):
     def _parse_data(self, msg: discord.Message):
         link = None
         username = None
+        company = None
         if len(msg.attachments) > 0:
             link = msg.attachments[0].url
 
@@ -107,9 +126,12 @@ class VerificationCog(commands.Cog):
             elif username is None and len(line) > 0:
                 username = line
 
+            elif company is None and len(line) > 1:
+                company = line
+
             original_text += f'> {line}\n'
 
-        return username, link, original_text
+        return username, company, link, original_text
 
     @commands.Cog.listener()
     async def on_message_edit(self, before: discord.Message, msg: discord.Message):
@@ -125,12 +147,12 @@ class VerificationCog(commands.Cog):
         if has_role(msg.author, 'Verified'):
             return
 
-        username, link, otext = self._parse_data(msg)
+        username, company, link, otext = self._parse_data(msg)
 
         if username is not None and link is not None:
             channel = self._get_mod_channel(msg.guild)
 
-            msg_data = self._create_verification_embed(username, link, msg, otext)
+            msg_data = self._create_verification_embed(username, company, link, msg, otext)
 
             edited = False
             sent = None
@@ -161,12 +183,12 @@ class VerificationCog(commands.Cog):
         if has_role(msg.author, 'Verified'):
             return
 
-        username, link, otext = self._parse_data(msg)
+        username, company, link, otext = self._parse_data(msg)
 
         if username is not None and link is not None:
             channel = self._get_mod_channel(msg.guild)
 
-            msg_data = self._create_verification_embed(username, link, msg, otext)
+            msg_data = self._create_verification_embed(username, company, link, msg, otext)
 
             self.awaiting_verifications[msg.author.mention] = await channel.send(**msg_data)
             await msg.add_reaction(emoji='🟢')
@@ -175,9 +197,11 @@ class VerificationCog(commands.Cog):
             await msg.add_reaction(emoji='❌')
             await msg.reply(content='__Please use the following template:__ \n'
                                     '> <username> \n'
+                                    '> <company> \n'
                                     '> <Attachment/link>\n'
                                     '\n'
-                                    '*Your username must match __exactly__ as it shows on your bio page to get approval.*',
+                                    '*Your username and company must match __exactly__ as it shows on your bio page to get approval.*'
+                                    '*Ignore company if you are not in one*',
                             )
 
     @commands.Cog.listener('on_interaction_received')
@@ -222,7 +246,11 @@ class VerificationCog(commands.Cog):
                     # )
 
                 if func == 'name':
-                    await user.edit(nick=nickname)
+                    try:
+                        await user.edit(nick=nickname)
+                    except Exception as e:
+                        update = self._set_embed_status(post, 'Renamed')
+
                     components[0].disabled = True
                     update = self._set_embed_status(post, 'Renamed')
 
