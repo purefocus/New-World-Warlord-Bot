@@ -82,9 +82,9 @@ class VerificationCog(commands.Cog):
         embed = discord.Embed(title='Verification Request',
                               color=discord.Color.dark_magenta(),
                               description=f'[Message Reference]({msg_link})')
-        embed.add_field(name='Status', value='Unverified', inline=False)
-        embed.add_field(name='\u200b', value='\u200b')
+        embed.add_field(name='Status', value='Unverified')
         embed.add_field(name='Actions', value='\u200b')
+        embed.add_field(name='\u200b', value='\u200b')
         embed.add_field(name='User', value=msg.author.mention)
         embed.add_field(name='Character Name', value=username)
         if company is not None:
@@ -92,6 +92,8 @@ class VerificationCog(commands.Cog):
                 embed.add_field(name='Company', value=f'{company}')
             else:
                 embed.add_field(name='Company', value=company_role.mention)
+        else:
+            embed.add_field(name='Company', value='\u200b')
 
         # embed.add_field(name='Original Message', value=otext, inline=False)
 
