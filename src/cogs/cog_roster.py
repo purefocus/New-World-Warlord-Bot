@@ -60,7 +60,7 @@ class RosterCog(commands.Cog):
 
             file = generate_enlistment_csv(war, self.state.users)
 
-            await ctx.send(content='Here\'s the roster.', file=discord.File(file), hidden=True)
+            await ctx.send(content='Here\'s the roster.', file=discord.File(file), hidden=False)
         else:
             await ctx.send(content=f"Denied!")
 
