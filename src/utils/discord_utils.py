@@ -1,6 +1,10 @@
 import discord
 import utils.botutil as bu
 
+import re
+
+_MENTION_REGEX_ = re.compile(r'<@(&?[0-9]*)>')
+
 _COMPANY_ROLE_COLOR_ = discord.Colour(0xb9adff)
 _COMPANY_RANK_NAMES_ = ['Governor', 'Consul', 'Officer']
 
@@ -82,6 +86,15 @@ async def get_companies(guild: discord.Guild):
     return companies
 
 
+def resolve_mention(txt: str, guild: discord.Guild):
+    matched = _MENTION_REGEX_.findall(txt)
+    for m in matched:
+        if m[0] == '&':
+            return guild.get_role(int(m[1:]))
+        return guild.get_member(int(m))
+    return None
+
+
 def get_embed_field(embed: discord.Embed, key):
     for field in embed.fields:
         if field.name == key:
@@ -95,6 +108,8 @@ def add_or_edit_embed_field(embed: discord.Embed, name, value, append=False):
         field = embed.fields[i]
         if field.name == name:
             field_idx = i
+            if field.value == '\u200b':
+                break
             if append:
                 value = f'{field.value}\n{value}'
             break

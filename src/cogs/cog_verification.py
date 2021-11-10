@@ -49,7 +49,7 @@ class VerificationCog(commands.Cog):
     def _create_btn(self, label, function, data, color='blurple'):
         return Button(custom_id=f'btn:verify:{function}:{data}', label=label, color=color)
 
-    def _set_embed_status(self, msg: Message, status: str = None, error=None):
+    def _set_embed_status(self, msg: Message, status: str = None, error=None, action=None):
         embed = msg.embeds
         if len(embed) > 0:
             embed = embed[0]
@@ -59,7 +59,10 @@ class VerificationCog(commands.Cog):
                 add_or_edit_embed_field(embed, 'Status', status, False)
 
             if error is not None:
-                add_or_edit_embed_field(embed, 'Error', error, True)
+                add_or_edit_embed_field(embed, 'Error', error, False)
+
+            if action is not None:
+                add_or_edit_embed_field(embed, 'Actions', action, True)
 
         return embed
 
@@ -68,10 +71,11 @@ class VerificationCog(commands.Cog):
         company_role = find_company_role(msg.guild, company)
         control = []
         control.append(self._create_btn('Set Name', 'name', ref, 'green'))
-        if company is not None and company_role is not None:
-            control.append(self._create_btn('Set Company', 'company', ref, 'green'))
+        # if company is not None and company_role is not None:
+        control.append(self._create_btn('Set Company', 'company', ref, 'green'))
         control.append(self._create_btn('Verify', 'verify', ref, 'green'))
         control.append(self._create_btn('Deny', 'no', ref, 'red'))
+        control.append(self._create_btn('Done', 'done', ref, 'blurple'))
 
         msg_link = f'https://discord.com/channels/{msg.guild.id}/{msg.channel.id}/{msg.id}'
 
@@ -82,15 +86,21 @@ class VerificationCog(commands.Cog):
         embed.add_field(name='Character Name', value=username)
         if company is not None:
             if company_role is None:
-                embed.add_field(name='Company', value=f'{company_role}')
+                embed.add_field(name='Company', value=f'{company}')
             else:
                 embed.add_field(name='Company', value=company_role.mention)
 
+        embed.add_field(name='Actions', value='\u200b')
+        embed.add_field(name='\u200b', value='\u200b')
         embed.add_field(name='Status', value='Unverified')
-        embed.add_field(name='Original Message', value=otext, inline=False)
+        # embed.add_field(name='Original Message', value=otext, inline=False)
 
         matched_names = check_for_matching_name(username, msg.guild)
-        if len(matched_names) > 0:
+        matched = []
+        for m in matched_names:
+            if m.id != msg.author.id:
+                matched.append(m)
+        if len(matched) > 0:
             names = ''
             for user in matched_names:
                 names += f"> {user.mention} ({user.joined_at.strftime('%b %d, %I:%M %p %Z')})\n"
@@ -201,7 +211,7 @@ class VerificationCog(commands.Cog):
 
     @commands.Cog.listener('on_interaction_received')
     async def on_interaction(self, ctx: Interaction):
-
+        clear_components = False
         data = ctx.data
         if 'custom_id' not in data:
             return
@@ -215,11 +225,13 @@ class VerificationCog(commands.Cog):
             vchannel = self._get_verify_channel(ctx.guild)
             nickname = None
             company = None
+            c_role = None
 
             if len(ctx.message.embeds) > 0:
                 embed: discord.Embed = ctx.message.embeds[0]
                 nickname = get_embed_field(embed, 'Character Name')
                 company = get_embed_field(embed, 'Company')
+                c_role = resolve_mention(company, ctx.guild)
 
             user = await ctx.guild.fetch_member(int(author_id))
             if user is None:
@@ -233,40 +245,50 @@ class VerificationCog(commands.Cog):
             if msg is not None:
                 components = post.components
                 if func == 'no':
+                    components[2].disabled = True
+                    components[3].disabled = True
                     await msg.add_reaction(emoji='❌')
-                    update = self._set_embed_status(post, '❌ Denied')
+                    update = self._set_embed_status(post, '❌ Denied', action='Denied')
 
-                    await post.edit(embed=update, components=None)
+                    await post.edit(embed=update, components=None if clear_components else components)
 
                 if func == 'name':
                     try:
                         await user.edit(nick=nickname)
                         components[0].disabled = True
-                        update = self._set_embed_status(post, 'Renamed')
+                        update = self._set_embed_status(post, action='☑️️ Name')
                     except Exception as e:
-                        update = self._set_embed_status(post, error=str(e))
+                        update = self._set_embed_status(post, error=str(e), action='❓ Name')
 
                     await post.edit(embed=update, components=components)
                 if func == 'company':
-                    update = self._set_embed_status(post, error='Company not implemented yet!')
-                    print(company)
+                    components[1].disabled = True
+                    if c_role is not None:
+                        await user.add_roles(c_role, reason='Verification')
+                    update = self._set_embed_status(post, action='☑️ Company')
 
                     await post.edit(embed=update, components=components)
 
                 if func == 'verify':
                     if self.vrole is None:
+                        components[2].disabled = True
+                        components[3].disabled = True
                         self.vrole = discord.utils.get(ctx.guild.roles, name="Verified")
-
+                    # print(self.vrole)
                     await user.add_roles(self.vrole, reason='Verification')
+
+                    update = self._set_embed_status(post, '✅ Verified', action='☑️️ Verified')
+
+                    await post.edit(embed=update, components=None if clear_components else components)
+
+                if func == 'done':
+                    # update = self._set_embed_status(post, '✅ Verified')
                     await msg.clear_reactions()
                     await msg.add_reaction(emoji='<:done_stamp:895817107797852190>')
-
-                    update = self._set_embed_status(post, '✅ Verified')
-
-                    await post.edit(embed=update, components=None)
-
+                    await post.edit(components=None)
                     if user in self.awaiting_verifications:
                         del self.awaiting_verifications[user.mention]
+
             else:
                 update = self._set_embed_status(post, '❗ Message Not Found!')
 
