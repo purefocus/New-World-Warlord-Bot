@@ -233,7 +233,8 @@ class VerificationCog(commands.Cog):
                 embed: discord.Embed = ctx.message.embeds[0]
                 nickname = get_embed_field(embed, 'Character Name')
                 company = get_embed_field(embed, 'Company')
-                c_role = resolve_mention(company, ctx.guild)
+                if company != '\u200b':
+                    c_role = resolve_mention(company, ctx.guild)
 
             user = await ctx.guild.fetch_member(int(author_id))
             if user is None:
