@@ -56,19 +56,10 @@ class VerificationCog(commands.Cog):
         if embed is not None:
             # embed.set_field_at(2, name='Status', value=status)
             if status is not None:
-                for field in embed.fields:
-                    if field.name == 'Status':
-                        field.value = status
+                add_or_edit_embed_field(embed, 'Status', status, False)
 
             if error is not None:
-                has_err_field = False
-                for field in embed.fields:
-                    if field.name == 'Error':
-                        field.value = f'{field.value}\n{error}'
-                        has_err_field = True
-                        break
-                if not has_err_field:
-                    embed.add_field(name='Error', value=error)
+                add_or_edit_embed_field(embed, 'Error', error, True)
 
         return embed
 
@@ -241,9 +232,6 @@ class VerificationCog(commands.Cog):
                     update = self._set_embed_status(post, '❌ Denied')
 
                     await post.edit(embed=update, components=None)
-                    # await post.edit(
-                    #     content=post.content + f'\n**Verification Denied!**', components=components
-                    # )
 
                 if func == 'name':
                     try:
@@ -254,9 +242,10 @@ class VerificationCog(commands.Cog):
                         update = self._set_embed_status(post, error=str(e))
 
                     await post.edit(embed=update, components=components)
-                    # await post.edit(
-                    #     content=post.content + f'\n**Nickname was set to {nickname}**', components=components
-                    # )
+                if func == 'company':
+                    update = self._set_embed_status(post, error='Company not implemented yet!')
+
+                    await post.edit(embed=update, components=components)
 
                 if func == 'verify':
                     if self.vrole is None:

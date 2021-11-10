@@ -72,6 +72,21 @@ async def get_companies(guild: discord.Guild):
     return companies
 
 
+def add_or_edit_embed_field(embed: discord.Embed, name, value, append=False):
+    field_idx = -1
+    for i in range(len(embed.fields)):
+        field = embed.fields[i]
+        if field.name == name:
+            field_idx = i
+            if append:
+                value = f'{field.value}{value}\n'
+            break
+    if field_idx == -1:
+        embed.add_field(name=name, value=value)
+    else:
+        embed.set_field_at(field_idx, name=name, value=value)
+
+
 def handle_mutations(inp: str):
     inp = inp.replace('1', 'L').replace('l', 'L').replace('i', 'L')
     inp = inp.replace('o', 'O').replace('0', 'O')
