@@ -58,7 +58,7 @@ class VerificationCog(commands.Cog):
 
         return embed
 
-    def _create_verification_embed(self, username, link, msg):
+    def _create_verification_embed(self, username, link, msg, otext):
         ref = f"{msg.author.id}:{msg.id}"
 
         control = [
@@ -74,6 +74,15 @@ class VerificationCog(commands.Cog):
         embed.add_field(name='User', value=msg.author.mention)
         embed.add_field(name='Character Name', value=username)
         embed.add_field(name='Status', value='Unverified')
+        embed.add_field(name='Original Message', value=otext, inline=False)
+
+        matched_names = check_for_matching_name(username, msg.guild)
+        if len(matched_names) > 0:
+            names = ''
+            for user in matched_names:
+                names += f"> {user.mention} ({user.joined_at.strftime('%b %d, %I:%M %p %Z')})\n"
+            embed.add_field(name='Possible Duplicates!', value=names, inline=False)
+
         embed.set_image(url=link)
         embed.set_footer(text=time.strftime('%b %d, %I:%M %p %Z'))
         return {
@@ -98,7 +107,7 @@ class VerificationCog(commands.Cog):
             elif username is None and len(line) > 0:
                 username = line
 
-            original_text += f'> {line}'
+            original_text += f'> {line}\n'
 
         return username, link, original_text
 
@@ -121,7 +130,7 @@ class VerificationCog(commands.Cog):
         if username is not None and link is not None:
             channel = self._get_mod_channel(msg.guild)
 
-            msg_data = self._create_verification_embed(username, link, msg)
+            msg_data = self._create_verification_embed(username, link, msg, otext)
 
             edited = False
             sent = None
@@ -157,7 +166,7 @@ class VerificationCog(commands.Cog):
         if username is not None and link is not None:
             channel = self._get_mod_channel(msg.guild)
 
-            msg_data = self._create_verification_embed(username, link, msg)
+            msg_data = self._create_verification_embed(username, link, msg, otext)
 
             self.awaiting_verifications[msg.author.mention] = await channel.send(**msg_data)
             await msg.add_reaction(emoji='🟢')
@@ -186,13 +195,6 @@ class VerificationCog(commands.Cog):
 
             vchannel = self._get_verify_channel(ctx.guild)
             nickname = None
-            # lines = ctx.message.content.split('\n')
-            # for line in lines:
-            #     if ':' in line:
-            #         args = line.split(':')
-            #         key, value = args[0], args[1]
-            #         if 'Name' in key:
-            #             nickname = value.replace('*', '').strip()
 
             if len(ctx.message.embeds) > 0:
                 embed: discord.Embed = ctx.message.embeds[0]
@@ -242,10 +244,9 @@ class VerificationCog(commands.Cog):
                     await post.edit(embed=update, components=None)
 
                     if user in self.awaiting_verifications:
-                        print('User Verified')
                         del self.awaiting_verifications[user.mention]
             else:
-                update = self._set_embed_status(post, '[Error]\nMessage Not Found!')
+                update = self._set_embed_status(post, '❗ Message Not Found!')
 
                 await post.edit(embed=update, components=None)
                 # await post.edit(

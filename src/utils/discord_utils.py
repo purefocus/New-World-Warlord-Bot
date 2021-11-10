@@ -70,3 +70,39 @@ async def get_companies(guild: discord.Guild):
         bu.print_stack_trace()
 
     return companies
+
+
+def handle_mutations(inp: str):
+    inp = inp.replace('1', 'L').replace('l', 'L').replace('i', 'L')
+    inp = inp.replace('o', 'O').replace('0', 'O')
+    inp = inp.replace('s', 'S').replace('5', 'S')
+    inp = inp.replace(' ', '').strip()
+
+    return inp
+
+
+def check_for_matching_name(name: str, guild: discord.Guild):
+    matched = []
+    name = handle_mutations(name).lower()
+    for member in guild.members:
+        mut_name = handle_mutations(member.display_name).lower()
+        if mut_name == name:
+            matched.append(member)
+
+    return matched
+
+
+def search_for_duplicate_names(guild: discord.Guild):
+    matches = {}
+    matched = []
+
+    for member in guild.members:
+        name = member.display_name
+        name_key = handle_mutations(name).lower()
+        if name_key in matches:
+            matches[name_key].append(member)
+            matched.append(name_key)
+        else:
+            matches[name_key] = [member]
+
+    return [(key, matches[key]) for key in matched]

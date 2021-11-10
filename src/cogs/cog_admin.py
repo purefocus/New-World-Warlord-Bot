@@ -78,6 +78,43 @@ class AdminCog(commands.Cog):
             elif args[0] == 'tag':
                 self.state.config.tag_war = args[1] == 'en'
 
+            elif args[0] == 'test':
+                embed = discord.Embed(title='Testing Something...')
+                embed.add_field(name='Test', value='> test1\n> test2')
+                await ctx.respond(embed=embed, hidden=True)
+
+            elif args[0] == 'dup_check':
+                guild: discord.Guild = ctx.guild
+                name = args[1]
+                matches = check_for_matching_name(name, guild)
+                result = 'Checking for duplicated names...\n\n'
+                if len(matches) == 0:
+                    result = 'No matching names found!'
+                else:
+                    for m in matches:
+                        result += f'  - {m.mention} (*{m.joined_at.strftime("%m/%d/%y")}*)\n'
+
+                await ctx.respond(content=result)
+
+            elif args[0] == 'dup_names':
+                guild: discord.Guild = ctx.guild
+                result = 'Checking for duplicated names...\n'
+                matches = search_for_duplicate_names(guild)
+                for key, matched in matches:
+                    result += f'  Matched Name: **{key}**\n'
+                    for m in matched:
+                        result += f'    - {m.mention} (*{m.joined_at.strftime("%m/%d/%y")}*)\n'
+
+                # names = {}
+                # for mem in guild.members:
+                #     name = mem.display_name.lower()
+                #     if name in names:
+                #         other = names[name]
+                #         result += f'- {name}: {mem.mention} ({mem.joined_at.strftime("%m/%d/%y")}), {other.mention} ({other.joined_at.strftime("%m/%d/%y")})\n'
+                #     names[name] = mem
+
+                await ctx.respond(content=result)
+
             elif args[0] == 'verified':
                 hidden = True
                 if len(args) == 2:
