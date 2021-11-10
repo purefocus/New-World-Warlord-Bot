@@ -75,8 +75,9 @@ def generate_enlistment_csv(war: WarDef, users):
 
     data = generate_enlistment_pandas(war, users)
 
-    table_data = [['Name', 'Role', 'Weapons', 'Company']]
-    print(data)
+    # table_data = [['Name', 'Role', 'Weapons', 'Company']]
+    data.to_csv(file, index=True, header=True)
+    return file
 
 
 def generate_enlistment_excel(war: WarDef, users):

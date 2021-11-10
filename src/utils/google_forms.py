@@ -28,14 +28,6 @@ def post_enlistment(enl: Enlistment):
         data = enl.data()
         fields = ['username', 'level', 'role', 'primary weapon', 'secondary weapon', 'preferred group', 'company',
                   'faction']
-        # self.username,
-        # self.level,
-        # role,
-        # weapons[0],
-        # weapons[1],
-        # self.group,
-        # self.company,
-        # self.faction
 
         req = {
             "fvv": 1, "partialResponse": '[]', "pageHistory": 0, "fbzx": -6893020537148369068
@@ -72,6 +64,13 @@ def _process_html(inp):
     return inp
 
 
+def pull_from_sheet(url, sheet):
+    url = f'{url}/gviz/tq?tqx=out:csv&sheet={sheet}'
+    import pandas as pd
+    pd.read_csv(url)
+
+    print(pd)
+
 def parse_google_form(url: str):
     sess = requests.Session()
     form = sess.get(url, params={'usp': 'sf_link'})
@@ -90,14 +89,6 @@ def parse_google_form(url: str):
 
 
 if __name__ == '__main__':
-    parse_google_form(
-        'https://docs.google.com/forms/d/e/1FAIpQLSfYNr3uLqLKoXKuY6PmHsugpEn4H6QjL84dY6-KgDabq_gGtA/viewform?usp=sf_link')
-
-    # from utils.userdata import UserData
-    #
-    # users = UserData()
-    # users.load('../../files/user_data.json')
-    # for user in users.users:
-    #     user = users[user]
-    #     post_enlistment(user)
-    # users.save('../../files/user_data2.json')
+    pull_from_sheet('https://docs.google.com/spreadsheets/d/1shDl1rikY29gBocWiCJOXaFq6sgO-74OZk-JQWuTx_Y/', 'War+Roster')
+    # parse_google_form(
+    #     'https://docs.google.com/forms/d/e/1FAIpQLSfYNr3uLqLKoXKuY6PmHsugpEn4H6QjL84dY6-KgDabq_gGtA/viewform?usp=sf_link')

@@ -58,7 +58,7 @@ class RosterCog(commands.Cog):
                                   allow_multiple=False)
         if war is not None:
 
-            file = generate_enlistment_excel(war, self.state.users)
+            file = generate_enlistment_csv(war, self.state.users)
 
             await ctx.send(content='Here\'s the roster.', file=discord.File(file), hidden=True)
         else:
