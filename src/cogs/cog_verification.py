@@ -49,16 +49,16 @@ class VerificationCog(commands.Cog):
     def _create_btn(self, label, function, data, color='blurple'):
         return Button(custom_id=f'btn:verify:{function}:{data}', label=label, color=color)
 
-    def _set_embed_status(self, msg: Message, status: str, error=None):
+    def _set_embed_status(self, msg: Message, status: str = None, error=None):
         embed = msg.embeds
         if len(embed) > 0:
             embed = embed[0]
         if embed is not None:
             # embed.set_field_at(2, name='Status', value=status)
-
-            for field in embed.fields:
-                if field.name == 'Status':
-                    field.value = status
+            if status is not None:
+                for field in embed.fields:
+                    if field.name == 'Status':
+                        field.value = status
 
             if error is not None:
                 has_err_field = False
@@ -248,11 +248,10 @@ class VerificationCog(commands.Cog):
                 if func == 'name':
                     try:
                         await user.edit(nick=nickname)
-                    except Exception as e:
+                        components[0].disabled = True
                         update = self._set_embed_status(post, 'Renamed')
-
-                    components[0].disabled = True
-                    update = self._set_embed_status(post, 'Renamed')
+                    except Exception as e:
+                        update = self._set_embed_status(post, error=str(e))
 
                     await post.edit(embed=update, components=components)
                     # await post.edit(
