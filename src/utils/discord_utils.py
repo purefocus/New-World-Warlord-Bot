@@ -47,6 +47,16 @@ async def get_verified_users(guild: discord.Guild):
     return users
 
 
+async def find_company_role(guild: discord.Guild, role_name):
+    if role_name is None:
+        return None
+    role_name = role_name.lower()
+    for role in guild.roles:
+        if role.name.lower() == role_name and role.color == _COMPANY_ROLE_COLOR_:
+            return role
+    return None
+
+
 async def get_companies(guild: discord.Guild):
     companies = {
         '': {'members': [], 'Consul': [], 'Officer': [], 'Governor': [], 'Settler': []}
@@ -79,7 +89,7 @@ def add_or_edit_embed_field(embed: discord.Embed, name, value, append=False):
         if field.name == name:
             field_idx = i
             if append:
-                value = f'{field.value}{value}\n'
+                value = f'{field.value}\n{value}'
             break
     if field_idx == -1:
         embed.add_field(name=name, value=value)

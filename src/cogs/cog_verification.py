@@ -65,9 +65,10 @@ class VerificationCog(commands.Cog):
 
     def _create_verification_embed(self, username, company, link, msg, otext):
         ref = f"{msg.author.id}:{msg.id}"
+        company_role = find_company_role(msg.guild, company)
         control = []
         control.append(self._create_btn('Set Name', 'name', ref, 'green'))
-        if company is not None:
+        if company is not None and company_role is not None:
             control.append(self._create_btn('Set Company', 'company', ref, 'green'))
         control.append(self._create_btn('Verify', 'verify', ref, 'green'))
         control.append(self._create_btn('Deny', 'no', ref, 'red'))
@@ -80,7 +81,10 @@ class VerificationCog(commands.Cog):
         embed.add_field(name='User', value=msg.author.mention)
         embed.add_field(name='Character Name', value=username)
         if company is not None:
-            embed.add_field(name='Company', value=company)
+            if company_role is None:
+                embed.add_field(name='Company', value=f'{company_role}')
+            else:
+                embed.add_field(name='Company', value=company_role.mention)
 
         embed.add_field(name='Status', value='Unverified')
         embed.add_field(name='Original Message', value=otext, inline=False)
