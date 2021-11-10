@@ -214,11 +214,12 @@ class VerificationCog(commands.Cog):
 
             vchannel = self._get_verify_channel(ctx.guild)
             nickname = None
+            company = None
 
             if len(ctx.message.embeds) > 0:
                 embed: discord.Embed = ctx.message.embeds[0]
-                field = embed.fields[1]
-                nickname = field.value
+                nickname = get_embed_field(embed, 'Character Name')
+                company = get_embed_field(embed, 'Company')
 
             user = await ctx.guild.fetch_member(int(author_id))
             if user is None:
@@ -248,6 +249,7 @@ class VerificationCog(commands.Cog):
                     await post.edit(embed=update, components=components)
                 if func == 'company':
                     update = self._set_embed_status(post, error='Company not implemented yet!')
+                    print(company)
 
                     await post.edit(embed=update, components=components)
 

@@ -82,6 +82,13 @@ async def get_companies(guild: discord.Guild):
     return companies
 
 
+def get_embed_field(embed: discord.Embed, key):
+    for field in embed.fields:
+        if field.name == key:
+            return field.value
+    return None
+
+
 def add_or_edit_embed_field(embed: discord.Embed, name, value, append=False):
     field_idx = -1
     for i in range(len(embed.fields)):
