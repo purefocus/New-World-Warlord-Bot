@@ -47,7 +47,7 @@ async def get_verified_users(guild: discord.Guild):
     return users
 
 
-async def find_company_role(guild: discord.Guild, role_name):
+def find_company_role(guild: discord.Guild, role_name):
     if role_name is None:
         return None
     role_name = role_name.lower()
