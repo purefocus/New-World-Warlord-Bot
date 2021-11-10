@@ -186,14 +186,18 @@ class VerificationCog(commands.Cog):
 
             vchannel = self._get_verify_channel(ctx.guild)
             nickname = None
-            lines = ctx.message.content.split('\n')
-            for line in lines:
-                if ':' in line:
-                    args = line.split(':')
-                    key, value = args[0], args[1]
-                    if 'Name' in key:
-                        value = value.replace('*', '')
-                        nickname = value.strip()
+            # lines = ctx.message.content.split('\n')
+            # for line in lines:
+            #     if ':' in line:
+            #         args = line.split(':')
+            #         key, value = args[0], args[1]
+            #         if 'Name' in key:
+            #             nickname = value.replace('*', '').strip()
+
+            if len(ctx.message.embeds) > 0:
+                embed: discord.Embed = ctx.message.embeds[0]
+                field = embed.fields[1]
+                nickname = field.value
 
             user = await ctx.guild.fetch_member(int(author_id))
             if user is None:
@@ -244,9 +248,9 @@ class VerificationCog(commands.Cog):
                 update = self._set_embed_status(post, '[Error]\nMessage Not Found!')
 
                 await post.edit(embed=update, components=None)
-                await post.edit(
-                    content=post.content + '\n\n**[Error] Referenced message was unable to be found!.**\n',
-                    components=None)
+                # await post.edit(
+                #     content=post.content + '\n\n**[Error] Referenced message was unable to be found!.**\n',
+                #     components=None)
 
             if not ctx.responded:
                 await ctx.respond(ninja_mode=True)
