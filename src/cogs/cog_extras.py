@@ -9,6 +9,7 @@ from discord_ui import Interaction
 from utils.discord_utils import *
 import config as cfg
 
+
 class ExtrasCog(commands.Cog):
 
     def __init__(self, client: commands.Bot, state: BotState):
@@ -27,13 +28,19 @@ class ExtrasCog(commands.Cog):
         data = {'No Company': []}
         members = channel.members
         for user in members:
+            u = self.state.users[user]
+            name = user.display_name
             company = get_company_role(user)
+            if company is None and u is not None:
+                company = u.company
+                name = u.username
+
             if company is None:
-                data['No Company'].append(user)
+                data['No Company'].append(name)
             else:
                 if company not in data:
                     data[company] = []
-                data[company].append(user.display_name)
+                data[company].append(name)
 
         embed = discord.Embed(title='Channel Stats')
         embed.add_field(name='Participants', value=str(len(members)), inline=False)
