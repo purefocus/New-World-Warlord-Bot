@@ -37,7 +37,7 @@ def create_roster_embed(names, state, title=None, embed=None, abrv_line=False):
         idx = 0
         for enl in enlisted:
             enl: Enlistment = enl
-            val = '• ' + str(enl.roster_line(abrv_line)) + '\n'
+            val = '> ' + str(enl.roster_line(abrv_line)) + '\n'
             if len(value) + len(val) > 1024:
                 embed.add_field(name=f'{key} {"" if idx == 0 else idx}', value=value, inline=abrv_line)
                 value = ''
