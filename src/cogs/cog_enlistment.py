@@ -216,9 +216,7 @@ class DMEnlistmentCog(commands.Cog):
 
     async def do_enlist(self, war: WarDef, ctx: Interaction):
         user = ctx.author
-        if not check_permission(ctx, Perm.PERM_ENLIST):
-            return
-            # war = self.state.wars[id]
+        # war = self.state.wars[id]
         if war is not None:
             print('Enlistment Started! ', str(ctx.author))
             # self.users_enlisting[ctx.author] = True
@@ -279,6 +277,8 @@ class DMEnlistmentCog(commands.Cog):
 
     @commands.Cog.listener('on_interaction_received')
     async def on_interaction(self, ctx: Interaction):
+        if not await check_permission(ctx, Perm.ENLIST):
+            return
         try:
             data = ctx.data
             if 'custom_id' not in data:
@@ -315,6 +315,8 @@ class DMEnlistmentCog(commands.Cog):
 
     @slash_cog(description='Enlist yourself to participate in wars!', **cfg.cmd_cfg)
     async def enlist(self, ctx: SlashedCommand):
+        if not await check_permission(ctx, Perm.ENLIST):
+            return
         try:
             war = self.state.wars['General Enlistment']
 

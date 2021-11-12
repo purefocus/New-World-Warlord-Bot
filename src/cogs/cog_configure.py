@@ -43,23 +43,27 @@ class ConfigurationCog(commands.Cog):
         SlashOption(str, name='channel', description=channel_config_options, required=True)
     ])
     async def cmd_set_channel_notice(self, ctx: Interaction, channel: str):
-        if check_permission(ctx, Perm.CONFIGURE):
+        if await check_permission(ctx, Perm.CONFIGURE):
             if _set_channel(self.state, ctx, channel):
                 response = f'{channel} channel has been set to {ctx.channel.name}'
             else:
                 response = f'Unknown channel configuration key {channel}!\n Available options are {channel_config_options}'
             await ctx.respond(content=response, hidden=True)
+        if not ctx.responded:
+            await ctx.respond(ninja_mode=True)
 
     @subslash_cog(base_names=['warlord_cfg', 'post'], name='world-status')
     async def cmd_post_world_status(self, ctx: Interaction, channel: str):
-        if check_permission(ctx, Perm.CONFIGURE):
+        if await check_permission(ctx, Perm.CONFIGURE):
             msg = await ctx.channel.send(content='World Status Here')
             self.state.config.register_message('world-status', msg)
             await ctx.respond(content='-', hidden=True)
+        if not ctx.responded:
+            await ctx.respond(ninja_mode=True)
 
     @subslash_cog(base_names=['warlord_cfg', 'server'], name='init')
     async def cmd_init_guild(self, ctx: Interaction):
-        if check_permission(ctx, Perm.CONFIGURE):
+        if await check_permission(ctx, Perm.CONFIGURE):
             if self.state.config.guildcfg(ctx.guild_id) is not None:
                 response = '[Error] This guild has already been registered'
             else:
@@ -67,7 +71,8 @@ class ConfigurationCog(commands.Cog):
                 response = 'Guild Registered!'
 
             await ctx.respond(response, hidden=True)
-
+        if not ctx.responded:
+            await ctx.respond(ninja_mode=True)
 
 # async def cmd_bot_configure(state: BotState, ctx: SlashedCommand, options: str):
 #     if not check_permission(ctx, Perm.CONFIGURE):
