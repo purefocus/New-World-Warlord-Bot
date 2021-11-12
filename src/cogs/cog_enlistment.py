@@ -74,7 +74,8 @@ question_list = {
 STR_ENLIST_FAILED = 'Something went wrong and you have not been enlisted.'
 STR_NO_ACTIVE_WAR = 'Sorry, This war is no longer active!\nIf this is a mistake, please contact an admin!'
 STR_ENLIST_SUCCESS = 'You have successfully been enlisted for the war **%s**\n ' \
-                     'You can update you enlistment by clicking the \'Enlist Now!\' button again.'
+                     'You can update you enlistment by clicking the \'Enlist Now!\' button again.\n' \
+                     '**Do not forget to also sign up at the in-game war board!**'
 
 
 async def question(client: commands.Bot, ctx, answers,
