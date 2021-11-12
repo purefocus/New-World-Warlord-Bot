@@ -19,13 +19,15 @@ import config as cfg
 
 admin_cmd_cfg = {
     'guild_ids': [894675526776676382],
-    'guild_permissions': SlashPermission(
-        allowed={
-            '894677353479942154': SlashPermission.Role,  # Admin
-            '895490018246815776': SlashPermission.Role,  # Moderator
-            '198526201374048256': SlashPermission.User  # purefocus
-        }
-    )
+    'guild_permissions': {
+        894675526776676382: SlashPermission(
+            allowed={
+                '894677353479942154': SlashPermission.Role,  # Admin
+                '895490018246815776': SlashPermission.Role,  # Moderator
+                '198526201374048256': SlashPermission.User  # purefocus
+            }
+        )
+    }
 }
 
 
