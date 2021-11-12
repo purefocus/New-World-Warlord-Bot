@@ -33,6 +33,7 @@ def create_roster_embed(names, state, title=None, embed=None, abrv_line=False):
     for key in groups:
         if fc == 2:
             fc = -1
+            print('buffer')
             embed.add_field(name='\u200b', value='\u200b')
         fc += 1
         value = ''
