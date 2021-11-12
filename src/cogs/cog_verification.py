@@ -134,7 +134,7 @@ class VerificationCog(commands.Cog):
                 username = line
 
             elif company is None and len(line) > 1:
-                company = line
+                company = replace_company_name(line)
 
             original_text += f'> {line}\n'
 
@@ -264,6 +264,7 @@ class VerificationCog(commands.Cog):
                         update = self._set_embed_status(post, error=str(e), action='❓ Name')
 
                     await post.edit(embed=update, components=components)
+
                 if func == 'company':
                     components[1].disabled = True
                     if c_role is not None:
@@ -280,7 +281,8 @@ class VerificationCog(commands.Cog):
                     # print(self.vrole)
                     await user.add_roles(self.vrole, reason='Verification')
 
-                    update = self._set_embed_status(post, '✅ Verified', action='☑️️ Verified')
+                    update = self._set_embed_status(post, f'✅ Verified\n(*{ctx.author.display_name}*)',
+                                                    action='☑️️ Verified')
 
                     await post.edit(embed=update, components=None if clear_components else components)
 

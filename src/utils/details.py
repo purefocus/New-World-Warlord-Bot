@@ -49,6 +49,13 @@ add_mapping(location_mappings, 'Fort Ebonscale Reach', ['Ebonscale Reach', 'ER',
 add_mapping(location_mappings, 'Fort Reekwater', ['Reekwater', 'RW', 'reek'])
 add_mapping(location_mappings, 'Fort Windsward', ['Windsward', 'WW'])
 
+#########################
+# Company Name Mappings #
+#########################
+company_mappings = {}
+add_mapping(company_mappings, 'Lotus Trading',
+            ['Lotus Trading Cartel', 'Lotus Trading Company', 'Lotus Holdings Co.', 'LTC'])
+
 
 def get_location(loc):
     if loc is None:
@@ -83,3 +90,12 @@ def replace_weapons_abbrev(txt: str):
     for i in range(len(WEAPON_CHOICES)):
         txt = txt.replace(WEAPON_CHOICES[i], WEAPON_CHOICES_ABRV[i])
     return txt
+
+
+def replace_company_name(company: str):
+    if company is None:
+        return None
+    company = company.lower()
+    if company in company_mappings:
+        return company_mappings[company]
+    return company

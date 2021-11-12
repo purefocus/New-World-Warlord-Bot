@@ -17,6 +17,7 @@ from views.view_confirm import ask_confirm
 
 import asyncio
 import config as cfg
+from utils.permissions import *
 
 question_list = {
     'name': {
@@ -214,7 +215,10 @@ class DMEnlistmentCog(commands.Cog):
             return
 
     async def do_enlist(self, war: WarDef, ctx: Interaction):
-        # war = self.state.wars[id]
+        user = ctx.author
+        if not check_permission(ctx, Perm.PERM_ENLIST):
+            return
+            # war = self.state.wars[id]
         if war is not None:
             print('Enlistment Started! ', str(ctx.author))
             # self.users_enlisting[ctx.author] = True

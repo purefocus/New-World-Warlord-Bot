@@ -4,15 +4,8 @@ from bot_state import *
 from forms.create_war import *
 from forms.enlist_form import cmd_enlist
 from forms.war_management import *
-from forms.bot_configure import *
 from utils.botutil import *
-from cogs.cog_enlistment import *
-from cogs.cog_management import WarManagementCog
-from cogs.cog_admin import AdminCog
-from cogs.cog_extras import ExtrasCog
-from cogs.cog_worldstatus import WorldStatusCog
-from cogs.cog_verification import VerificationCog
-from cogs.cog_roster import RosterCog
+from cogs import *
 
 intents = discord.Intents.all()
 
@@ -35,7 +28,8 @@ cogs = [
     WorldStatusCog(client, state),
 
     AdminCog(client, state, ui),
-    VerificationCog(client, state)
+    VerificationCog(client, state),
+    ConfigurationCog(client, state)
 ]
 
 for cog in cogs:
@@ -107,11 +101,11 @@ async def on_error(event_method, *args, **kwargs):
 # Bot Configuration #
 #####################
 
-@ui.slash.command(name='warlord_cfg', options=[
-    SlashOption(str, name='options', description='configuration options', required=True),
-], description='Allows configuring the bot', **cmd_cfg_mod)
-async def warlord_config(ctx, options: str):
-    await cmd_bot_configure(state, ctx, options)
+# @ui.slash.command(name='warlord_cfg', options=[
+#     SlashOption(str, name='options', description='configuration options', required=True),
+# ], description='Allows configuring the bot', **cmd_cfg_mod)
+# async def warlord_config(ctx, options: str):
+#     await cmd_bot_configure(state, ctx, options)
 
 
 ####################

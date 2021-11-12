@@ -1,12 +1,8 @@
 import json
-from dat.EnlistDef import Enlistment
+
 import config as cfg
-
+from dat.EnlistDef import Enlistment
 from utils.google_forms import post_enlistment
-
-import json
-
-from utils.colorprint import *
 
 
 class User:

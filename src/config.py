@@ -69,15 +69,15 @@ fguild_permissions_low = {
 }
 
 cmd_cfg_elev = {
-    'guild_ids': guild_ids,
-    'default_permission': True,
-    'guild_permissions': guild_permissions
+    # 'guild_ids': guild_ids,
+    # 'default_permission': True,
+    # 'guild_permissions': guild_permissions
 }
 
 cmd_cfg_mod = {
-    'guild_ids': guild_ids,
-    'default_permission': True,
-    'guild_permissions': mod_guild_permissions
+    # 'guild_ids': guild_ids,
+    # 'default_permission': True,
+    # 'guild_permissions': mod_guild_permissions
 }
 
 cmd_cfg = {

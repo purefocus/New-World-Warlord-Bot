@@ -17,15 +17,15 @@ from utils.colorprint import *
 
 import config as cfg
 
-admin_permissions = SlashPermission(
-    allowed={
-        '894677353479942154': SlashPermission.Role,  # Admin
-        '895490018246815776': SlashPermission.Role,  # Moderator
-        '198526201374048256': SlashPermission.User  # purefocus
-    }
-)
-guild_permissions = {
-    '894675526776676382': admin_permissions
+admin_cmd_cfg = {
+    'guild_ids': [894675526776676382],
+    'guild_permissions': SlashPermission(
+        allowed={
+            '894677353479942154': SlashPermission.Role,  # Admin
+            '895490018246815776': SlashPermission.Role,  # Moderator
+            '198526201374048256': SlashPermission.User  # purefocus
+        }
+    )
 }
 
 
@@ -61,7 +61,7 @@ class AdminCog(commands.Cog):
 
     @slash_cog(name='test_cmd', options=[
         SlashOption(str, 'arguments', 'command args', required=True)
-    ], guild_ids=[894675526776676382], guild_permissions=guild_permissions)
+    ], **admin_cmd_cfg)
     async def test_cmd(self, ctx: discord_ui.SlashedCommand, arguments: str):
         args = arguments.split(' ')
         try:
@@ -183,11 +183,13 @@ class AdminCog(commands.Cog):
     async def warlord_cmd_sync(self, ctx: SlashedCommand):
         try:
             if ctx.author.id == 198526201374048256:
-                await ctx.defer(hidden=True)
+                msg = await ctx.send(content='Removing all Commands... ', hidden=True)
+                await self.ui.slash.nuke_commands()
+                await msg.edit(content=f'{msg.content}\nAdding Commands...')
                 print('Commands Before: ', self.state.client.commands)
                 await self.ui.slash.sync_commands()
                 print('Commands After: ', self.state.client.commands)
-                await ctx.respond('Done!', hidden=True)
+                await msg.edit(content=f'{msg.content}\nCommand Sync Complete!')
         except Exception as e:
             print_stack_trace()
             await ctx.respond(content=str(e), hidden=True)
@@ -214,7 +216,7 @@ class AdminCog(commands.Cog):
 
     @subslash_cog(base_names=['admin', 'company'], name='create', options=[
         SlashOption(str, name='Name', description='Name of the company you wish to create', required=True)
-    ], guild_ids=[894675526776676382], guild_permissions=guild_permissions)
+    ], **admin_cmd_cfg)
     async def cmd_admin_company(self, ctx: SlashedCommand, name: str):
         guild: discord.Guild = ctx.guild
 
