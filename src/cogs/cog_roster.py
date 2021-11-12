@@ -21,6 +21,8 @@ from utils.colorprint import *
 
 import config as cfg
 
+from utils.permissions import *
+
 
 class RosterCog(commands.Cog):
 
@@ -32,7 +34,9 @@ class RosterCog(commands.Cog):
                description='Replies with a table of all the users enlisted for a specific war',
                **cfg.cmd_cfg)
     async def get_enlisted(self, ctx):
-        war, _ = await select_war(state, ctx, 'Select the war to get the enlistment roster for',
+        if not check_permission(ctx, Perm.WAR_ROSTER):
+            return
+        war, _ = await select_war(self.state, ctx, 'Select the war to get the enlistment roster for',
                                   allow_multiple=False,
                                   allow_overall=True)
         if war is not None:
@@ -54,6 +58,8 @@ class RosterCog(commands.Cog):
         description='Generates a CSV file with a table of everyone who signed up (Can be imported into excel).',
         **cfg.cmd_cfg)
     async def download_enlisted(self, ctx):
+        if not check_permission(ctx, Perm.WAR_ROSTER):
+            return
         war, _ = await select_war(self.state, ctx, 'Select the war to get the enlistment roster for',
                                   allow_multiple=False)
         if war is not None:
@@ -68,6 +74,8 @@ class RosterCog(commands.Cog):
                description='Flags a war as ended, disabling the ability to sign up for it',
                **cfg.cmd_cfg_mod)
     async def end_war(self, ctx):
+        if not check_permission(ctx, Perm.WAR_END):
+            return
         war, msg = await select_war(self.state, ctx, 'Select the war to end', allow_multiple=False)
         if war is not None:
             war.active = False
@@ -85,6 +93,8 @@ class RosterCog(commands.Cog):
                description='Reposts the war notification',
                **cfg.cmd_cfg_elev)
     async def repost_war(self, ctx):
+        if not check_permission(ctx, Perm.WAR_POST):
+            return
         wars, _ = await select_war(self.state, ctx, 'Select war', allow_multiple=True)
         for war in wars:
             for board in war.boards:
@@ -102,6 +112,8 @@ class RosterCog(commands.Cog):
                description='posts a war notification in your current channel',
                **cfg.cmd_cfg_elev)
     async def post_war(self, ctx):
+        if not check_permission(ctx, Perm.WAR_POST):
+            return
         wars, _ = await select_war(self.state, ctx, 'Select war', allow_multiple=True)
         for war in wars:
             await add_war_board_to(war, self.state, ctx.channel)
@@ -111,6 +123,8 @@ class RosterCog(commands.Cog):
                description='posts a war enlistment button in your current channel',
                **cfg.cmd_cfg_elev)
     async def post_enlist(self, ctx):
+        if not check_permission(ctx, Perm.WAR_POST):
+            return
         wars, msg = await select_war(self.state, ctx, 'Select war', allow_multiple=True)
         btns = []
         for war in wars:

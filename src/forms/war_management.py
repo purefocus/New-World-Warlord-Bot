@@ -21,7 +21,7 @@ async def cmd_war_select(state, ctx):
 
 
 async def cmd_get_enlisted(state: BotState, ctx):
-    if not check_faction_permission(ctx, Perm.PERM_WAR_ROSTER, state.client):
+    if not check_permission(ctx, Perm.WAR_ROSTER):
         return
     war, _ = await select_war(state, ctx, 'Select the war to get the enlistment roster for',
                               allow_multiple=False,
@@ -52,7 +52,7 @@ async def cmd_get_enlisted(state: BotState, ctx):
 
 
 async def cmd_dl_enlisted(state, ctx):
-    if not check_faction_permission(ctx, Perm.PERM_WAR_ROSTER, state.client):
+    if not check_permission(ctx, Perm.WAR_ROSTER):
         return
     war, _ = await select_war(state, ctx, 'Select the war to get the enlistment roster for', allow_multiple=False)
     if war is not None:
