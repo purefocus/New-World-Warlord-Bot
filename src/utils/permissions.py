@@ -106,6 +106,7 @@ def has_permission(user: discord.Member, p: Permission) -> bool:
 
             for role in allowed:
                 if has_role(user, role):
+                    print(f'allowed by role {role}')
                     return p.allow
     return not p.allow
 
