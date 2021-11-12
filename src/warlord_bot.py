@@ -29,6 +29,7 @@ cogs = [
 
     AdminCog(client, state, ui),
     VerificationCog(client, state),
+    # DMVerificationCog(client, state),
     ConfigurationCog(client, state)
 ]
 

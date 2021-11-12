@@ -39,7 +39,7 @@ class ConfigurationCog(commands.Cog):
         self.client = client
         self.state = state
 
-    @subslash_cog(base_names=['warlord_cfg', 'set'], name='channel', options=[
+    @subslash_cog(base_names=['wl_configure', 'set'], name='channel', options=[
         SlashOption(str, name='channel', description=channel_config_options, required=True)
     ])
     async def cmd_set_channel_notice(self, ctx: Interaction, channel: str):
@@ -52,7 +52,7 @@ class ConfigurationCog(commands.Cog):
         if not ctx.responded:
             await ctx.respond(ninja_mode=True)
 
-    @subslash_cog(base_names=['warlord_cfg', 'post'], name='world-status')
+    @subslash_cog(base_names=['wl_configure', 'post'], name='world-status')
     async def cmd_post_world_status(self, ctx: Interaction, channel: str):
         if await check_permission(ctx, Perm.CONFIGURE):
             msg = await ctx.channel.send(content='World Status Here')
@@ -61,7 +61,7 @@ class ConfigurationCog(commands.Cog):
         if not ctx.responded:
             await ctx.respond(ninja_mode=True)
 
-    @subslash_cog(base_names=['warlord_cfg', 'server'], name='init')
+    @subslash_cog(base_names=['wl_configure', 'server'], name='init')
     async def cmd_init_guild(self, ctx: Interaction):
         if await check_permission(ctx, Perm.CONFIGURE):
             if self.state.config.guildcfg(ctx.guild_id) is not None:

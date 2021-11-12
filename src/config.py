@@ -178,7 +178,7 @@ class Config:
         self.nws_token = None
         self.tag_war = True
         self.unsaved = False
-
+        self.faction_guild = None
         self.question_timeout = int(60 * 5)
 
         self.config = {
@@ -253,6 +253,8 @@ class Config:
         try:
             for guild in self.guilds:
                 g = client.get_guild(int(guild))
+                if g.id == FACTION_SERVER_ID:
+                    self.faction_guild = g
                 self.guilds[guild].resolve(g)
 
             self.save()

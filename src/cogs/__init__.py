@@ -6,3 +6,4 @@ from cogs.cog_worldstatus import WorldStatusCog
 from cogs.cog_verification import VerificationCog
 from cogs.cog_roster import RosterCog
 from cogs.cog_configure import ConfigurationCog
+from cogs.cog_dm_verify import DMVerificationCog

@@ -171,6 +171,11 @@ class AdminCog(commands.Cog):
                                   file=discord.File(file), hidden=hidden)
 
                 # await ctx.respond(ninja_mode=True)
+            elif args[0] == 'verify_btn':
+                await ctx.channel.send(content='Click this button to verify!', components=[
+                    discord_ui.Button(custom_id='btn:verification_btn', label='Click here to verify!', color='green')
+                ])
+                await ctx.respond('Done.', hidden=True)
 
 
 
