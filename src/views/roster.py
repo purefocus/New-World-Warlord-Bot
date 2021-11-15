@@ -45,7 +45,7 @@ def create_roster_embed(names, absent, state, title=None, embed=None, abrv_line=
                 value = ''
                 idx += 1
 
-                if fc % 2 == 1:
+                if fc % 2 == 1 and abrv_line:
                     embed.add_field(name='\u200b', value='\u200b')
                 fc += 1
             value += val
@@ -53,7 +53,7 @@ def create_roster_embed(names, absent, state, title=None, embed=None, abrv_line=
         if value != '':
             embed.add_field(name=f'{key} {"" if idx == 0 else idx}', value=value, inline=abrv_line)
 
-            if fc % 2 == 1:
+            if fc % 2 == 1 and abrv_line:
                 embed.add_field(name='\u200b', value='\u200b')
             fc += 1
 
