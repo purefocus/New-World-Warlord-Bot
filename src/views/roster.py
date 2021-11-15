@@ -5,11 +5,11 @@ from utils.details import WAR_ROLES
 from discord import Embed
 
 
-def _get_users_from_names(names, users: UserData):
-    return [users[name] for name in names]
+def _get_users_from_names(names, absent, users: UserData):
+    return [users[name] for name in names], [users[name] for name in absent]
 
 
-def _group_by_role(roster: list):
+def _group_by_role(roster: list, absent: list):
     result = {}
 
     for role in WAR_ROLES:
@@ -20,13 +20,13 @@ def _group_by_role(roster: list):
 
             if role in user.roles:
                 result[role].append(user)
-
+    result['absent'] = absent
     return result
 
 
-def create_roster_embed(names, state, title=None, embed=None, abrv_line=False):
-    roster = _get_users_from_names(names, state.users)
-    groups = _group_by_role(roster)
+def create_roster_embed(names, state, absent=None, title=None, embed=None, abrv_line=False):
+    roster, absent = _get_users_from_names(names, absent, state.users)
+    groups = _group_by_role(roster, absent)
     if embed is None:
         embed = Embed(title='War Enlistment', description=f'{title}')
     fc = 0
