@@ -7,6 +7,13 @@ import discord_ui
 from discord_ui import Button
 
 
+def _check(x, ctx):
+    print(type(x), type(ctx))
+    if isinstance(ctx, discord.Member):
+        return x.author == ctx
+    return x.author == ctx.author
+
+
 async def ask_confirm(state: BotState, ctx, question: str, embed: discord.Embed = None, text=None, colors=None,
                       default_response=False, ret_msg=False, hidden=True, cancel=False):
     try:

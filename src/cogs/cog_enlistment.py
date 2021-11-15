@@ -283,7 +283,7 @@ class DMEnlistmentCog(commands.Cog):
                         break
 
                     if udata is not None:
-                        correct = await ask_confirm(self.state, ctx, 'Is this information correct?',
+                        correct = await ask_confirm(self.state, ctx.author, 'Is this information correct?',
                                                     embed=udata.embed(), hidden=False)
 
                     else:
