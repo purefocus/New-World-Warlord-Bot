@@ -83,6 +83,7 @@ def generate_enlistment_csv(war: WarDef, users):
 
     # table_data = [['Name', 'Role', 'Weapons', 'Company']]
     data.to_csv(file, index=True, header=True)
+    print('data Saved!')
     return file
 
 

@@ -65,10 +65,11 @@ class RosterCog(commands.Cog):
                                   allow_multiple=False)
         if war is not None:
 
-            # file = generate_enlistment_csv(war, self.state.users)
-            file = generate_enlistment_excel(war, self.state.users)
+            file = generate_enlistment_csv(war, self.state.users)
+            # file = generate_enlistment_excel(war, self.state.users)
+            print(file)
 
-            await ctx.send(content='Here\'s the roster.', file=discord.File(file), hidden=False)
+            await ctx.send(content='Here\'s the roster.', file=discord.File(file), hidden=True)
         else:
             await ctx.send(content=f"Denied!")
 
