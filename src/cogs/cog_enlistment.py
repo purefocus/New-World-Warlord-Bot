@@ -25,9 +25,9 @@ question_list = {
         'response_type': str,
     },
     'level': {
-        'question': 'What level is your character? *(Use your average gear score if above level 60)*',
+        'question': 'What level is your character?',
         'response_type': int,
-        # 'check': lambda response, answers: None if 0 < response <= 600 else 'Your answer must be between 0-60'
+        'check': lambda response, answers: None if 0 < response <= 60 else 'Your answer must be between 0-60'
     },
     # 'gearscore': {
     #     'question': 'What level is your Gear Score?',
@@ -67,7 +67,7 @@ question_list = {
     #     'check': lambda response, answers: None if 0 < response <= 20 else 'Your answer must be between 0-20'
     # },
     'group': {
-        'question': 'Do you have a preferred group? Enter `None` if you do not have one.',
+        'question': 'Any extra information? \nAttribute Distribution, Specialties, Favorite Taylor Swift song, etc..?',
         'response_type': str,
     }
 }

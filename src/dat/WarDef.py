@@ -8,6 +8,7 @@ from utils.data import *
 import uuid
 from utils.details import WAR_ROLES
 
+
 class WarDef:
 
     def __init__(self, data=None):
@@ -25,6 +26,7 @@ class WarDef:
         self.owners = None
         # self.enlisted = Enlisted()
         self.roster = []
+        self.absent = []
         # self.war_board = []
         self.boards = []
 
@@ -47,6 +49,7 @@ class WarDef:
             'wartime': self.war_time,
             'owners': self.owners,
             'roster': self.roster,
+            'absent': self.absent,
             'additional': self.additional_info,
             # 'enlisted': self.enlisted.as_dict(),
             # 'boards': self.war_board,
@@ -70,6 +73,8 @@ class WarDef:
             self.name = dic['name']
         if 'roster' in dic:
             self.roster = dic['roster']
+        if 'absent' in dic:
+            self.absent = dic['absent']
         if 'additional' in dic:
             self.additional_info = dic['additional']
 
@@ -92,8 +97,24 @@ class WarDef:
         if isinstance(enlisted, Enlistment):
             enlisted = enlisted.username
 
+        if enlisted in self.absent:
+            self.absent.remove(enlisted)
+
         if enlisted not in self.roster:
             self.roster.append(enlisted)
+            return False
+
+        return True
+
+    def add_absent(self, enlisted) -> bool:
+        if isinstance(enlisted, Enlistment):
+            enlisted = enlisted.username
+
+        if enlisted in self.roster:
+            self.roster.remove(enlisted)
+
+        if enlisted not in self.absent:
+            self.absent.append(enlisted)
             return False
 
         return True
@@ -108,11 +129,12 @@ class WarDef:
                             inline=False)
             embed.add_field(name='Attackers', value=self.attacking, inline=True)
             embed.add_field(name='Defenders', value=self.defending, inline=True)
+            embed.add_field(name='\u200b', value='\u200b', inline=True)
 
             # self.groups.embed(embed)
 
-        if self.looking_for is not None:
-            embed.add_field(name='Looking for', value=self.looking_for, inline=False)
+        # if self.looking_for is not None:
+        #     embed.add_field(name='Looking for', value=self.looking_for, inline=False)
 
         if self.additional_info is not None:
             info = self.additional_info
@@ -122,7 +144,11 @@ class WarDef:
 
         embed.add_field(name='Enlisted',
                         value=f'{str(len(self.roster))}',
-                        inline=False)
+                        inline=True)
+        embed.add_field(name='Absent',
+                        value=f'{str(len(self.absent))}',
+                        inline=True)
+        embed.add_field(name='\u200b', value='\u200b')
 
         # embed.set_footer(text='Use /enlist to sign up!')
 
