@@ -22,7 +22,7 @@ def _group_by_role(roster: list, absent: list):
 
             if role in user.roles:
                 result[role].append(user)
-    result['absent'] = absent
+    result['🚫 Absent'] = absent
     return result
 
 
