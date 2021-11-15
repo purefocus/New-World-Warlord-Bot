@@ -59,7 +59,7 @@ def generate_enlistment_pandas(war: WarDef, users):
             dat.append(d)
         else:
             d[2: -1] = ['ABSENT', '-', '-', '-', '-', '-', '-']
-    data = [entry.data() for enl, entry in data]
+    data = dat#[entry.data() for enl, entry in data]
 
     data = pd.DataFrame(data,
                         columns=[
