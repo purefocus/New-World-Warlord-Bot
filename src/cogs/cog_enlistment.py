@@ -74,7 +74,7 @@ question_list = {
 STR_ENLIST_FAILED = 'Something went wrong and you have not been enlisted.'
 STR_NO_ACTIVE_WAR = 'Sorry, This war is no longer active!\nIf this is a mistake, please contact an admin!'
 STR_ENLIST_SUCCESS = 'You have successfully been enlisted for the war **%s**\n ' \
-                     'You can update you enlistment by clicking the \'Enlist Now!\' button again.\n' \
+                     'You can update you enlistment by clicking the \'Click to Enlist!\' button again.\n' \
                      '**Do not forget to also sign up at the in-game war board!**'
 
 STR_NO_PERMISSION = 'It seems you have privacy settings preventing me from sending you a private message!\n' \
@@ -91,6 +91,7 @@ STR_NO_PERMISSION = 'It seems you have privacy settings preventing me from sendi
                     'Extra Information: \n' \
                     '```\n' \
                     'Once you have done this, try and enlist again!'
+
 
 # def _check(x, ctx):
 
@@ -285,7 +286,8 @@ class DMEnlistmentCog(commands.Cog):
                     if udata is not None:
                         correct = await ask_confirm(self.state, ctx.author, 'Is this information correct?',
                                                     embed=udata.embed(), hidden=False)
-
+                        if correct:
+                            await ctx.author.send(STR_ENLIST_SUCCESS % war.location)
                     else:
                         break
 
