@@ -278,11 +278,11 @@ class DMEnlistmentCog(commands.Cog):
 
     @commands.Cog.listener('on_interaction_received')
     async def on_interaction(self, ctx: Interaction):
-        if not await check_permission(ctx, Perm.ENLIST):
-            return
         try:
             data = ctx.data
             if 'custom_id' not in data:
+                return
+            if not await check_permission(ctx, Perm.ENLIST):
                 return
             id: str = data['custom_id']
             if id.startswith('btn:enlist:'):
