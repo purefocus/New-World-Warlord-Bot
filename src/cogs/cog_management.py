@@ -24,10 +24,10 @@ signup_fields = {
     'faction': 'faction',
     'company': 'company',
     'character level': 'level',
-    'desired role(s)': 'role',
-    'primary weapon/level': 'primary_weapon',
-    'secondary weapon/level': 'secondary_weapon',
-    'group member(s)': 'preferred_group'
+    'desired role': 'role',
+    'primary weapon': 'primary_weapon',
+    'secondary weapon': 'secondary_weapon',
+    'extra information': 'extra_info'
 }
 
 
@@ -133,7 +133,7 @@ def parse_signup_info(state: BotState, lines):
         entry.role = result['role']
         entry.primary_weapon = result['primary_weapon']
         entry.secondary_weapon = result['secondary_weapon']
-        entry.preferred_group = result['preferred_group']
+        entry.preferred_group = result['extra_info']
 
         return entry
 
