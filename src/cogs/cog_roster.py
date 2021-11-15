@@ -44,10 +44,11 @@ class RosterCog(commands.Cog):
 
             if isinstance(war, WarDef):
                 names = war.roster
+                absent = war.absent
             else:
                 names = self.state.users.users.keys()
-
-            embed = create_roster_embed(names, self.state, title, abrv_line=False)
+                absent = None
+            embed = create_roster_embed(names, absent, self.state, title, abrv_line=False)
             await ctx.send(content='Here\'s the roster.', embed=embed)
 
         else:

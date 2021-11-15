@@ -37,10 +37,12 @@ async def cmd_get_enlisted(state: BotState, ctx):
 
         if isinstance(war, WarDef):
             names = war.roster
+            absent = war.absent
         else:
             names = state.users.users.keys()
+            absent = None
 
-        embed = create_roster_embed(names, state, title, abrv_line=False)
+        embed = create_roster_embed(names, absent, state, title, abrv_line=False)
         await ctx.send(content='Here\'s the roster.', embed=embed)
         # print_dict(by_roles)
         # create_war_roster(war)
