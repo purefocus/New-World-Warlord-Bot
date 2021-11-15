@@ -21,11 +21,11 @@ from utils.permissions import *
 
 question_list = {
     'name': {
-        'question': 'What is your character name?',
+        'question': '**What is your character name?**',
         'response_type': str,
     },
     'level': {
-        'question': 'What level is your character?',
+        'question': '**What level is your character?**',
         'response_type': int,
         'check': lambda response, answers: None if 0 < response <= 60 else 'Your answer must be between 0-60'
     },
@@ -35,19 +35,19 @@ question_list = {
     #     'askif': lambda answers: answers['level'] == 60
     # },
     'faction': {
-        'question': 'What Faction are you?',
+        'question': '**What Faction are you?**',
         'choices': FACTIONS,
     },
     'company': {
-        'question': 'What Company are you in?',
+        'question': '**What Company are you in?**',
         'response_type': str,
     },
     'role': {
-        'question': 'What is your desired role?',
+        'question': '**What is your desired role?**',
         'choices': WAR_ROLES,
     },
     'primary_weapon': {
-        'question': 'What is your Primary Weapon?',
+        'question': '**What is your Primary Weapon?**',
         'choices': WEAPON_CHOICES,
     },
     # 'primary_level': {
@@ -56,7 +56,7 @@ question_list = {
     #     'check': lambda response, answers: None if 0 < response <= 20 else 'Your answer must be between 0-20'
     # },
     'secondary_weapon': {
-        'question': 'What is your Secondary Weapon?',
+        'question': '**What is your Secondary Weapon?**',
         'choices': WEAPON_CHOICES,
         'check': lambda response, answers: None if response != answers[
             'primary_weapon'] else 'You must select a different weapon from your primary!'
@@ -67,7 +67,7 @@ question_list = {
     #     'check': lambda response, answers: None if 0 < response <= 20 else 'Your answer must be between 0-20'
     # },
     'group': {
-        'question': 'Any extra information? \nAttribute Distribution, Specialties, Favorite Taylor Swift song, etc..?',
+        'question': '**Any extra information?** \n  *Attribute Distribution, Specialties, Favorite Taylor Swift song, etc..?*\n*Enter None if no extra information*',
         'response_type': str,
     }
 }
@@ -112,7 +112,7 @@ async def question(client: commands.Bot, ctx, answers,
             SelectMenu(custom_id='question_select', options=options, min_values=1, max_values=1, placeholder=question)
         ]
 
-    msg = await ctx.author.send(content=f'**{question}**', components=components)
+    msg = await ctx.author.send(content=f'{question}', components=components)
 
     if choices is not None:
         selection: SelectedMenu = await msg.wait_for('select', client=client, by=ctx.author, timeout=120)
