@@ -26,7 +26,9 @@ async def ask_confirm(state: BotState, ctx, question: str, embed: discord.Embed 
         else:
             msg = await ctx.send(content=question, components=comps, embed=embed)
 
-        response = await msg.wait_for(event_name='button', client=state.client, timeout=60)
+        response = await msg.wait_for(event_name='button', client=state.client,
+                                      check=lambda x: x.author == ctx.author,
+                                      timeout=60)
         result = default_response
         if response.custom_id == 'btn:confirm_yes':
             result = True

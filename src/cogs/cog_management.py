@@ -6,6 +6,7 @@ from utils.botutil import *
 from bot_state import *
 from utils.details import get_location
 
+from views.view_confirm import ask_confirm
 from utils.colorprint import *
 
 war_fields = {
@@ -208,31 +209,12 @@ async def handle_signup_message(state: BotState, message: discord.Message, edite
     try:
 
         if entry is not None:
-            # await msg.reply()
+            author = message.author
+            correct = await ask_confirm(state, author, 'Is this information correct?',
+                                        embed=entry.embed(), hidden=True)
+            if correct:
+                state.users.add_user(str(message.author), entry.to_enlistment())
 
-            msg = await message.reply(content='What war are you signing up for?',
-                                      components=[
-                                          Button(label='Click Here!',
-                                                 custom_id='signup_btn')])
-
-            test = await msg.wait_for('button', state.client, by=message.author, timeout=20)
-            await msg.delete()
-            war, resp = await select_war(state, test, 'Which war?')
-            if not test.responded:
-                await test.respond(ninja_mode=True)
-
-            if war is not None:
-                await state.add_enlistment(str(message.author), war, entry)
-                war.add_enlistment(entry.to_enlistment())
-                await resp.edit(
-                    content='You have been signed up!\nDo not forget to sign up at the war board in-game too!',
-                    components=None)
-
-            # await message.delete()
-            # await channel.send(embed=entry.embed())
-
-            # await update_war_boards(war, state)
-            # state.save_war_data()
             return True
 
     except Exception as e:
