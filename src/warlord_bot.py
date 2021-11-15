@@ -23,6 +23,7 @@ client = commands.Bot(" ", intents=intents)
 ui = UI(client, slash_options={'auto_sync': False, "wait_sync": 2, "delete_unused": None})
 ui.logger.setLevel(10)
 ui.logger.disabled = False
+
 config = Config()
 config.load()
 state = BotState(client, config)
