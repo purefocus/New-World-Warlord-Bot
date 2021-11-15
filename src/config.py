@@ -7,7 +7,7 @@ import os
 
 FILES_DIR = '../../files'
 CFG_FILE = os.path.join(FILES_DIR, 'bot_config.json')
-TMP_DIR = os.path.join(FILES_DIR, '.tmp')
+TMP_DIR = os.path.join(FILES_DIR, 'tmp')
 WAR_DATA = os.path.join(FILES_DIR, 'wars.json')
 USER_DATA = os.path.join(FILES_DIR, 'user_data.json')
 
