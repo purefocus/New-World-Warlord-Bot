@@ -215,7 +215,7 @@ class DMEnlistmentCog(commands.Cog):
 
         except discord.Forbidden as e:
             print('No permission!')
-            await ctx.send(STR_NO_PERMISSION)
+            await ctx.send(STR_NO_PERMISSION, hidden=True)
         except asyncio.TimeoutError as e:
             # import traceback
             # import sys
