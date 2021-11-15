@@ -179,7 +179,8 @@ class BotState:
             ret['content'] = '<@&894698039774679060>'
         if btn:
             ret['components'] = [
-                Button(custom_id=f'btn:enlist:{war.id}', label='Click here to Enlist!')
+                Button(custom_id=f'btn:enlist:{war.id}', label='Click here to Enlist!'),
+                Button(custom_id=f'btn:absent:{war.id}', label='Absent', color='red')
             ]
         return ret
 
