@@ -69,7 +69,7 @@ class RosterCog(commands.Cog):
             # file = generate_enlistment_excel(war, self.state.users)
             print(file)
 
-            await ctx.send(content='Here\'s the roster.', file=discord.File(file, filename=war.location + '.csv'),
+            await ctx.send(content='Here\'s the roster.', file=discord.File(open(file, 'rb'), filename=war.location + '.csv'),
                            hidden=True)
         else:
             await ctx.send(content=f"Denied!")
