@@ -6,6 +6,8 @@ from discord import Embed
 
 
 def _get_users_from_names(names, absent, users: UserData):
+    if absent is None:
+        absent = []
     return [users[name] for name in names], [users[name] for name in absent]
 
 
