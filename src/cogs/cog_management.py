@@ -210,12 +210,15 @@ async def handle_signup_message(state: BotState, message: discord.Message, edite
 
         if entry is not None:
             author = message.author
-            correct, cmsg = await ask_confirm(state, author, 'Is this information correct?',
+            correct, cmsg = await ask_confirm(state, message, 'Is this information correct?',
                                               embed=entry.embed(), hidden=False, ret_msg=True)
             if correct:
                 state.users.add_user(str(message.author), entry.to_enlistment())
-                await cmsg.edit(content='Data Saved!', embed=entry.embed())
+                await cmsg.edit(content='Data Saved!', embed=entry.embed(), components=None)
                 await message.delete()
+            else:
+                await cmsg.edit(content='Failed! Please try again!', embed=None, components=None)
+                await cmsg.delete(delay=5)
 
             return True
 
@@ -246,9 +249,9 @@ class WarManagementCog(commands.Cog):
                 if self.state.config.is_war_signup(msg):
                     ret = await handle_signup_message(self.state, msg, edited)
 
-                if ret:
-                    msg = await msg.reply(content='Done.')
-                    await msg.delete(delay=1)
+                # if ret:
+                #     msg = await msg.reply(content='Done.')
+                #     await msg.delete(delay=1)
 
             except Exception as e:
                 import traceback

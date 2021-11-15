@@ -23,6 +23,8 @@ async def ask_confirm(state: BotState, ctx, question: str, embed: discord.Embed 
 
         if hidden:
             msg = await ctx.send(content=question, components=comps, embed=embed, hidden=hidden)
+        elif isinstance(ctx, discord.Message):
+            msg = await ctx.reply(content=question, components=comps, embed=embed)
         else:
             msg = await ctx.send(content=question, components=comps, embed=embed)
 

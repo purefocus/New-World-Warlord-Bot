@@ -77,6 +77,21 @@ STR_ENLIST_SUCCESS = 'You have successfully been enlisted for the war **%s**\n '
                      'You can update you enlistment by clicking the \'Enlist Now!\' button again.\n' \
                      '**Do not forget to also sign up at the in-game war board!**'
 
+STR_NO_PERMISSION = 'It seems you have privacy settings preventing me from sending you a private message!\n' \
+                    'Please manually enter your information using the following template and try again!\n' \
+                    '```\n' \
+                    '@Warlord\n' \
+                    'Name: \n' \
+                    'Faction: \n' \
+                    'Company: \n' \
+                    'Character Level: \n' \
+                    'Desired Role: \n' \
+                    'Primary Weapon: \n' \
+                    'Secondary Weapon: \n' \
+                    'Extra Information: \n' \
+                    '```\n' \
+                    'Once you have done this, try and enlist again!'
+
 
 async def question(client: commands.Bot, ctx, answers,
                    question=None, followup=None, response_type=None, choices=None,
@@ -198,6 +213,9 @@ class DMEnlistmentCog(commands.Cog):
 
             return user
 
+        except discord.Forbidden as e:
+            print('No permission!')
+            await ctx.send(STR_NO_PERMISSION)
         except asyncio.TimeoutError as e:
             # import traceback
             # import sys
