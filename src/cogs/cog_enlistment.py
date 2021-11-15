@@ -229,12 +229,20 @@ class DMEnlistmentCog(commands.Cog):
             udata = self.state.users[str(ctx.author)]
             if udata is not None:
                 # if war.absent
-                ask, msg = await ask_confirm(self.state, ctx,
-                                             'You have enlisted in a previous war, so we can just reuse that information! '
-                                             '\nWould you like to update your information instead? ',
-                                             embed=udata.embed(), ret_msg=True,
-                                             text=['Update Information', 'Enlist', "Cancel"],
-                                             colors=['blurple', 'green', 'red'], cancel=True)
+                if absent:
+                    ask, msg = await ask_confirm(self.state, ctx,
+                                                 'You have enlisted in a previous war, so we can just reuse that information! '
+                                                 '\nWould you like to update your information instead? ',
+                                                 embed=udata.embed(), ret_msg=True,
+                                                 text=['Update', 'Absent', "Cancel"],
+                                                 colors=['blurple', 'green', 'red'], cancel=True)
+                else:
+                    ask, msg = await ask_confirm(self.state, ctx,
+                                                 'You have enlisted in a previous war, so we can just reuse that information! '
+                                                 '\nWould you like to update your information instead? ',
+                                                 embed=udata.embed(), ret_msg=True,
+                                                 text=['Update', 'Enlist', "Cancel"],
+                                                 colors=['blurple', 'green', 'red'], cancel=True)
                 if ask:
                     await msg.edit(content='**Please check your private messages!**', components=None, embed=None)
             if ask is None:
