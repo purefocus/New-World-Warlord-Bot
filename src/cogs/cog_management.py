@@ -210,10 +210,12 @@ async def handle_signup_message(state: BotState, message: discord.Message, edite
 
         if entry is not None:
             author = message.author
-            correct = await ask_confirm(state, author, 'Is this information correct?',
-                                        embed=entry.embed(), hidden=True)
+            correct, cmsg = await ask_confirm(state, author, 'Is this information correct?',
+                                              embed=entry.embed(), hidden=False, ret_msg=True)
             if correct:
                 state.users.add_user(str(message.author), entry.to_enlistment())
+                await cmsg.edit(content='Data Saved!', embed=entry.embed())
+                await message.delete()
 
             return True
 
