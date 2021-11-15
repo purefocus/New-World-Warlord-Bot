@@ -88,26 +88,28 @@ async def check_faction_permission(user: discord.Member, p: Permission, client: 
     return False
 
 
-def has_permission(user: discord.Member, p: Permission) -> bool:
+def has_permission(user: discord.User, p: Permission) -> bool:
     if user.id in master_users:
         # print(f'Master Permission Bypass! {user.display_name} ({user})')
         return True
     # print(type(user))
     guild = user.guild
-    if p.faction_only and user.guild.id != cfg.FACTION_SERVER_ID:
-        return False
+    for guild in user.mutual_guilds:
+        user = guild.get_member(user.id)
+        if p.faction_only and guild.id != cfg.FACTION_SERVER_ID:
+            return False
 
-    if guild.id in permissions:
-        perms = permissions[guild.id]
-        if p in perms:
-            allowed = perms[p]
-            if isinstance(allowed, Permission):
+        if guild.id in permissions:
+            perms = permissions[guild.id]
+            if p in perms:
                 allowed = perms[p]
+                if isinstance(allowed, Permission):
+                    allowed = perms[p]
 
-            for role in allowed:
-                if has_role(user, role):
-                    # print(f'allowed by role {role}')
-                    return p.allow
+                for role in allowed:
+                    if has_role(user, role):
+                        # print(f'allowed by role {role}')
+                        return p.allow
     return not p.allow
 
 

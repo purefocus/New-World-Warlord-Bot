@@ -21,6 +21,15 @@ def add_mapping(mappings, name: str, aliases: list):
 
 
 ##########################
+#    Weapon Mappings     #
+##########################
+weapon_mappings = {}
+add_mapping(weapon_mappings, 'Sword & Shield',
+            ['Sword and Shield', 'Sword and board', 'word & board', 'Sword&Shield', 'SS'])
+add_mapping(weapon_mappings, 'War Hammer', ['Hammer', 'WH', 'Great Hammer', 'GH'])
+add_mapping(weapon_mappings, 'Great Axe', ['GA', 'War Axe', 'Axe'])
+
+##########################
 #  Emoji Role Mappings   #
 ##########################
 role_emoji_mappings = {}
@@ -73,6 +82,15 @@ def role_emoji(role):
     if _loc in role_emoji_mappings:
         return role_emoji_mappings[_loc]
     return role
+
+
+def replace_weapon(weappon):
+    if weappon is None:
+        return None
+    _weappon = weappon.lower()
+    if _weappon in weapon_mappings:
+        return weapon_mappings[_weappon]
+    return weappon
 
 
 def replace_emojis(txt: str):

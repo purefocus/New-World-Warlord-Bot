@@ -4,7 +4,7 @@ from discord_ui.cogs import slash_cog, subslash_cog, listening_component_cog
 from utils.botutil import *
 
 from bot_state import *
-from utils.details import get_location
+from utils.details import get_location, replace_weapon
 
 from views.view_confirm import ask_confirm
 from utils.colorprint import *
@@ -92,7 +92,7 @@ def parse_war_info(state: BotState, lines) -> WarDef:
     has_fields = True
     for field in war_required_fields:
         if field not in result:
-            print(f'does not have {field}')
+            # print(f'does not have {field}')
             print_dict(result)
             has_fields = False
 
@@ -132,8 +132,8 @@ def parse_signup_info(state: BotState, lines):
         entry.company = result['company']
         entry.level = result['level']
         entry.role = result['role']
-        entry.primary_weapon = result['primary_weapon']
-        entry.secondary_weapon = result['secondary_weapon']
+        entry.primary_weapon = replace_weapon(result['primary_weapon'])
+        entry.secondary_weapon = replace_weapon(result['secondary_weapon'])
         entry.preferred_group = result['extra_info']
 
         return entry
