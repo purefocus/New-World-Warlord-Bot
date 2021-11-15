@@ -157,6 +157,8 @@ class DMEnlistmentCog(commands.Cog):
                 user.username = responses['name'] = udata.username
                 user.faction = responses['faction'] = udata.faction
                 user.company = responses['company'] = udata.company
+                if udata.level == 60:
+                    user.level = responses['level'] = udata.level
 
             await ctx.author.send(
                 f'Hello **{user}**, you have chosen to enlist in the war for **{war.location}**'
@@ -226,6 +228,7 @@ class DMEnlistmentCog(commands.Cog):
             ask = True
             udata = self.state.users[str(ctx.author)]
             if udata is not None:
+                # if war.absent
                 ask, msg = await ask_confirm(self.state, ctx,
                                              'You have enlisted in a previous war, so we can just reuse that information! '
                                              '\nWould you like to update your information instead? ',
