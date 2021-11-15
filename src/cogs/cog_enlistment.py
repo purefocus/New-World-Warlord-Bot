@@ -215,7 +215,7 @@ class DMEnlistmentCog(commands.Cog):
         if channel.type != discord.ChannelType.private:
             return
 
-    async def do_enlist(self, war: WarDef, ctx: Interaction):
+    async def do_enlist(self, war: WarDef, ctx: Interaction, absent=False):
         user = ctx.author
         # war = self.state.wars[id]
         if war is not None:
@@ -265,7 +265,7 @@ class DMEnlistmentCog(commands.Cog):
             print('Enlistment Ended! ', str(ctx.author), len(self.users_enlisting))
 
             if udata is not None:
-                await self.state.add_enlistment(str(ctx.author), war, udata, announce=ask)
+                await self.state.add_enlistment(str(ctx.author), war, udata, absent=absent, announce=ask)
                 if msg is not None:
                     await msg.edit(content=STR_ENLIST_SUCCESS % war.location, components=None)
                 else:
@@ -285,7 +285,8 @@ class DMEnlistmentCog(commands.Cog):
             if not await check_permission(ctx, Perm.ENLIST):
                 return
             id: str = data['custom_id']
-            if id.startswith('btn:enlist:'):
+            absent = id.startswith('btn:absent:')
+            if id.startswith('btn:enlist:') or absent:
                 id = id[11:]
                 war = None
                 for w in self.state.wars:
@@ -303,7 +304,7 @@ class DMEnlistmentCog(commands.Cog):
                     print('Proc killed')
                 del self.users_enlisting[ctx.author]
 
-            self.users_enlisting[ctx.author] = self.do_enlist(war, ctx)
+            self.users_enlisting[ctx.author] = self.do_enlist(war, ctx, absent)
             await self.users_enlisting[ctx.author]
             try:
                 del self.users_enlisting[ctx.author]

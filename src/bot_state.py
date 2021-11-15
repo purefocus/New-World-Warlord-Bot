@@ -49,12 +49,15 @@ class BotState:
             )
         )
 
-    async def add_enlistment(self, disc_name, war: WarDef, user: Enlistment, save=True, announce=True):
+    async def add_enlistment(self, disc_name, war: WarDef, user: Enlistment, absent=False, save=True, announce=True):
         try:
             num_enlisted = len(war)
             if isinstance(user, UserSignup):
                 user = user.to_enlistment()
-            war.add_enlistment(user)
+            if absent:
+                war.add_absent(user)
+            else:
+                war.add_enlistment(user)
 
             self.users.add_user(disc_name, user)
 
