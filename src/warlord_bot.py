@@ -7,6 +7,15 @@ from forms.war_management import *
 from utils.botutil import *
 from cogs import *
 
+# fc = 0
+# lst = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+# for i in range(len(lst)):
+#     print(lst[fc], end='')
+#     if fc % 2 == 1:
+#         print('c', end='\n')
+#     fc += 1
+# sys.exit(0)
+
 intents = discord.Intents.all()
 
 client = commands.Bot(" ", intents=intents)
