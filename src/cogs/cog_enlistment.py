@@ -92,6 +92,8 @@ STR_NO_PERMISSION = 'It seems you have privacy settings preventing me from sendi
                     '```\n' \
                     'Once you have done this, try and enlist again!'
 
+# def _check(x, ctx):
+
 
 async def question(client: commands.Bot, ctx, answers,
                    question=None, followup=None, response_type=None, choices=None,
@@ -281,7 +283,7 @@ class DMEnlistmentCog(commands.Cog):
                         break
 
                     if udata is not None:
-                        correct = await ask_confirm(self.state, ctx.author, 'Is this information correct?',
+                        correct = await ask_confirm(self.state, ctx, 'Is this information correct?',
                                                     embed=udata.embed(), hidden=False)
 
                     else:
