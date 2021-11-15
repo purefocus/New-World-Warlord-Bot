@@ -92,7 +92,7 @@ def has_permission(user: discord.Member, p: Permission) -> bool:
     if user.id in master_users:
         # print(f'Master Permission Bypass! {user.display_name} ({user})')
         return True
-    print(type(user))
+    # print(type(user))
     guild = user.guild
     if p.faction_only and user.guild.id != cfg.FACTION_SERVER_ID:
         return False
