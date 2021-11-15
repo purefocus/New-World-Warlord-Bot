@@ -246,7 +246,7 @@ class WarManagementCog(commands.Cog):
                 if self.state.config.is_war_management(msg):
                     ret = await handle_management_message(self.state, msg, edited)
 
-                if self.state.config.is_war_signup(msg):
+                if self.state.config.is_war_signup(msg) or self.state.config.is_war_management(msg):
                     ret = await handle_signup_message(self.state, msg, edited)
 
                 # if ret:
