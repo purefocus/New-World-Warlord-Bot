@@ -134,6 +134,7 @@ async def on_ready():
             war = state.wars[war]
             if war.active:
                 await state.update_war_boards(war)
+
         # await ui.slash.sync_commands()
     except Exception as e:
         import traceback

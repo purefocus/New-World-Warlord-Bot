@@ -71,6 +71,7 @@ def pull_from_sheet(url, sheet):
 
     print(pd)
 
+
 def parse_google_form(url: str):
     sess = requests.Session()
     form = sess.get(url, params={'usp': 'sf_link'})
@@ -88,7 +89,15 @@ def parse_google_form(url: str):
     print_dict(dict)
 
 
+class Question:
+    def __init__(self, name, desc, code):
+        self.name = name
+        self.desc = desc
+        self.code = code
+        pass
+
+
 if __name__ == '__main__':
-    pull_from_sheet('https://docs.google.com/spreadsheets/d/1shDl1rikY29gBocWiCJOXaFq6sgO-74OZk-JQWuTx_Y/', 'War+Roster')
-    # parse_google_form(
-    #     'https://docs.google.com/forms/d/e/1FAIpQLSfYNr3uLqLKoXKuY6PmHsugpEn4H6QjL84dY6-KgDabq_gGtA/viewform?usp=sf_link')
+    # pull_from_sheet('https://docs.google.com/spreadsheets/d/1shDl1rikY29gBocWiCJOXaFq6sgO-74OZk-JQWuTx_Y/', 'War+Roster')
+    parse_google_form(
+        'https://docs.google.com/forms/d/e/1FAIpQLSfYNr3uLqLKoXKuY6PmHsugpEn4H6QjL84dY6-KgDabq_gGtA/viewform?usp=sf_link')

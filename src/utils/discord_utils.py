@@ -8,6 +8,22 @@ _MENTION_REGEX_ = re.compile(r'<@(&?[0-9]*)>')
 _COMPANY_ROLE_COLOR_ = discord.Colour(0xb9adff)
 _COMPANY_RANK_NAMES_ = ['Governor', 'Consul', 'Officer']
 
+special_company_role_cases = {
+    868924409115709480: {  # Lotus Trading Company
+        'Member': 'Lotus Trading'
+    }
+}
+
+
+def _get_company_role_special(user: discord.Member) -> [None, str]:
+    gid = user.guild.id
+    if gid in special_company_role_cases:
+        cases = special_company_role_cases[gid]
+        for key in cases:
+            if has_role(user, key):
+                return cases[key]
+    return None
+
 
 def has_role(user: discord.Member, role_name: str):
     for role in user.roles:
@@ -17,6 +33,12 @@ def has_role(user: discord.Member, role_name: str):
 
 
 def get_company_role(user: discord.Member):
+    # Add case for lotus
+
+    role = _get_company_role_special(user)
+    if role is not None:
+        return role
+
     for role in user.roles:
         if role.color == _COMPANY_ROLE_COLOR_:
             return role.name
