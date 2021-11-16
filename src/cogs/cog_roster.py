@@ -23,7 +23,7 @@ import config as cfg
 import time
 from utils.permissions import *
 
-last_message_time = time.time()
+last_message_time = 0
 
 
 class RosterCog(commands.Cog):
@@ -38,9 +38,11 @@ class RosterCog(commands.Cog):
                    SlashOption(str, name='message', description='The message to send to all users', required=True)
                ], **cfg.cmd_cfg)
     async def message_enlisted(self, ctx, message):
+        global last_message_time
         ctime = time.time()
         if float(ctime - last_message_time) > 60:
             await ctx.respond('Sending messages too frequently!')
+            last_message_time = time.time()
             return
 
         if not await check_permission(ctx, Perm.WAR_MANAGEMENT):
