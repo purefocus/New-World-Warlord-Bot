@@ -20,8 +20,10 @@ import os
 from utils.colorprint import *
 
 import config as cfg
-
+import time
 from utils.permissions import *
+
+last_message_time = time.time()
 
 
 class RosterCog(commands.Cog):
@@ -29,6 +31,31 @@ class RosterCog(commands.Cog):
     def __init__(self, client: commands.Bot, state: BotState):
         self.client = client
         self.state = state
+
+    @slash_cog(name='message_enlisted',
+               description='Sends a message to all users who are signed up for a war',
+               options=[
+                   SlashOption(str, name='message', description='The message to send to all users', required=True)
+               ], **cfg.cmd_cfg)
+    async def message_enlisted(self, ctx, message):
+        ctime = time.time()
+        if float(ctime - last_message_time) > 60:
+            await ctx.respond('Sending messages too frequently!')
+            return
+
+        if not await check_permission(ctx, Perm.WAR_MANAGEMENT):
+            return
+        war, _ = await select_war(self.state, ctx, 'Select the war to get the enlistment roster for',
+                                  allow_multiple=False,
+                                  allow_overall=False)
+        roster = war.roster
+        await ctx.respond(
+            content=f'Sending the following message to all users enlisted in the war for {war.location}\n```\n{message}\n```')
+        if roster is not None:
+            for name in roster:
+                user = self.state.users[name]
+                if user is not None:
+                    await user.send_message(self.state.client, message)
 
     @slash_cog(name='get_enlisted',
                description='Replies with a table of all the users enlisted for a specific war',
