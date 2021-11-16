@@ -41,7 +41,7 @@ class RosterCog(commands.Cog):
         global last_message_time
         ctime = time.time()
         if float(ctime - last_message_time) > 60:
-            await ctx.respond('Sending messages too frequently!')
+            await ctx.respond(f'Sending messages too frequently! {float(ctime - last_message_time)}', hidden=True)
             last_message_time = time.time()
             return
 
