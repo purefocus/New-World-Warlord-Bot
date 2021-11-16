@@ -30,7 +30,7 @@ class Perm:
 
 
 master_users = [198526201374048256]
-
+#/message_enlisted message: Sorry for the spam, but this is just a test
 permissions = {
     cfg.LOTUS_SERVER_ID: {
         Perm.ADMIN: ['Moderator', 'Governor', 'Consul'],
@@ -51,7 +51,7 @@ permissions = {
         Perm.CONFIGURE: []
     },
     cfg.WARLORD_TEST_ID: {
-        Perm.ADMIN: [],
+        Perm.ADMIN: ['WarAdmin'],
         Perm.ENLIST: [],
         Perm.WAR_CREATE: [],
         Perm.WAR_END: [],
