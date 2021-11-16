@@ -243,4 +243,5 @@ class AdminCog(commands.Cog):
                 await _make_company_role(name, guild)
 
             await msg.edit(
-                f'Role {name} Added!\n *Don\'t forget to change the role\'s position in the server role list!*')
+                f'Role {name} Added!\n *Don\'t forget to change the role\'s position in the server role list!*',
+                components=None)
