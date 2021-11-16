@@ -21,7 +21,7 @@ class Permission:
 class Perm:
     ENLIST = Permission('enlist', True)
     WAR_CREATE = Permission('war_create', True)
-    WAR_MANAGEMENT = Permission('war_manage', True)
+    WAR_MANAGEMENT = Permission('war_manage', False)
     WAR_END = Permission('war_end', True)
     WAR_ROSTER = Permission('war_roster', True)
     WAR_POST = Permission('war_post', True)
