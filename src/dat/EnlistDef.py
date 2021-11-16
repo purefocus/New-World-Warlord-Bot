@@ -200,7 +200,7 @@ class Enlistment:
             r = role
         return r + str(self.level) + str(self.company)
 
-    def send_message(self, client: discord.Client, content=None, embed=None):
+    async def send_message(self, client: discord.Client, content=None, embed=None):
         for guild in client.guilds:
             user = guild.get_member_named(self.disc_name)
             if user is not None:
