@@ -38,12 +38,12 @@ class RosterCog(commands.Cog):
                    SlashOption(str, name='message', description='The message to send to all users', required=True)
                ], **cfg.cmd_cfg)
     async def message_enlisted(self, ctx, message):
-        global last_message_time
-        ctime = time.time()
-        if float(ctime - last_message_time) < 60:
-            await ctx.respond(f'Sending messages too frequently! {float(ctime - last_message_time)}', hidden=True)
-            return
-        last_message_time = time.time()
+        # global last_message_time
+        # ctime = time.time()
+        # if float(ctime - last_message_time) < 60:
+        #     await ctx.respond(f'Sending messages too frequently! {float(ctime - last_message_time)}', hidden=True)
+        #     return
+        # last_message_time = time.time()
 
         if not await check_permission(ctx, Perm.WAR_MANAGEMENT):
             return
