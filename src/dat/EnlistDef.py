@@ -204,5 +204,8 @@ class Enlistment:
         for guild in client.guilds:
             user = guild.get_member_named(self.disc_name)
             if user is not None:
-                await user.send(content=content, embed=embed)
+                try:
+                    await user.send(content=content, embed=embed)
+                except:
+                    pass
                 return
