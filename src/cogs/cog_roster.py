@@ -40,7 +40,7 @@ class RosterCog(commands.Cog):
     async def message_enlisted(self, ctx, message):
         global last_message_time
         ctime = time.time()
-        if float(ctime - last_message_time) > 60:
+        if float(ctime - last_message_time) < 60:
             await ctx.respond(f'Sending messages too frequently! {float(ctime - last_message_time)}', hidden=True)
             return
         last_message_time = time.time()
