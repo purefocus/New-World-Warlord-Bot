@@ -14,6 +14,14 @@ from cogs import *
 #     if fc % 2 == 1:
 #         print('c', end='\n')
 #     fc += 1
+# em = '▪️'
+# print(em, len(em))
+# em = em.encode('UTF-8')
+# print(em, len(em))
+#
+# # test = '▪️ purefocus\'s Channel'
+# # print(em in test)
+#
 # sys.exit(0)
 
 intents = discord.Intents.all()
@@ -29,22 +37,25 @@ config.load()
 state = BotState(client, config)
 state.load_war_data()
 
-cogs = [
-    WarManagementCog(client, state),
-    DMEnlistmentCog(client, state),
-    RosterCog(client, state),
+state.cogs = {
+    'war_management': WarManagementCog(client, state),
+    'dm_enlist': DMEnlistmentCog(client, state),
+    'roster': RosterCog(client, state),
+    #
+    'extras': ExtrasCog(client, state),
+    'world_status': WorldStatusCog(client, state),
+    #
+    'admin': AdminCog(client, state, ui),
+    'verify': VerificationCog(client, state),
+    # 'dm_verify': DMVerificationCog(client, state),
+    'config': ConfigurationCog(client, state),
 
-    ExtrasCog(client, state),
-    WorldStatusCog(client, state),
+    'temp_voice': TempVoiceCog(client, state),
+    # 'war_voice': WarVoiceCog(client, state),
+}
 
-    AdminCog(client, state, ui),
-    VerificationCog(client, state),
-    # DMVerificationCog(client, state),
-    ConfigurationCog(client, state)
-]
-
-for cog in cogs:
-    client.add_cog(cog)
+for c in state.cogs:
+    client.add_cog(state.cogs[c])
 
 
 # # War Related Cogs

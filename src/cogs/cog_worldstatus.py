@@ -14,8 +14,7 @@ class WorldStatusCog(commands.Cog):
         self.state = state
         self.update_status.start()
 
-    @tasks.loop(minutes=5)
-    async def update_status(self):
+    async def update_now(self):
 
         status = self.state.world_status = get_status(self.state.config.nws_token)
         await self.state.update_presence(str(status))
@@ -38,13 +37,18 @@ class WorldStatusCog(commands.Cog):
 
                 embed.add_field(name='Status', value=f'{status.status_enum}')
 
-                embed.set_footer(text=f'Last Updated • {status.last_updated}')
+                embed.set_footer(text=f'⌚ Last Updated • {status.last_updated}')
 
                 m = await msg.get_message(self.client)
                 await m.edit(content=' ', embed=embed)
+
+    @tasks.loop(minutes=5)
+    async def update_status(self):
+        await self.update_now()
 
     @update_status.before_loop
     async def before_update_status(self):
         await self.client.wait_until_ready()
         status = self.state.world_status = get_status(self.state.config.nws_token)
         await self.state.update_presence(str(status))
+        await self.update_now()

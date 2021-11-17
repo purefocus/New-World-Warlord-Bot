@@ -34,6 +34,7 @@ class BotState:
         self.wars = {}
         self.config = config
         self.users = UserData()
+        self.cogs = {}
 
         self.war_selection = {}
 

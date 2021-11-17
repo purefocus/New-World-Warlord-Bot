@@ -27,6 +27,7 @@ class Perm:
     WAR_POST = Permission('war_post', True)
     CONFIGURE = Permission('configure', True)
     ADMIN = Permission('admin', True)
+    WAR_HOST = Permission('war_host', True)
 
 
 master_users = [198526201374048256]
@@ -39,7 +40,8 @@ permissions = {
         Perm.WAR_END: Perm.WAR_END,
         Perm.WAR_ROSTER: ['Warden Leader'],
         Perm.WAR_POST: Perm.WAR_ROSTER,
-        Perm.CONFIGURE: []
+        Perm.CONFIGURE: [],
+        Perm.WAR_HOST: []
     },
     cfg.FACTION_SERVER_ID: {
         Perm.ADMIN: ['Moderators', 'Admin'],
@@ -48,7 +50,8 @@ permissions = {
         Perm.WAR_END: Perm.WAR_END,
         Perm.WAR_ROSTER: ['Governor', 'Consul', 'Officer'],
         Perm.WAR_POST: Perm.WAR_ROSTER,
-        Perm.CONFIGURE: []
+        Perm.CONFIGURE: [],
+        Perm.WAR_HOST: ['War Manager']
     },
     cfg.WARLORD_TEST_ID: {
         Perm.ADMIN: ['WarAdmin'],
@@ -57,7 +60,8 @@ permissions = {
         Perm.WAR_END: [],
         Perm.WAR_ROSTER: [],
         Perm.WAR_POST: [],
-        Perm.CONFIGURE: []
+        Perm.CONFIGURE: [],
+        Perm.WAR_HOST: []
     },
 }
 

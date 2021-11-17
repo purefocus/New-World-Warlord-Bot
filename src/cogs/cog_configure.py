@@ -57,6 +57,10 @@ class ConfigurationCog(commands.Cog):
         if await check_permission(ctx, Perm.CONFIGURE):
             msg = await ctx.channel.send(content='World Status Here')
             self.state.config.register_message('world-status', msg)
+
+            wscog = self.state.cogs['world_status']
+            await wscog.update_now()
+
             await ctx.respond(content='-', hidden=True)
         if not ctx.responded:
             await ctx.respond(ninja_mode=True)

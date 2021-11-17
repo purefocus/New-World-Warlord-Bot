@@ -7,3 +7,5 @@ from cogs.cog_verification import VerificationCog
 from cogs.cog_roster import RosterCog
 from cogs.cog_configure import ConfigurationCog
 from cogs.cog_dm_verify import DMVerificationCog
+from cogs.cog_temp_voice import TempVoiceCog
+from cogs.cog_war_channels import WarVoiceCog
