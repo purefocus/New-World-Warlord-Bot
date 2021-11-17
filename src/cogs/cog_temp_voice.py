@@ -9,8 +9,8 @@ from discord_ui import Interaction
 from utils.discord_utils import *
 import config as cfg
 
-_JOIN_TEMP_GUILD_REF_ = 897098434153185290
-_JOIN_TEMP_CHANNEL_REF_ = 910580969042497636
+_JOIN_TEMP_GUILD_REF_ = 894675526776676382
+_JOIN_TEMP_CHANNEL_REF_ = 910647314006282280
 
 _TEMP_CHANNEL_KEY = '▪'
 
