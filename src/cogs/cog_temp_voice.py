@@ -10,7 +10,7 @@ from utils.discord_utils import *
 import config as cfg
 
 _JOIN_TEMP_GUILD_REF_ = 894675526776676382
-_JOIN_TEMP_CHANNEL_REF_ = 910647314006282280
+_JOIN_TEMP_CHANNEL_REF_ = 910647897433972806
 
 _TEMP_CHANNEL_KEY = '▪'
 
@@ -47,7 +47,7 @@ class TempVoiceCog(commands.Cog):
         }
         channel_name = f'{_TEMP_CHANNEL_KEY} {owner.display_name}\'s Channel'
         channel = await guild.create_voice_channel(channel_name, category=category, overwrites=overwrites,
-                                                   user_limit=100)
+                                                   user_limit=99)
 
         self.temporary_channels[channel.id] = TempVoiceChannel(owner, channel)
         return channel
