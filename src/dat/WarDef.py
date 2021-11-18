@@ -131,10 +131,8 @@ class WarDef:
             embed.add_field(name='Details',
                             value=f'📆 {self.war_time}\n\n {self.owners}',
                             inline=False)
-            embed.add_field(name='\u200b', value='\u200b', inline=False)
             embed.add_field(name='Attackers', value=self.attacking, inline=True)
             embed.add_field(name='Defenders', value=self.defending, inline=True)
-            embed.add_field(name='\u200b', value='\u200b', inline=False)
             # embed.add_field(name='\u200b', value='\u200b', inline=True)
 
             # self.groups.embed(embed)
