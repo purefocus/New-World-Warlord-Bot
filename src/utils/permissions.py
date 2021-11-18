@@ -108,7 +108,7 @@ def has_permission(user: discord.User, p: Permission) -> bool:
             if p in perms:
                 allowed = perms[p]
                 if isinstance(allowed, Permission):
-                    allowed = perms[p]
+                    allowed = perms[allowed]
 
                 for role in allowed:
                     if has_role(user, role):
