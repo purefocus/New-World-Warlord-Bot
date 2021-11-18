@@ -131,9 +131,11 @@ class WarDef:
             embed.add_field(name='Details',
                             value=f'📆 {self.war_time}\n\n {self.owners}',
                             inline=False)
+            embed.add_field(name='\u200b', value='\u200b', inline=False)
             embed.add_field(name='Attackers', value=self.attacking, inline=True)
             embed.add_field(name='Defenders', value=self.defending, inline=True)
-            embed.add_field(name='\u200b', value='\u200b', inline=True)
+            embed.add_field(name='\u200b', value='\u200b', inline=False)
+            # embed.add_field(name='\u200b', value='\u200b', inline=True)
 
             # self.groups.embed(embed)
 
@@ -146,13 +148,14 @@ class WarDef:
                 info = self.additional_info[:1018]
             embed.add_field(name='Additional Info', value=f'```{info}```', inline=False)
 
+        embed.add_field(name='\u200b', value='\u200b', inline=False)
         embed.add_field(name='Enlisted',
                         value=f'{str(len(self.roster))}',
                         inline=True)
         embed.add_field(name='Absent',
                         value=f'{str(len(self.absent))}',
                         inline=True)
-        embed.add_field(name='\u200b', value='\u200b')
+        embed.add_field(name='\u200b', value='\u200b', inline=False)
 
         if self.image_url is not None:
             embed.set_image(url=self.image_url)
