@@ -149,14 +149,14 @@ class WarDef:
                 info = self.additional_info[:1018]
             embed.add_field(name='Additional Info', value=f'```{info}```', inline=False)
 
-        embed.add_field(name='\u200b', value='\u200b', inline=False)
+        # embed.add_field(name='\u200b', value='\u200b', inline=False)
         embed.add_field(name='Enlisted',
                         value=f'{str(len(self.roster))}',
                         inline=True)
         embed.add_field(name='Absent',
                         value=f'{str(len(self.absent))}',
                         inline=True)
-        embed.add_field(name='\u200b', value='\u200b', inline=False)
+        embed.add_field(name='\u200b', value='\u200b', inline=True)
 
 
         # embed.set_footer(text='Use /enlist to sign up!')
