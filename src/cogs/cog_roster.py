@@ -161,12 +161,12 @@ class RosterCog(commands.Cog):
         wars, msg = await select_war(self.state, ctx, 'Select war', allow_multiple=True)
         btns = []
         for war in wars:
-            btns.append(
+            btns.append([
                 Button(
                     custom_id=f'btn:enlist:{war.id}',
                     label=f'Enlist for {war.location}',
                     new_line=True
-                )
-            )
+                ),Button(custom_id=f'btn:absent:{war.id}', label='Absent', color='red')
+            ])
         await msg.edit(content='Done!', components=None)
         await ctx.respond(content='**Click buttons to enlist!**', components=btns)
