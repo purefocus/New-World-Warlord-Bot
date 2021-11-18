@@ -125,7 +125,7 @@ class WarDef:
 
     def get_embeded(self):
         embed = discord.Embed(title=f':exclamation: __{self.location}!__ :exclamation: ')
-        embed.set_thumbnail(url='https://pbs.twimg.com/profile_images/1392124727976546307/vBwCWL8W_400x400.jpg')
+        # embed.set_thumbnail(url='https://pbs.twimg.com/profile_images/1392124727976546307/vBwCWL8W_400x400.jpg')
         # embed.set_author(name='Test')
         if self.attacking is not None:
             embed.add_field(name='Details',
