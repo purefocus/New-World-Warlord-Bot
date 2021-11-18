@@ -173,7 +173,10 @@ async def handle_management_message(state: BotState, msg: discord.Message, edite
     content: str = msg.content
     lines = content.splitlines()
     war = parse_war_info(state, lines)
-    print(war)
+
+    if len(msg.attachments) > 0:
+        image_link = msg.attachments
+        war.image_url = image_link[0].url
 
     if war is not None:
         war.active = True

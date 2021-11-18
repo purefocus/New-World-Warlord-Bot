@@ -24,6 +24,7 @@ class WarDef:
         self.location = None
         self.war_time = None
         self.owners = None
+        self.image_url = None
         # self.enlisted = Enlisted()
         self.roster = []
         self.absent = []
@@ -50,6 +51,7 @@ class WarDef:
             'owners': self.owners,
             'roster': self.roster,
             'absent': self.absent,
+            'image_url': self.image_url,
             'additional': self.additional_info,
             # 'enlisted': self.enlisted.as_dict(),
             # 'boards': self.war_board,
@@ -67,6 +69,8 @@ class WarDef:
         self.location = dic['location']
         self.war_time = dic['wartime']
         self.owners = dic['owners']
+        if 'image_url' in dic:
+            self.image_url = dic['image_url']
         # self.war_board = dic['boards']
         # self.enlisted = Enlisted(dic['enlisted'])
         if 'name' in dic:
@@ -149,6 +153,9 @@ class WarDef:
                         value=f'{str(len(self.absent))}',
                         inline=True)
         embed.add_field(name='\u200b', value='\u200b')
+
+        if self.image_url is not None:
+            embed.set_image(url=self.image_url)
 
         # embed.set_footer(text='Use /enlist to sign up!')
 
