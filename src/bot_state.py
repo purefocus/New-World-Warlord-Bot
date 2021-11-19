@@ -86,6 +86,7 @@ class BotState:
         if war.is_fake:
             return False
         exists = False
+        best_match = None
         if edit:
             best_match = None
             best_score = 0
@@ -94,15 +95,21 @@ class BotState:
                 if not w.active:
                     continue
                 score = _compare_wars(war, w)
-                if score > best_score:
+                if w.owners == war.owners and w.active:
                     best_match = w
-                    best_score = score
+                # if score > best_score:
+                #     best_match = w
+                #     best_score = score
 
         else:
             if war.location in self.wars:
-                best_match = self.wars[war.location]
-                if not best_match.active:
-                    best_match = None
+                for _w in self.wars:
+                    w: WarDef = self.wars[_w]
+                    if w.owners == war.owners and w.active:
+                        best_match = w
+                # best_match = self.wars[war.location]
+                # if not best_match.active:
+                #     best_match = None
             else:
                 best_match = None
 
