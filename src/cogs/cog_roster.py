@@ -159,6 +159,7 @@ class RosterCog(commands.Cog):
         if not await check_permission(ctx, Perm.WAR_POST):
             return
         wars, msg = await select_war(self.state, ctx, 'Select war', allow_multiple=True)
+        print(wars)
         btns = []
         for war in wars:
             btns.append([
@@ -166,7 +167,8 @@ class RosterCog(commands.Cog):
                     custom_id=f'btn:enlist:{war.id}',
                     label=f'Enlist for {war.location}',
                     new_line=True
-                ),Button(custom_id=f'btn:absent:{war.id}', label='Absent', color='red')
+                ),
+                Button(custom_id=f'btn:absent:{war.id}', label='Absent', color='red')
             ])
         await msg.edit(content='Done!', components=None)
         await ctx.respond(content='**Click buttons to enlist!**', components=btns)
