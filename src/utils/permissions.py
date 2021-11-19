@@ -63,6 +63,16 @@ permissions = {
         Perm.CONFIGURE: [],
         Perm.WAR_HOST: []
     },
+    cfg.ACTUAL_APES_ID: {
+        Perm.ADMIN: ['Server Admin', 'Consul', 'Gorillas'],
+        Perm.ENLIST: [],
+        Perm.WAR_CREATE: [],
+        Perm.WAR_END: [],
+        Perm.WAR_ROSTER: [],
+        Perm.WAR_POST: [],
+        Perm.CONFIGURE: [],
+        Perm.WAR_HOST: []
+    },
 }
 
 for guild in permissions:
