@@ -74,6 +74,7 @@ def _gf(data, key):
 def parse_war_info(state: BotState, lines) -> WarDef:
     result = {}
     is_fake = False
+    is_private = False
     additional_info = None
     for i in range(len(lines)):
         line = lines[i]
@@ -82,6 +83,8 @@ def parse_war_info(state: BotState, lines) -> WarDef:
 
         if '[Fake]' in line:
             is_fake = True
+        if '[private]' in line:
+            is_private = True
 
         text_block = parse_text_block(line, lines, i)
         if text_block is not None:
@@ -108,6 +111,7 @@ def parse_war_info(state: BotState, lines) -> WarDef:
         war.war_time = _gf(result, 'time')
         war.owners = _gf(result, 'owner')
         war.additional_info = additional_info
+        war.private = is_private
         lf = _gf(result, 'looking_for')
         if lf is not None:
             war.looking_for = lf.replace(';', '\n')
@@ -175,6 +179,8 @@ async def handle_management_message(state: BotState, msg: discord.Message, edite
     content: str = msg.content
     lines = content.splitlines()
     war = parse_war_info(state, lines)
+    if war.private:
+        war.private = msg.guild.id
 
     if len(msg.attachments) > 0:
         image_link = msg.attachments

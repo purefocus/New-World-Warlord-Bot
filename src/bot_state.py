@@ -201,8 +201,9 @@ class BotState:
                 if war is not None:
                     channels = self.config.get_notice_channels()
                     for ch in channels:
-                        msg: discord.Message = await ch.send(**self.create_board(war, btn=True))
-                        war.add_board(msg)
+                        if war.can_post(ch):
+                            msg: discord.Message = await ch.send(**self.create_board(war, btn=True))
+                            war.add_board(msg)
 
 
         except Exception as e:
@@ -211,5 +212,6 @@ class BotState:
             traceback.print_exception(*sys.exc_info())
 
     async def add_war_board_to(self, war: WarDef, ch: discord.TextChannel):
-        msg: discord.Message = await ch.send(**self.create_board(war, btn=True))
-        war.add_board(msg)
+        if war.can_post(ch):
+            msg: discord.Message = await ch.send(**self.create_board(war, btn=True))
+            war.add_board(msg)

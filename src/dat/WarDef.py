@@ -33,6 +33,7 @@ class WarDef:
 
         self.looking_for = None
         self.additional_info = None
+        self.private = None
 
         self.groups = GroupAssignments(None, self)
 
@@ -51,6 +52,7 @@ class WarDef:
             'owners': self.owners,
             'roster': self.roster,
             'absent': self.absent,
+            'private': self.private,
             'image_url': self.image_url,
             'additional': self.additional_info,
             # 'enlisted': self.enlisted.as_dict(),
@@ -81,6 +83,8 @@ class WarDef:
             self.absent = dic['absent']
         if 'additional' in dic:
             self.additional_info = dic['additional']
+        if 'private' in dic:
+            self.private = dic['private']
 
         self.boards = parse_message_references(dic['boards'])
 
@@ -90,6 +94,9 @@ class WarDef:
         self.groups.from_dict(dic['groups'])
 
         return self
+
+    def can_post(self, ctx):
+        return self.private is None or self.private == ctx.guild.id
 
     def add_board(self, msg: discord.Message):
         self.boards.append(MessageReference(msg=msg))
