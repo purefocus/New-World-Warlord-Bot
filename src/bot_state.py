@@ -94,7 +94,7 @@ class BotState:
                 w = self.wars[w]
                 if not w.active:
                     continue
-                score = _compare_wars(war, w)
+                # score = _compare_wars(war, w)
                 if w.owners == war.owners and w.active:
                     best_match = w
                 # if score > best_score:
@@ -102,11 +102,11 @@ class BotState:
                 #     best_score = score
 
         else:
-            if war.location in self.wars:
-                for _w in self.wars:
-                    w: WarDef = self.wars[_w]
-                    if w.owners == war.owners and w.active:
-                        best_match = w
+            if war in self.wars:
+                # for _w in self.wars:
+                w: WarDef = self.wars[war]
+                if w.owners == war.owners and w.active:
+                    best_match = w
                 # best_match = self.wars[war.location]
                 # if not best_match.active:
                 #     best_match = None
@@ -120,10 +120,10 @@ class BotState:
             # war.groups = best_match.groups
             war.id = best_match.id
 
-            if war.location.lower() != best_match.location.lower():
-                del self.wars[best_match.location]
+            # if war.location.lower() != best_match.location.lower():
+            #     del self.wars[best_match.id]
 
-        self.wars[war.location] = war
+        self.wars[war.id] = war
         return exists
 
     def save_war_data(self):

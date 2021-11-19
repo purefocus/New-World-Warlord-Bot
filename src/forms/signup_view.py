@@ -17,7 +17,8 @@ class SelectWar(ui.Select):
         for w in state.wars:
             war: WarDef = state.wars[w]
             if war.active:
-                options.append(discord.SelectOption(label=war.location, value=w, description=war.war_time))
+                loc = war.name or war.location
+                options.append(discord.SelectOption(label=war.name, value=w, description=war.war_time))
 
         super().__init__(placeholder='Select the war to enlist in!', options=options)
 

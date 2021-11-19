@@ -43,7 +43,8 @@ async def select_war(state, ctx: SlashedCommand, question, allow_multiple=False,
     for w in state.wars:
         war = state.wars[w]
         if war.active:
-            select_options.append(SelectOption(value=w, label=war.location, description=war.make_description()))
+            select_options.append(
+                SelectOption(value=w, label=war.name or war.location, description=war.make_description()))
 
     if len(select_options) == 0:
         await ctx.send(content='There are no active wars!', hidden=True)
