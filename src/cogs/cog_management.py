@@ -19,7 +19,7 @@ war_fields = {
     'looking for': 'looking_for'
 }
 
-war_required_fields = ['attacking', 'defending', 'time', 'location']
+war_required_fields = ['name', 'time', 'location']
 
 signup_fields = {
     'name': 'name',
