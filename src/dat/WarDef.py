@@ -136,7 +136,7 @@ class WarDef:
                                 inline=False)
                 embed.add_field(name='Attackers', value=self.attacking, inline=True)
                 embed.add_field(name='Defenders', value=self.defending, inline=True)
-            # embed.add_field(name='\u200b', value='\u200b', inline=True)
+                embed.add_field(name='\u200b', value='\u200b', inline=False)
 
             # self.groups.embed(embed)
 
