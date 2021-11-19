@@ -179,15 +179,17 @@ async def handle_management_message(state: BotState, msg: discord.Message, edite
     content: str = msg.content
     lines = content.splitlines()
     war = parse_war_info(state, lines)
-    if war.private:
-        war.private = msg.guild.id
-
-    if len(msg.attachments) > 0:
-        image_link = msg.attachments
-        war.image_url = image_link[0].url
 
     if war is not None:
         war.active = True
+        if war.private:
+            war.private = msg.guild.id
+
+        print('New War!', war.private)
+
+        if len(msg.attachments) > 0:
+            image_link = msg.attachments
+            war.image_url = image_link[0].url
         # print('1')
         parse_group_info(war.groups, lines)
         # print('2')
@@ -234,7 +236,7 @@ async def handle_signup_message(state: BotState, message: discord.Message, edite
             return True
 
     except Exception as e:
-        raise e
+        print_stack_trace()
     return False
 
 
