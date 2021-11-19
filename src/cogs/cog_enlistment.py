@@ -25,7 +25,7 @@ question_list = {
         'response_type': str,
     },
     'level': {
-        'question': '**What level is your character?**\n*Use gear score if level is > 60*',
+        'question': '**What level is your gear score?**',
         'response_type': int,
         # 'check': lambda response, answers: None if 0 < response <= 60 else 'Your answer must be between 0-60'
     },
