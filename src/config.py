@@ -317,6 +317,8 @@ class Config:
                     lst.append(msg.__dict__())
                 self.config['messages'][key] = lst
 
+            self.config['status_channels'] = self.status_channels
+
             json.dump(self.config, open(CFG_FILE, 'w+'), indent=2)
             self.unsaved = False
         except Exception as e:

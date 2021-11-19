@@ -25,7 +25,7 @@ async def get_def_war(state, ctx: SlashedCommand):
 
 async def set_selected_war(state, ctx: SlashedCommand):
     print(ctx.author)
-    war: WarDef = await select_war(state, ctx, 'Which war are you working with?', allow_multiple=False)
+    war, _ = await select_war(state, ctx, 'Which war are you working with?', allow_multiple=False)
     if war is not None:
         state.set_modifying_war(ctx.author.name, war)
         await ctx.respond(f'Selected war: {war.location}', hidden=True)

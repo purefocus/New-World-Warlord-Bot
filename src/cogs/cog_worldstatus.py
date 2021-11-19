@@ -6,6 +6,7 @@ from bot_state import BotState
 
 from utils.world_status import get_status, WorldStatus
 
+from utils.botutil import *
 
 class WorldStatusCog(commands.Cog):
 
@@ -56,31 +57,33 @@ class WorldStatusCog(commands.Cog):
                 await m.edit(content=' ', embed=embed)
 
     async def create_status_channels(self, guild: discord.Guild):
+        try:
+            # cat_id = 911261832881250314
+            overwrites = {
+                guild.default_role: discord.PermissionOverwrite(mute_members=False, view_channel=True, connect=False,
+                                                                speak=False),
+            }
+            cat = await guild.create_category(name='Server Status',
+                                              overwrites=overwrites,
+                                              reason='Creating Server Status',
+                                              position=0)
 
-        # cat_id = 911261832881250314
-        overwrites = {
-            guild.default_role: discord.PermissionOverwrite(mute_members=False, view_channel=True, connect=False,
-                                                            speak=False),
-        }
-        cat = await guild.create_category(name='Server Status',
-                                          overwrites=overwrites,
-                                          reason='Creating Server Status',
-                                          position=0)
+            # await cat.create_voice_channel(name='Server: Ohonoo')
+            status = await cat.create_voice_channel(name='Ohonoo: xxxx')
+            players_online = await cat.create_voice_channel(name='Online: xxxx')
+            queue_size = await cat.create_voice_channel(name='Queue: xxxx')
 
-        # await cat.create_voice_channel(name='Server: Ohonoo')
-        players_online = await cat.create_voice_channel(name='Online: xxxx')
-        queue_size = await cat.create_voice_channel(name='Queue: xxxx')
-        status = await cat.create_voice_channel(name='Ohonoo: xxxx')
+            self.state.config.status_channels[guild.id] = {
+                'status': status.id,
+                'players_online': players_online.id,
+                'queue_size': queue_size.id,
+            }
+            self.state.config.save()
 
-        self.state.config.status_channels[guild.id] = {
-            'status': status.id,
-            'players_online': players_online.id,
-            'queue_size': queue_size.id,
-        }
-        self.state.config.save()
-
-        status = self.state.world_status = get_status(self.state.config.nws_token)
-        await self.update_status_channels(status)
+            status = self.state.world_status = get_status(self.state.config.nws_token)
+            await self.update_status_channels(status)
+        except Exception as e:
+            print_stack_trace()
 
     async def update_status_channels(self, status: WorldStatus):
         for gid in self.state.config.status_channels:
@@ -89,13 +92,13 @@ class WorldStatusCog(commands.Cog):
                 guild = self.client.get_guild(gid)
 
                 ch = guild.get_channel(channels['players_online'])
-                await ch.edit(name=f'Players Online: {status.players_current}/{status.players_maximum}')
+                await ch.edit(name=f'Online: {status.players_current}/{status.players_maximum}')
 
                 ch = guild.get_channel(channels['queue_size'])
                 await ch.edit(name=f'Queue: {status.queue_current}')
 
                 ch = guild.get_channel(channels['status'])
-                await ch.edit(name=f'World Status: {status.status_enum}')
+                await ch.edit(name=f'Ohonoo : {status.status_enum}')
 
             except Exception as e:
                 pass
@@ -117,17 +120,12 @@ class WorldStatusCog(commands.Cog):
 
     # @commands.Cog.listener()
     # async def on_ready(self):
-
-    # guild = self.client.get_guild(897098434153185290)
-    # has_cat = False
-    # for cat in guild.categories:
-    #     if cat.name == 'Server Status':
-    #         has_cat = True
-    #         break
     #
-    # if not has_cat:
-    #     print('Creating Status Catagory')
-    #     await self.create_status_channels(guild)
-    # else:
-    #
-    #     print('Server Status Already Exists!')
+    #     guild = self.client.get_guild(897098434153185290)
+    #     has_cat = False
+    #     for cat in guild.categories:
+    #         if cat.name == 'Server Status':
+    #             for ch in cat.channels:
+    #                 await ch.delete()
+    #             await cat.delete()
+    #             return

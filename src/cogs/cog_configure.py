@@ -71,10 +71,12 @@ class ConfigurationCog(commands.Cog):
     async def cmd_testing(self, ctx: Interaction, params):
         if await check_permission(ctx, Perm.CONFIGURE):
             args = params.split(' ')
-            if args[0] == 'add' and args[1] == 'ws-channel':
+            if args[0] == 'add' and args[1] == 'wsch':
                 from cogs.cog_worldstatus import WorldStatusCog
                 wscog: WorldStatusCog = self.state.cogs['world_status']
                 await wscog.create_status_channels(ctx.guild)
+            if not ctx.responded:
+                await ctx.respond('Added Status Channels', hidden=True)
 
     @subslash_cog(base_names=['wl_configure', 'server'], name='init')
     async def cmd_init_guild(self, ctx: Interaction):
