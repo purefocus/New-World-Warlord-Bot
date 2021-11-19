@@ -90,7 +90,7 @@ class WorldStatusCog(commands.Cog):
         for gid in self.state.config.status_channels:
             try:
                 channels = self.state.config.status_channels[gid]
-                guild = self.client.get_guild(gid)
+                guild = self.client.get_guild(int(gid))
 
                 ch = guild.get_channel(channels['players_online'])
                 await ch.edit(name=f'Online: {status.players_current}/{status.players_maximum}')
