@@ -344,6 +344,7 @@ class DMEnlistmentCog(commands.Cog):
             except:
                 pass
         except:
+            print('error: ', ctx.author)
             import traceback
             import sys
             traceback.print_exception(*sys.exc_info())
