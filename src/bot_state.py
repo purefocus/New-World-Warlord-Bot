@@ -201,9 +201,12 @@ class BotState:
                 if war is not None:
                     channels = self.config.get_notice_channels()
                     for ch in channels:
+                        print(ch)
                         if war.can_post(ch):
                             msg: discord.Message = await ch.send(**self.create_board(war, btn=True))
                             war.add_board(msg)
+                        else:
+                            print('Cannot post!')
 
 
         except Exception as e:
