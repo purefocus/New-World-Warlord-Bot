@@ -67,15 +67,15 @@ class WorldStatusCog(commands.Cog):
                                           reason='Creating Server Status',
                                           position=0)
 
-        await cat.create_voice_channel(name='Server: Ohonoo')
+        # await cat.create_voice_channel(name='Server: Ohonoo')
         players_online = await cat.create_voice_channel(name='Online: xxxx')
         queue_size = await cat.create_voice_channel(name='Queue: xxxx')
-        status = await cat.create_voice_channel(name='Status: xxxx')
+        status = await cat.create_voice_channel(name='Ohonoo: xxxx')
 
         self.state.config.status_channels[guild.id] = {
+            'status': status.id,
             'players_online': players_online.id,
             'queue_size': queue_size.id,
-            'status': status.id,
         }
         self.state.config.save()
 

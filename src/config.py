@@ -330,7 +330,7 @@ class Config:
             self.bot_token = info['token']
             self.nws_token = info['nws_token']
         except:
-            json.dump({'token': '<token goes here'}, open(BOT_TOKEN_FILE, 'w+'))
+            json.dump({'token': '<token goes here>'}, open(BOT_TOKEN_FILE, 'w+'))
             raise Exception(f'Need bot token! Add the token to {BOT_TOKEN_FILE}!')
         try:
             self.config = json.load(open(CFG_FILE, 'r'))
