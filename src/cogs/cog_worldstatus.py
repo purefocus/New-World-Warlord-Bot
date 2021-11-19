@@ -8,6 +8,7 @@ from utils.world_status import get_status, WorldStatus
 
 from utils.botutil import *
 
+
 class WorldStatusCog(commands.Cog):
 
     def __init__(self, client: commands.Bot, state: BotState):
@@ -101,7 +102,7 @@ class WorldStatusCog(commands.Cog):
                 await ch.edit(name=f'Ohonoo : {status.status_enum}')
 
             except Exception as e:
-                pass
+                print_stack_trace()
 
     @tasks.loop(minutes=5)
     async def update_status(self):
