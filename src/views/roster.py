@@ -35,7 +35,7 @@ def create_roster_embed(names, absent, state, title=None, embed=None, abrv_line=
     for key in groups:
         value = ''
         enlisted = groups[key]
-        enlisted = sorted(enlisted, key=lambda x: x.level, reverse=True)
+        # enlisted = sorted(enlisted, key=lambda x: x.level, reverse=True)
         idx = 0
         for enl in enlisted:
             enl: Enlistment = enl
