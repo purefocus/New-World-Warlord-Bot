@@ -175,8 +175,8 @@ class DMEnlistmentCog(commands.Cog):
                 user.username = responses['name'] = udata.username
                 user.faction = responses['faction'] = udata.faction
                 user.company = responses['company'] = udata.company
-                if udata.level == 60:
-                    user.level = responses['level'] = udata.level
+                # if udata.level == 60:
+                #     user.level = responses['level'] = udata.level
 
             await ctx.author.send(
                 f'Hello **{user}**, you have chosen to enlist in the war for **{war.location}**'
