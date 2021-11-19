@@ -124,16 +124,24 @@ class WarDef:
         return True
 
     def get_embeded(self):
-        embed = discord.Embed(title=f':exclamation: __{self.location}!__ :exclamation: ')
+        if self.name is not None:
+            embed = discord.Embed(title=f':exclamation: __{self.name}!__ :exclamation: ')
+        else:
+            embed = discord.Embed(title=f':exclamation: __{self.location}!__ :exclamation: ')
         # embed.set_author(name='Test')
         if self.image_url is not None:
             embed.set_image(url=self.image_url)
         else:
             if self.attacking is not None:
                 embed.set_thumbnail(url='https://pbs.twimg.com/profile_images/1392124727976546307/vBwCWL8W_400x400.jpg')
-                embed.add_field(name='Details',
-                                value=f'📆 {self.war_time}\n\n {self.owners}',
-                                inline=False)
+                if self.name is None:
+                    embed.add_field(name='Details',
+                                    value=f'📆 {self.war_time}\n\n {self.owners}',
+                                    inline=False)
+                else:
+                    embed.add_field(name='Details',
+                                    value=f'📆 {self.war_time}\n\n {self.owners}\n📍 {self.location}',
+                                    inline=False)
                 embed.add_field(name='Attackers', value=self.attacking, inline=True)
                 embed.add_field(name='Defenders', value=self.defending, inline=True)
                 embed.add_field(name='\u200b', value='\u200b', inline=False)
@@ -157,7 +165,6 @@ class WarDef:
                         value=f'{str(len(self.absent))}',
                         inline=True)
         embed.add_field(name='\u200b', value='\u200b', inline=True)
-
 
         # embed.set_footer(text='Use /enlist to sign up!')
 

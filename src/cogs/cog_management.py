@@ -10,6 +10,7 @@ from views.view_confirm import ask_confirm
 from utils.colorprint import *
 
 war_fields = {
+    'name': 'name',
     'attacking faction': 'attacking',
     'defending faction': 'defending',
     'contact': 'owner',
@@ -100,6 +101,7 @@ def parse_war_info(state: BotState, lines) -> WarDef:
         # print_dict(result)
         war = WarDef()
         war.is_fake = is_fake
+        war.name = _gf(result, 'name')
         war.attacking = _gf(result, 'attacking')
         war.defending = _gf(result, 'defending')
         war.location = get_location(_gf(result, 'location'))
