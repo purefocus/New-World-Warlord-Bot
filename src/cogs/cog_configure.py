@@ -53,17 +53,28 @@ class ConfigurationCog(commands.Cog):
             await ctx.respond(ninja_mode=True)
 
     @subslash_cog(base_names=['wl_configure', 'post'], name='world-status')
-    async def cmd_post_world_status(self, ctx: Interaction, channel: str):
+    async def cmd_post_world_status(self, ctx: Interaction):
         if await check_permission(ctx, Perm.CONFIGURE):
             msg = await ctx.channel.send(content='World Status Here')
             self.state.config.register_message('world-status', msg)
-
-            wscog = self.state.cogs['world_status']
-            await wscog.update_now()
+            from cogs.cog_worldstatus import WorldStatusCog
+            wscog: WorldStatusCog = self.state.cogs['world_status']
+            await wscog.update_status()
 
             await ctx.respond(content='-', hidden=True)
         if not ctx.responded:
             await ctx.respond(ninja_mode=True)
+
+    @subslash_cog(base_names=['wl_configure'], options=[
+        SlashOption(str, name='params', required=True)
+    ], description='Only for testing purposes, do not use', name='test')
+    async def cmd_testing(self, ctx: Interaction, params):
+        if await check_permission(ctx, Perm.CONFIGURE):
+            args = params.split(' ')
+            if args[0] == 'add' and args[1] == 'ws-channel':
+                from cogs.cog_worldstatus import WorldStatusCog
+                wscog: WorldStatusCog = self.state.cogs['world_status']
+                await wscog.create_status_channels(ctx.guild)
 
     @subslash_cog(base_names=['wl_configure', 'server'], name='init')
     async def cmd_init_guild(self, ctx: Interaction):

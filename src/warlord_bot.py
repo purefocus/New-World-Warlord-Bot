@@ -38,10 +38,11 @@ state = BotState(client, config)
 state.load_war_data()
 
 state.cogs = {
+    #
     'war_management': WarManagementCog(client, state),
     'dm_enlist': DMEnlistmentCog(client, state),
     'roster': RosterCog(client, state),
-    #
+
     'extras': ExtrasCog(client, state),
     'world_status': WorldStatusCog(client, state),
     #
@@ -49,7 +50,7 @@ state.cogs = {
     'verify': VerificationCog(client, state),
     # 'dm_verify': DMVerificationCog(client, state),
     'config': ConfigurationCog(client, state),
-
+    #
     'temp_voice': TempVoiceCog(client, state),
     # 'war_voice': WarVoiceCog(client, state),
 }

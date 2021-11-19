@@ -187,11 +187,12 @@ class AdminCog(commands.Cog):
         # guild.create_role(name=faction)
 
     @slash_cog(name='warlord_cmd_sync')
-    async def warlord_cmd_sync(self, ctx: SlashedCommand):
+    async def warlord_cmd_sync(self, ctx: SlashedCommand, nuke=True):
         try:
             if ctx.author.id == 198526201374048256:
                 msg = await ctx.send(content='Removing all Commands... ', hidden=True)
-                await self.ui.slash.nuke_commands()
+                if nuke:
+                    await self.ui.slash.nuke_commands()
                 await msg.edit(content=f'{msg.content}\nAdding Commands...')
                 print('Commands Before: ', self.state.client.commands)
                 await self.ui.slash.sync_commands()

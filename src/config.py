@@ -211,6 +211,7 @@ class Config:
         self.mod_verify_channel = self._get(cfg, 'mod_verification_channel', 'verify-requests')
 
         self.msgs = self._get(self.config, 'messages', {})
+        self.status_channels = self._get(self.config, 'status_channels', {})
 
         for key in self.msgs:
             msgs = self.msgs[key]
