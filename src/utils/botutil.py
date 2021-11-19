@@ -41,8 +41,8 @@ async def select_war(state, ctx: SlashedCommand, question, allow_multiple=False,
         select_options.append(SelectOption(value='global_roster', label='Global Roster', description=str(state.users)))
 
     for w in state.wars:
-        war = state.wars[w]
-        if war.active:
+        war: WarDef = state.wars[w]
+        if war.active and war.can_post(ctx):
             select_options.append(
                 SelectOption(value=w, label=war.name or war.location, description=war.make_description()))
 
