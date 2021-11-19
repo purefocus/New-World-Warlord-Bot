@@ -169,12 +169,12 @@ class DMEnlistmentCog(commands.Cog):
 
                 if user.company is not None:
                     responses['faction'] = 'Syndicate'
-                    responses['company'] = user.company
+                    # responses['company'] = user.company
 
             if udata is not None:
                 user.username = responses['name'] = udata.username
                 user.faction = responses['faction'] = udata.faction
-                user.company = responses['company'] = udata.company
+                # user.company = responses['company'] = udata.company
                 # if udata.level == 60:
                 #     user.level = responses['level'] = udata.level
 
