@@ -104,7 +104,7 @@ class WorldStatusCog(commands.Cog):
             except Exception as e:
                 print_stack_trace()
 
-    @tasks.loop(minutes=5)
+    @tasks.loop(minutes=2)
     async def update_status(self):
         status = self.state.world_status = get_status(self.state.config.nws_token)
         await self.state.update_presence(str(status))
