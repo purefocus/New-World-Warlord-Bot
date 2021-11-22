@@ -174,7 +174,7 @@ class WarDef:
         embed.add_field(name='\u200b', value='\u200b', inline=True)
 
         if self.private is not None:
-            embed.set_footer(text='🔒')
+            embed.set_footer(text='🔒 Private')
 
         # embed.set_footer(text='Use /enlist to sign up!')
 
