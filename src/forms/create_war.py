@@ -13,7 +13,7 @@ from utils.permissions import *
 
 
 async def cmd_create_war(ctx, attacking, defending, location, time, owner, state: BotState):
-    if not check_permission(ctx, Perm.WAR_MANAGEMENT):
+    if not await check_permission(ctx, Perm.WAR_MANAGEMENT):
         return
     war = WarDef()
     war.attacking = attacking
@@ -34,7 +34,7 @@ async def cmd_create_war(ctx, attacking, defending, location, time, owner, state
 
 
 async def cmd_end_war(state, ctx):
-    if not check_permission(ctx, Perm.WAR_END):
+    if not await check_permission(ctx, Perm.WAR_END):
         return
     war, msg = await select_war(state, ctx, 'Select the war to end', allow_multiple=False)
     if war is not None:
@@ -51,7 +51,7 @@ async def cmd_end_war(state, ctx):
 
 
 async def cmd_repost_war(state, ctx):
-    if not check_permission(ctx, Perm.WAR_POST):
+    if not await check_permission(ctx, Perm.WAR_POST):
         return
     wars, _ = await select_war(state, ctx, 'Select war', allow_multiple=True)
     for war in wars:
@@ -68,7 +68,7 @@ async def cmd_repost_war(state, ctx):
 
 
 async def cmd_post_war(state, ctx):
-    if not check_permission(ctx, Perm.WAR_POST):
+    if not await check_permission(ctx, Perm.WAR_POST):
         return
     wars, _ = await select_war(state, ctx, 'Select war', allow_multiple=True)
     for war in wars:
@@ -77,7 +77,7 @@ async def cmd_post_war(state, ctx):
 
 
 async def cmd_post_btn(state, ctx: SlashedCommand):
-    if not check_permission(ctx, Perm.WAR_POST):
+    if not await check_permission(ctx, Perm.WAR_POST):
         return
     wars, msg = await select_war(state, ctx, 'Select war', allow_multiple=True)
     btns = []
