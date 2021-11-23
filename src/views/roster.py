@@ -42,7 +42,7 @@ def create_roster_embed(names, absent, state, title=None, embed=None, abrv_line=
             enl: Enlistment = enl
             if enl is None:
                 continue
-            val = f'> [{str(enl.roster_line(abrv_line))}](link "{enl.company}, {enl.level}")\n'
+            val = f'> {str(enl.roster_line(abrv_line))}\n'
             if len(value) + len(val) > 1024:
                 embed.add_field(name=f'{key} {"" if idx == 0 else idx}', value=value, inline=abrv_line)
                 value = ''
