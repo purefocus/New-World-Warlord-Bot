@@ -142,6 +142,9 @@ async def on_ready():
         print('------')
         config.resolve(client)
 
+        for guild in client.guilds:
+            print('Guild: ', guild.name)
+
         for war in state.wars:
             war = state.wars[war]
             if war.active:
