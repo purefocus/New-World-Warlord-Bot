@@ -141,7 +141,7 @@ class WarDef:
             embed.set_image(url=self.image_url)
         # else:
         if self.name is None:
-            embed.add_field(name='Details',
+            embed.add_field(name='Details_',
                             value=f'📆 {self.war_time}\n📣 {self.owners}',
                             inline=False)
         else:
