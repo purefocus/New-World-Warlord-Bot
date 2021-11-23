@@ -149,7 +149,7 @@ class WarDef:
                             inline=False)
         if self.attacking is not None:
             # embed.set_thumbnail(url='https://pbs.twimg.com/profile_images/1392124727976546307/vBwCWL8W_400x400.jpg')
-            embed.add_field(name='Attackers', value=self.attacking, inline=True)
+            embed.add_field(name='Attackers', value=f'[{self.attacking}](link "test")', inline=True)
             embed.add_field(name='Defenders', value=self.defending, inline=True)
             embed.add_field(name='\u200b', value='\u200b', inline=False)
 
