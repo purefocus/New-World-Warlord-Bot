@@ -59,10 +59,11 @@ class UserData:
         except Exception as e:
             print(e)
 
-    def __getitem__(self, name) -> Enlistment:
+    def __getitem__(self, name) -> [None, Enlistment]:
         try:
+            name = name.lower()
             if '#' not in name:
-                name = self.name_to_disc_map[name.lower()]
+                name = self.name_to_disc_map[name]
             if name in self.users:
                 return self.users[name]
         except:
@@ -71,8 +72,9 @@ class UserData:
 
     def __contains__(self, item):
         if isinstance(item, str):
+            item = item.lower()
             if '#' not in item:
-                item = self.name_to_disc_map[item.lower()]
+                item = self.name_to_disc_map[item]
             return item.lower() in self.users
         return False
 
