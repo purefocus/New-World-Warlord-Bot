@@ -22,6 +22,7 @@ class VerificationCog(commands.Cog):
         self.mod_channel = None
         self.verify_channel = None
         self.vrole = None
+        self.uvrole = None
 
         self.awaiting_verifications = {}
 
@@ -275,10 +276,16 @@ class VerificationCog(commands.Cog):
 
                 if func == 'verify':
                     if self.vrole is None:
-                        components[2].disabled = True
-                        components[3].disabled = True
                         self.vrole = discord.utils.get(ctx.guild.roles, name="Verified")
+                    if self.uvrole is None:
+                        self.uvrole = discord.utils.get(ctx.guild.roles, name="Unverified")
+                    components[2].disabled = True
+                    components[3].disabled = True
                     # print(self.vrole)
+                    try:
+                        await user.remove_roles(self.uvrole, reason='Verified')
+                    except:
+                        pass
                     await user.add_roles(self.vrole, reason='Verification')
 
                     update = self._set_embed_status(post, f'✅ Verified\n(*{ctx.author.display_name}*)',
