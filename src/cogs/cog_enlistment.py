@@ -258,7 +258,7 @@ class DMEnlistmentCog(commands.Cog):
                                                  'Are you sure you would like to be marked as *Absent*?',
                                                  ret_msg=True,
                                                  text=['Absent', "Cancel"],
-                                                 colors=['green', 'red'], cancel=True)
+                                                 colors=['green', 'red'], cancel=False)
                 else:
                     ask, msg = await ask_confirm(self.state, ctx,
                                                  'You have enlisted in a previous war, so we can just reuse that information! '
