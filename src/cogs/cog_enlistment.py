@@ -252,11 +252,10 @@ class DMEnlistmentCog(commands.Cog):
                 # if war.absent
                 if absent:
                     ask, msg = await ask_confirm(self.state, ctx,
-                                                 'You have enlisted in a previous war, so we can just reuse that information! '
-                                                 '\nWould you like to update your information instead? ',
-                                                 embed=udata.embed(), ret_msg=True,
-                                                 text=['Update', 'Absent', "Cancel"],
-                                                 colors=['blurple', 'green', 'red'], cancel=True)
+                                                 'Are you sure you would like to be marked as *Absent*?',
+                                                 ret_msg=True,
+                                                 text=['Absent', "Cancel"],
+                                                 colors=['green', 'red'], cancel=True)
                 else:
                     ask, msg = await ask_confirm(self.state, ctx,
                                                  'You have enlisted in a previous war, so we can just reuse that information! '
@@ -309,6 +308,21 @@ class DMEnlistmentCog(commands.Cog):
         else:
             await ctx.author.send(content=STR_NO_ACTIVE_WAR)
 
+    async def _proc_enlist(self, ctx, war, absent=False):
+        if ctx.author in self.users_enlisting:
+            proc = self.users_enlisting[ctx.author]
+            if proc is not None:
+                proc.close()
+                print('Proc killed')
+            del self.users_enlisting[ctx.author]
+
+        self.users_enlisting[ctx.author] = self.do_enlist(war, ctx, absent)
+        await self.users_enlisting[ctx.author]
+        try:
+            del self.users_enlisting[ctx.author]
+        except:
+            pass
+
     @commands.Cog.listener('on_interaction_received')
     async def on_interaction(self, ctx: Interaction):
         try:
@@ -330,19 +344,8 @@ class DMEnlistmentCog(commands.Cog):
             else:
                 return
 
-            if ctx.author in self.users_enlisting:
-                proc = self.users_enlisting[ctx.author]
-                if proc is not None:
-                    proc.close()
-                    print('Proc killed')
-                del self.users_enlisting[ctx.author]
+            await self._proc_enlist(ctx, war, absent)
 
-            self.users_enlisting[ctx.author] = self.do_enlist(war, ctx, absent)
-            await self.users_enlisting[ctx.author]
-            try:
-                del self.users_enlisting[ctx.author]
-            except:
-                pass
         except:
             print('error: ', ctx.author)
             import traceback
@@ -355,21 +358,9 @@ class DMEnlistmentCog(commands.Cog):
             return
         try:
             war = self.state.wars['General Enlistment']
-
-            if ctx.author in self.users_enlisting:
-                proc = self.users_enlisting[ctx.author]
-                if proc is not None:
-                    proc.close()
-                    print('Proc killed')
-                del self.users_enlisting[ctx.author]
-
-            self.users_enlisting[ctx.author] = self.do_enlist(war, ctx)
-            await self.users_enlisting[ctx.author]
-            try:
-                del self.users_enlisting[ctx.author]
-            except:
-                pass
+            await self._proc_enlist(ctx, war)
         except:
+
             import traceback
             import sys
             traceback.print_exception(*sys.exc_info())
