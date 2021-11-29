@@ -72,10 +72,15 @@ question_list = {
     }
 }
 STR_ENLIST_FAILED = 'Something went wrong and you have not been enlisted.'
+
 STR_NO_ACTIVE_WAR = 'Sorry, This war is no longer active!\nIf this is a mistake, please contact an admin!'
+
 STR_ENLIST_SUCCESS = 'You have successfully been enlisted for the war **%s**\n ' \
                      'You can update you enlistment by clicking the \'Click to Enlist!\' button again.\n' \
                      '**Do not forget to also sign up at the in-game war board!**'
+
+STR_ENLIST_ABSENT = 'You have successfully been marked **absent** for the war **%s**\n ' \
+                    'You can update you enlistment by clicking the \'Click to Enlist!\' button again.\n'
 
 STR_NO_PERMISSION = 'It seems you have privacy settings preventing me from sending you a private message!\n' \
                     'Please manually enter your information using the following template and try again!\n' \
@@ -266,7 +271,8 @@ class DMEnlistmentCog(commands.Cog):
                                                  embed=udata.embed(), ret_msg=True,
                                                  text=['Update', 'Enlist', "Cancel"],
                                                  colors=['blurple', 'green', 'red'], cancel=True)
-                if ask:
+
+                if ask and (not absent or udata is None):
                     await msg.edit(content='**Please check your private messages!**', components=None, embed=None)
             if ask is None:
                 await msg.edit(content='Enlistment Canceled', components=None, embed=None)
@@ -289,7 +295,10 @@ class DMEnlistmentCog(commands.Cog):
                         correct = await ask_confirm(self.state, ctx.author, 'Is this information correct?',
                                                     embed=udata.embed(), hidden=False)
                         if correct:
-                            await ctx.author.send(STR_ENLIST_SUCCESS % war.location)
+                            if absent:
+                                await ctx.author.send(STR_ENLIST_ABSENT % war.location)
+                            else:
+                                await ctx.author.send(STR_ENLIST_SUCCESS % war.location)
                     else:
                         break
 
