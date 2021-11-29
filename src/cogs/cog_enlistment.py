@@ -265,9 +265,13 @@ class DMEnlistmentCog(commands.Cog):
                                                  text=['Absent', "Cancel"],
                                                  colors=['green', 'red'], cancel=False)
                 else:
+                    if user.name in war.roster:
+                        confirm_text = 'You are already enlisted in this war, would you like to update your information?'
+                    else:
+                        confirm_text = 'You have enlisted in a previous war, so we can just reuse that information! ' \
+                                       '\nWould you like to update your information instead? '
                     ask, msg = await ask_confirm(self.state, ctx,
-                                                 'You have enlisted in a previous war, so we can just reuse that information! '
-                                                 '\nWould you like to update your information instead? ',
+                                                 confirm_text,
                                                  embed=udata.embed(), ret_msg=True,
                                                  text=['Update', 'Enlist', "Cancel"],
                                                  colors=['blurple', 'green', 'red'], cancel=True)
