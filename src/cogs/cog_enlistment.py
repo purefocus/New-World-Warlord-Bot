@@ -311,9 +311,16 @@ class DMEnlistmentCog(commands.Cog):
             if udata is not None:
                 await self.state.add_enlistment(str(ctx.author), war, udata, absent=absent, announce=ask)
                 if msg is not None:
-                    await msg.edit(content=STR_ENLIST_SUCCESS % war.location, components=None)
+
+                    if absent:
+                        await msg.edit(STR_ENLIST_ABSENT % war.location, components=None)
+                    else:
+                        await msg.edit(STR_ENLIST_SUCCESS % war.location, components=None)
                 else:
-                    await ctx.author.send(content=STR_ENLIST_SUCCESS % war.location)
+                    if absent:
+                        await ctx.author.send(STR_ENLIST_ABSENT % war.location)
+                    else:
+                        await ctx.author.send(STR_ENLIST_SUCCESS % war.location)
             else:
                 await ctx.author.send(content=STR_ENLIST_FAILED)
 
