@@ -271,7 +271,7 @@ class DMEnlistmentCog(commands.Cog):
             if ask is None:
                 await msg.edit(content='Enlistment Canceled', components=None, embed=None)
                 return
-            elif ask:
+            elif ask and (not absent or udata is None):
 
                 if not ctx.responded:
                     try:
