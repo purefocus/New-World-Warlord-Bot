@@ -245,6 +245,9 @@ class DMEnlistmentCog(commands.Cog):
             print('Enlistment Started! ', str(ctx.author))
             # self.users_enlisting[ctx.author] = True
 
+            if user.name in war.roster:
+                print('Already in war!')
+
             msg = None
             ask = True
             udata = self.state.users[str(ctx.author)]
