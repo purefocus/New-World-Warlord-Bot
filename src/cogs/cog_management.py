@@ -108,7 +108,7 @@ def parse_war_info(state: BotState, lines) -> WarDef:
         war.attacking = _gf(result, 'attacking')
         war.defending = _gf(result, 'defending')
         war.location = get_location(_gf(result, 'location'))
-        war.war_time = _gf(result, 'time')
+        war.war_time = _gf(result, 'time')  # parse_date()
         war.owners = _gf(result, 'owner')
         war.additional_info = additional_info
         war.private = is_private

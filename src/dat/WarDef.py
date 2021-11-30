@@ -7,6 +7,7 @@ from utils.data import *
 
 import uuid
 from utils.details import WAR_ROLES
+from utils.details import parse_date
 
 
 class WarDef:
@@ -133,20 +134,27 @@ class WarDef:
     def get_embeded(self):
 
         if self.name is not None:
-            embed = discord.Embed(title=f':exclamation: __{self.name}!__ :exclamation: ', colour=discord.Colour.blurple())
+            embed = discord.Embed(title=f':exclamation: __{self.name}!__ :exclamation: ',
+                                  colour=discord.Colour.blurple())
         else:
-            embed = discord.Embed(title=f':exclamation: __{self.location}!__ :exclamation: ', colour=discord.Colour.blurple())
+            embed = discord.Embed(title=f':exclamation: __{self.location}!__ :exclamation: ',
+                                  colour=discord.Colour.blurple())
         # embed.set_author(name='Test')
         if self.image_url is not None:
             embed.set_image(url=self.image_url)
         # else:
+
+        wartime = parse_date(self.war_time)
+        if not isinstance(wartime, str):
+            ts = int(wartime.timestamp())
+            wartime = f'<t:{ts}:f> (<t:{ts}:R>)'
         if self.name is None:
             embed.add_field(name='Details',
-                            value=f'📆 {self.war_time}\n📣 {self.owners}',
+                            value=f'📆 {wartime}\n📣 {self.owners}',
                             inline=False)
         else:
             embed.add_field(name='Details',
-                            value=f'📆 {self.war_time}\n📣 {self.owners}\n📍 {self.location}',
+                            value=f'📆 {wartime}\n📣 {self.owners}\n📍 {self.location}',
                             inline=False)
         if self.attacking is not None:
             # embed.set_thumbnail(url='https://pbs.twimg.com/profile_images/1392124727976546307/vBwCWL8W_400x400.jpg')

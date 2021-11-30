@@ -117,3 +117,38 @@ def replace_company_name(company: str):
     if company in company_mappings:
         return company_mappings[company]
     return company
+
+
+import datetime
+
+
+def _parse_date(text, format):
+    try:
+        dt = datetime.datetime.strptime(text, format)
+        now = datetime.datetime.now()
+        dt = dt.replace(year=now.year, tzinfo=now.tzinfo)
+        if dt.hour < 12:
+            dt = dt.replace(hour=dt.hour + 12)
+        # print('Date/Time: ', dt.strftime('%c'))
+        return dt
+    except:
+        pass
+        # print_stack_trace()
+    return None
+
+
+def parse_date(text):
+    formats = [
+        '%a, %b %d, %H:%M%p %Z',  # Tue, Nov 30, 11:00PM EST
+        '%a, %b %d, %H:%M %p %Z',  # Tue, Nov 30, 11:00 PM EST
+        '%a, %b %d, %H:%M %p',  # Tue, Nov 30, 11:00 PM
+        '%m/%d %H:%M %p %Z',  # Nov 30 @ 11:00 PM
+    ]
+    for fmt in formats:
+        result = _parse_date(text, fmt)
+        if result is not None:
+            return result
+            # ts = int(result.timestamp())
+            # return f'<t:{ts}:f> (<t:{ts}:R>)'
+
+    return text

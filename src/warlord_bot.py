@@ -46,14 +46,17 @@ state.cogs = {
     'extras': ExtrasCog(client, state),
     'world_status': WorldStatusCog(client, state),
     #
-    'admin': AdminCog(client, state, ui),
-    'verify': VerificationCog(client, state),
+    # 'admin': AdminCog(client, state, ui),
+    # 'verify': VerificationCog(client, state),
     # 'dm_verify': DMVerificationCog(client, state),
     'config': ConfigurationCog(client, state),
     #
     'temp_voice': TempVoiceCog(client, state),
     # 'war_voice': WarVoiceCog(client, state),
 }
+if config.guildcfg(894675526776676382) is not None:
+    state.cogs['admin'] = AdminCog(client, state, ui)
+    state.cogs['verify'] = VerificationCog(client, state)
 
 for c in state.cogs:
     client.add_cog(state.cogs[c])
