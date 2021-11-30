@@ -80,7 +80,7 @@ class UserSignup:
         self.secondary_weapon = data['secondary_weapon']
         self.preferred_group = data['preferred_group']
 
-    def embed(self) -> discord.Embed:
+    def embed(self, state=None) -> discord.Embed:
         embed = discord.Embed(title=f'{self.username} ({self.level})')
         user_data = f'*Faction*: {self.faction}\n*Company*: {self.company}'
 
@@ -89,7 +89,16 @@ class UserSignup:
         embed.add_field(name='Role', value=self.role, inline=True)
         embed.add_field(name='Weapons', value=f'{self.primary_weapon}\n{self.secondary_weapon}', inline=True)
         if self.preferred_group is not None:
-            embed.add_field(name='Preferred Group', value=self.preferred_group, inline=False)
+            embed.add_field(name='Extra Information', value=self.preferred_group, inline=False)
+
+        if state is not None:
+            enlisted_wars = ''
+            for war in state.wars:
+                war = state.wars[war]
+                if war.active and self.username in war.roster:
+                    enlisted_wars += f'> {war.name}\n'
+            if len(enlisted_wars) > 0:
+                embed.add_field(name='Wars', value=enlisted_wars, inline=False)
 
         return embed
 
