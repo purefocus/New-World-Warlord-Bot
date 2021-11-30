@@ -211,8 +211,9 @@ class VerificationCog(commands.Cog):
                                     '> <company> \n'
                                     '> <Attachment/link>\n'
                                     '\n'
-                                    '*Your username and company must match __exactly__ as it shows on your bio page to get approval.*'
-                                    '*Ignore company if you are not in one*',
+                                    '*Your username and company must match __exactly__ as it shows on your bio page to get approval.*\n'
+                                    '*Ignore company if you are not in one*\n'
+                                    '__Press *Shift+Enter* to create a new line!__',
                             )
 
     @commands.Cog.listener('on_interaction_received')
