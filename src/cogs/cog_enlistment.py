@@ -437,9 +437,11 @@ class DMEnlistmentCog(commands.Cog):
             del self.users_enlisting[ctx.author]
 
         self.users_enlisting[ctx.author] = self._do_enlist(war, ctx, absent)
+        print(colors.red('Users Enlisting: '), len(self.users_enlisting))
         await self.users_enlisting[ctx.author]
         try:
             del self.users_enlisting[ctx.author]
+            print(colors.red('Users Enlisting: '), len(self.users_enlisting))
         except:
             pass
 
