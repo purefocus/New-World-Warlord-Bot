@@ -129,11 +129,14 @@ def _parse_date(text, format):
         dt = dt.replace(year=now.year, tzinfo=now.tzinfo)
         if dt.hour < 12:
             dt = dt.replace(hour=dt.hour + 12)
-        # print('Date/Time: ', dt.strftime('%c'))
+        print('Date/Time: ', dt.strftime('%c'))
         return dt
     except:
+        # import traceback
+        # import sys
+        #
+        # traceback.print_exception(*sys.exc_info())
         pass
-        # print_stack_trace()
     return None
 
 
@@ -142,7 +145,8 @@ def parse_date(text):
         '%a, %b %d, %H:%M%p %Z',  # Tue, Nov 30, 11:00PM EST
         '%a, %b %d, %H:%M %p %Z',  # Tue, Nov 30, 11:00 PM EST
         '%a, %b %d, %H:%M %p',  # Tue, Nov 30, 11:00 PM
-        '%m/%d %H:%M %p %Z',  # Nov 30 @ 11:00 PM
+        '%b %d @ %H:%M %p',  # Nov 30 @ 11:00 PM
+        '%m/%d %H:%M %p %Z',  # 11/30 11:00 PM EST
     ]
     for fmt in formats:
         result = _parse_date(text, fmt)
