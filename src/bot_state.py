@@ -51,6 +51,8 @@ class BotState:
         )
 
     async def add_enlistment(self, disc_name, war: WarDef, user: Enlistment, absent=False, save=True, announce=True):
+        if user is None:
+            return
         try:
             num_enlisted = len(war)
             if isinstance(user, UserSignup):
@@ -73,6 +75,7 @@ class BotState:
                 self.save_war_data()
 
         except Exception as e:
+
             import traceback
             import sys
             traceback.print_exception(*sys.exc_info())

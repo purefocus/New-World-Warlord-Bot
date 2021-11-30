@@ -227,7 +227,7 @@ class DMEnlistmentCog(commands.Cog):
                 pref_group = None
             user.preferred_group = pref_group
 
-            return user
+            return user.to_enlistment()
 
         except discord.Forbidden as e:
             print('No permission!')
