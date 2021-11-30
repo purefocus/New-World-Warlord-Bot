@@ -124,18 +124,10 @@ class VerificationCog(commands.Cog):
         if len(msg.attachments) > 0:
             link = msg.attachments[0].url
 
+        content = msg.content
+        content = content.replace(' - ', '\n').replace(',', '\n')
         lines = msg.content.split('\n')
 
-        l = []
-        for line in lines:
-            if '-' in line:
-                sp = line.split('-')
-                for s in sp:
-                    l.append(s)
-            else:
-                l.append(line)
-
-        lines = l
         original_text = ''
         for line in lines:
             if 'https://' in line:
