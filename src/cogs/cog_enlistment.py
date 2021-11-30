@@ -18,6 +18,7 @@ from views.view_confirm import *
 import asyncio
 import config as cfg
 from utils.permissions import *
+from utils.botutil import print_stack_trace
 
 question_list = {
     'name': {
@@ -207,6 +208,8 @@ class DMEnlistmentCog(commands.Cog):
                         return False
                 responses[key] = response
 
+            await ctx.author.send('You have finished answering all the questions!')
+
             print_dict(responses)
             user = UserSignup()
             user.faction = responses['faction']
@@ -300,39 +303,42 @@ class DMEnlistmentCog(commands.Cog):
         return None, None
 
     async def _do_enlist(self, war: WarDef, ctx: Interaction, absent=False):
-        gcfg = self.state.config.guildcfg(ctx.guild_id)
+        try:
+            gcfg = self.state.config.guildcfg(ctx.guild_id)
 
-        if gcfg is None:
-            return
+            if gcfg is None:
+                return
 
-        user = UserProfile(ctx.author, gcfg, self.state.users)
-        response, action_msg = await self.determine_action(user, war, ctx, absent)
+            user = UserProfile(ctx.author, gcfg, self.state.users)
+            response, action_msg = await self.determine_action(user, war, ctx, absent)
 
-        print_fields('Enlist Response', username=user.username, response=response)
+            print_fields('Enlist Response', username=user.username, response=response)
 
-        if response is None:
-            print(colors.red('Response is None!'))
-            return
+            if response is None:
+                print(colors.red('Response is None!'))
+                return
 
-        if response == 'survey':
-            user.user_data = await self.enlist_questionair(war, ctx, user.user_data)
-            await self.state.add_enlistment(str(ctx.author), war, user.user_data, absent=absent, announce=False)
-            if absent:
-                await action_msg.edit(f'You have been marked **Absent** for the war at **{war.location}**',
-                                      components=None, embed=None)
-            else:
+            if response == 'survey':
+                user.user_data = await self.enlist_questionair(war, ctx, user.user_data)
+                await self.state.add_enlistment(str(ctx.author), war, user.user_data, absent=absent, announce=False)
+                if absent:
+                    await action_msg.edit(f'You have been marked **Absent** for the war at **{war.location}**',
+                                          components=None, embed=None)
+                else:
+                    await action_msg.edit(f'You have been marked **Enlisted** for the war at **{war.location}**',
+                                          components=None, embed=user.user_data.embed(self.state))
+            elif response == 'enlist':
+                await self.state.add_enlistment(str(ctx.author), war, user.user_data, absent=absent, announce=False)
                 await action_msg.edit(f'You have been marked **Enlisted** for the war at **{war.location}**',
                                       components=None, embed=user.user_data.embed(self.state))
-        elif response == 'enlist':
-            await self.state.add_enlistment(str(ctx.author), war, user.user_data, absent=absent, announce=False)
-            await action_msg.edit(f'You have been marked **Enlisted** for the war at **{war.location}**',
-                                  components=None, embed=user.user_data.embed(self.state))
-        elif response == 'absent':
-            await self.state.add_enlistment(str(ctx.author), war, user.user_data, absent=True, announce=False)
-            await action_msg.edit(f'You have been marked **Absent** for the war at **{war.location}**',
-                                  components=None, embed=None)
-        elif response == 'cancel':
-            pass
+            elif response == 'absent':
+                await self.state.add_enlistment(str(ctx.author), war, user.user_data, absent=True, announce=False)
+                await action_msg.edit(f'You have been marked **Absent** for the war at **{war.location}**',
+                                      components=None, embed=None)
+            elif response == 'cancel':
+                pass
+        except:
+            print_stack_trace()
 
     async def do_enlist(self, war: WarDef, ctx: Interaction, absent=False):
         user = ctx.author
