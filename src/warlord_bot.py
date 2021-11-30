@@ -6,7 +6,7 @@ from forms.enlist_form import cmd_enlist
 from forms.war_management import *
 from utils.botutil import *
 from cogs import *
-
+from utils.colorprint import print_color_table
 # fc = 0
 # lst = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 # for i in range(len(lst)):
@@ -23,7 +23,7 @@ from cogs import *
 # # print(em in test)
 #
 # sys.exit(0)
-
+print_color_table()
 intents = discord.Intents.all()
 
 client = commands.Bot(" ", intents=intents)
