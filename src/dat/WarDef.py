@@ -133,9 +133,9 @@ class WarDef:
     def get_embeded(self):
 
         if self.name is not None:
-            embed = discord.Embed(title=f':exclamation: __{self.name}!__ :exclamation: ')
+            embed = discord.Embed(title=f':exclamation: __{self.name}!__ :exclamation: ', colour=discord.Colour.blurple())
         else:
-            embed = discord.Embed(title=f':exclamation: __{self.location}!__ :exclamation: ')
+            embed = discord.Embed(title=f':exclamation: __{self.location}!__ :exclamation: ', colour=discord.Colour.blurple())
         # embed.set_author(name='Test')
         if self.image_url is not None:
             embed.set_image(url=self.image_url)
