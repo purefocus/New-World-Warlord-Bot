@@ -23,7 +23,7 @@ from utils.colorprint import print_color_table
 # # print(em in test)
 #
 # sys.exit(0)
-print_color_table()
+# print_color_table()
 intents = discord.Intents.all()
 
 client = commands.Bot(" ", intents=intents)

@@ -45,6 +45,7 @@ class styles:
 class colors16:
     reset = TextStyle(0)
 
+    white = TextStyle(22)
     black = TextStyle(30)
     red = TextStyle(31)
     green = TextStyle(32)
@@ -73,7 +74,7 @@ class colors16:
 
 
 class colors:
-    reset = TextStyle256(7)
+    reset = TextStyle256(255)
 
     black = TextStyle256(0)
     red = TextStyle256(1)
@@ -83,6 +84,7 @@ class colors:
     magenta = TextStyle256(5)
     cyan = TextStyle256(6)
     light_grey = TextStyle256(7)
+    white = TextStyle256(255)
 
     dark_grey = TextStyle256(8)
     light_red = TextStyle256(9)
