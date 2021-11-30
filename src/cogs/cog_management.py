@@ -185,7 +185,7 @@ async def handle_management_message(state: BotState, msg: discord.Message, edite
         if war.private:
             war.private = msg.guild.id
 
-        print('New War!', war.private)
+        # print('New War!', war.private)
 
         if len(msg.attachments) > 0:
             image_link = msg.attachments
@@ -201,10 +201,13 @@ async def handle_management_message(state: BotState, msg: discord.Message, edite
         existed = state.add_war(war, edit=edited)
         if existed and edited:
             try:
+                print_fields('Update War Boards', existed=existed, edited=edited)
                 await update_war_boards(war, state)
             except:
+                print_fields('Add War Boards', existed=existed, edited=edited)
                 await add_war_board(war, state, msg)
         else:
+            print_fields('Add War Boards', existed=existed, edited=edited)
             await add_war_board(war, state, msg)
 
         state.save_war_data()

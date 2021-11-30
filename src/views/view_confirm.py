@@ -71,7 +71,7 @@ class BtnOpt:
 
 
 async def option_buttons(state: BotState, ctx, question: str, options: list,
-                         default_response=None, hidden=True, **msg_kwargs):
+                         default_response=None, auto_edit=True, **msg_kwargs):
     msg = None
     try:
         comps = []
@@ -79,25 +79,28 @@ async def option_buttons(state: BotState, ctx, question: str, options: list,
             comps.append(Button(f'btn:options:{op.key}', op.text, color=op.color))
 
         if isinstance(ctx, discord.Message):
-            msg = await ctx.reply(content=question, **msg_kwargs)
+            msg = await ctx.reply(content=question, components=comps, **msg_kwargs)
         else:
-            msg = await ctx.send(content=question, **msg_kwargs)
+            msg = await ctx.send(content=question, components=comps, **msg_kwargs)
 
-        response = await msg.wait_for(event_name='button', client=state.client,
-                                      check=lambda x: _check(x, ctx),
-                                      timeout=60)
+        response: discord_ui.PressedButton = await msg.wait_for(event_name='button', client=state.client,
+                                                                check=lambda x: _check(x, ctx),
+                                                                timeout=60)
 
         result = default_response
         if 'btn:options:' in response.custom_id:
-            result = response.custom_id[14:]
+            result = response.custom_id[12:]
+
+        if auto_edit:
+            await msg.edit(content=msg.content + f'\n> Selected: **{response.label}**', components=None)
 
         await response.respond(ninja_mode=True)
 
         return result, msg
 
     except asyncio.TimeoutError as e:
-        if hidden:
-            await ctx.send(f'You took too long to respond\nDefault Response={default_response}', hidden=hidden)
+        if 'hidden' in msg_kwargs:
+            await ctx.send(f'You took too long to respond\nDefault Response={default_response}', hidden=True)
         else:
             await ctx.send(f'You took too long to respond\nDefault Response={default_response}')
 

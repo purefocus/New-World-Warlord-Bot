@@ -10,7 +10,12 @@ class UserProfile:
 
         self.username = user.display_name if cfg.name_enforcement else None
         self.discord_user = str(user)
-        self.user_data = None if users is None else users[self.username]
+        self.user_data = None  # if users is None else users[self.username]
+        if users is not None:
+            self.user_data = users[self.discord_user]
+            if self.user_data is not None:
+                self.username = self.user_data.username
+                self.company = self.user_data.company
 
     def __repr__(self):
         return self.__str__()

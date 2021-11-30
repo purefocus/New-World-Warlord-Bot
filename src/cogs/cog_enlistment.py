@@ -101,7 +101,7 @@ cancel_btn = BtnOpt('cancel', 'Cancel', 'red')
 update_btn = BtnOpt('survey', 'Update', 'blurple')
 survey_btn = BtnOpt('survey', 'Signup', 'green')
 enlist_btn = BtnOpt('enlist', 'Signup', 'green')
-absent_btn = BtnOpt('absent', 'Absent', 'orange')
+absent_btn = BtnOpt('absent', 'Absent', 'green')
 
 
 # def _check(x, ctx):
@@ -267,13 +267,13 @@ class DMEnlistmentCog(commands.Cog):
                 question = 'Before you can sign up, we need to collect some information first!'
                 question_options.append(survey_btn)
 
-            if in_war:
+            elif in_war:
                 if absent:
                     question = f'You are currently signed up for this war, are you sure you would like to switch to Absent? (**{war.location}**)'
                     question_options.append(absent_btn)
                 else:
                     question = f'You are already enlisted in this war, would you like to update your information? (**{war.location}**)'
-                    embed = user_data.embed()
+                    embed = user_data.embed(self.state)
                     question_options.append(update_btn)
             else:
                 if absent:
@@ -281,7 +281,7 @@ class DMEnlistmentCog(commands.Cog):
                     question_options.append(absent_btn)
                 else:
                     question = f'Is the following information correct?\nWould you like to update your information?'
-                    embed = user_data.embed()
+                    embed = user_data.embed(self.state)
                     question_options.append(enlist_btn)
                     question_options.append(update_btn)
 
@@ -306,7 +306,7 @@ class DMEnlistmentCog(commands.Cog):
             return
 
         user = UserProfile(ctx.author, gcfg, self.state.users)
-        response, msg = await self.determine_action(user, war, ctx, absent)
+        response, action_msg = await self.determine_action(user, war, ctx, absent)
 
         print_fields('Enlist Response', username=user.username, response=response)
 
@@ -314,12 +314,23 @@ class DMEnlistmentCog(commands.Cog):
             print(colors.red('Response is None!'))
             return
 
-        if response == 'update':
+        if response == 'survey':
             user.user_data = await self.enlist_questionair(war, ctx, user.user_data)
+            await self.state.add_enlistment(str(ctx.author), war, user.user_data, absent=absent, announce=False)
+            if absent:
+                await action_msg.edit(f'You have been marked **Absent** for the war at **{war.location}**',
+                                      components=None, embed=None)
+            else:
+                await action_msg.edit(f'You have been marked **Enlisted** for the war at **{war.location}**',
+                                      components=None, embed=user.user_data.embed(self.state))
         elif response == 'enlist':
-            pass
+            await self.state.add_enlistment(str(ctx.author), war, user.user_data, absent=absent, announce=False)
+            await action_msg.edit(f'You have been marked **Enlisted** for the war at **{war.location}**',
+                                  components=None, embed=user.user_data.embed(self.state))
         elif response == 'absent':
-            pass
+            await self.state.add_enlistment(str(ctx.author), war, user.user_data, absent=True, announce=False)
+            await action_msg.edit(f'You have been marked **Absent** for the war at **{war.location}**',
+                                  components=None, embed=None)
         elif response == 'cancel':
             pass
 
@@ -419,7 +430,7 @@ class DMEnlistmentCog(commands.Cog):
                 print('Proc killed')
             del self.users_enlisting[ctx.author]
 
-        self.users_enlisting[ctx.author] = self.do_enlist(war, ctx, absent)
+        self.users_enlisting[ctx.author] = self._do_enlist(war, ctx, absent)
         await self.users_enlisting[ctx.author]
         try:
             del self.users_enlisting[ctx.author]
@@ -428,6 +439,7 @@ class DMEnlistmentCog(commands.Cog):
 
     @commands.Cog.listener('on_interaction_received')
     async def on_interaction(self, ctx: Interaction):
+
         try:
             data = ctx.data
             if 'custom_id' not in data:
@@ -474,6 +486,6 @@ class DMEnlistmentCog(commands.Cog):
 
         data = self.state.users[str(user)]
         if data is not None:
-            await ctx.respond(content=' ', embed=data.embed(), hidden=True)
+            await ctx.respond(content=' ', embed=data.embed(self.state), hidden=True)
         else:
             await ctx.respond(content='No enlistment data found for this user!', hidden=True)

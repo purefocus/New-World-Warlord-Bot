@@ -116,7 +116,7 @@ class Enlistment:
             self.faction
         ]
 
-    def embed(self):
+    def embed(self, state=None):
         embed = discord.Embed(title='War Enlistment')
         user_data = f'*Name*: {self.username} (level {self.level})\n*Faction*: {self.faction}\n*Company*: {self.company}'
 
@@ -136,6 +136,15 @@ class Enlistment:
         embed.add_field(name='Weapons', value=weapons, inline=True)
         if self.group is not None:
             embed.add_field(name='Extra Information', value=self.group, inline=False)
+
+        if state is not None:
+            enlisted_wars = ''
+            for war in state.wars:
+                war = state.wars[war]
+                if war.active and self.username in war.roster:
+                    enlisted_wars += f'> {war.name}\n'
+            if len(enlisted_wars) > 0:
+                embed.add_field(name='Wars', value=enlisted_wars, inline=False)
 
         return embed
 
