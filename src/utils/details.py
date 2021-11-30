@@ -129,7 +129,6 @@ def _parse_date(text, format):
         dt = dt.replace(year=now.year, tzinfo=now.tzinfo)
         if dt.hour < 12:
             dt = dt.replace(hour=dt.hour + 12)
-        print('Date/Time: ', dt.strftime('%c'))
         return dt
     except:
         # import traceback
