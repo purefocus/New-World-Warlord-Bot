@@ -73,7 +73,7 @@ class colors16:
 
 
 class colors:
-    reset = TextStyle256(0)
+    reset = TextStyle256(7)
 
     black = TextStyle256(0)
     red = TextStyle256(1)
