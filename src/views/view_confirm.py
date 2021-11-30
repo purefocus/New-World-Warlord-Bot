@@ -63,19 +63,25 @@ async def ask_confirm(state: BotState, ctx, question: str, embed: discord.Embed 
             await ctx.send(f'You took too long to respond\nDefault Response={default_response}')
 
 
-async def option_buttons(state: BotState, ctx, question: str, options: list, embed: discord.Embed = None,
-                         default_response=None, ret_msg=False, hidden=True, cancel=False):
+class BtnOpt:
+    def __init__(self, key, text, color='blurple'):
+        self.key = key
+        self.text = text
+        self.color = color
+
+
+async def option_buttons(state: BotState, ctx, question: str, options: list,
+                         default_response=None, hidden=True, **msg_kwargs):
+    msg = None
     try:
         comps = []
-        for text, color, key in options:
-            comps.append(Button(f'btn:options:key', text, color=color))
+        for op in options:
+            comps.append(Button(f'btn:options:{op.key}', op.text, color=op.color))
 
-        if hidden:
-            msg = await ctx.send(content=question, components=comps, embed=embed, hidden=hidden)
-        elif isinstance(ctx, discord.Message):
-            msg = await ctx.reply(content=question, components=comps, embed=embed)
+        if isinstance(ctx, discord.Message):
+            msg = await ctx.reply(content=question, **msg_kwargs)
         else:
-            msg = await ctx.send(content=question, components=comps, embed=embed)
+            msg = await ctx.send(content=question, **msg_kwargs)
 
         response = await msg.wait_for(event_name='button', client=state.client,
                                       check=lambda x: _check(x, ctx),
@@ -87,11 +93,6 @@ async def option_buttons(state: BotState, ctx, question: str, options: list, emb
 
         await response.respond(ninja_mode=True)
 
-        if not ret_msg:
-            await msg.edit(content=f'{question}\n **You responded: {"Yes" if result else "No"}**', components=None,
-                           embed=None)
-
-            return result
         return result, msg
 
     except asyncio.TimeoutError as e:
@@ -99,3 +100,5 @@ async def option_buttons(state: BotState, ctx, question: str, options: list, emb
             await ctx.send(f'You took too long to respond\nDefault Response={default_response}', hidden=hidden)
         else:
             await ctx.send(f'You took too long to respond\nDefault Response={default_response}')
+
+        return default_response, msg

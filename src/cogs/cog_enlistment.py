@@ -13,7 +13,7 @@ from utils.details import WAR_ROLES, WEAPON_CHOICES, FACTIONS
 from dat.UserSignup import UserSignup
 from dat.UserProfile import UserProfile
 
-from views.view_confirm import ask_confirm
+from views.view_confirm import *
 
 import asyncio
 import config as cfg
@@ -97,6 +97,12 @@ STR_NO_PERMISSION = 'It seems you have privacy settings preventing me from sendi
                     '```\n' \
                     'Once you have done this, try and enlist again!'
 
+cancel_btn = BtnOpt('cancel', 'Cancel', 'red')
+update_btn = BtnOpt('survey', 'Update', 'blurple')
+survey_btn = BtnOpt('survey', 'Signup', 'green')
+enlist_btn = BtnOpt('enlist', 'Signup', 'green')
+absent_btn = BtnOpt('absent', 'Absent', 'orange')
+
 
 # def _check(x, ctx):
 
@@ -165,8 +171,7 @@ class DMEnlistmentCog(commands.Cog):
             gcfg = self.state.config.guildcfg(ctx.guild_id)
             if gcfg is None:
                 return
-            user = UserProfile(ctx.author, name_enforcement=gcfg.name_enforcement,
-                               company_enforcement=gcfg.company_enforcement)
+            user = UserProfile(ctx.author, gcfg)
 
             responses = {}
             if user.username is not None:
@@ -242,6 +247,81 @@ class DMEnlistmentCog(commands.Cog):
         channel = msg.channel
         if channel.type != discord.ChannelType.private:
             return
+
+    async def determine_action(self, user: UserProfile, war: WarDef, ctx: Interaction, absent=False):
+
+        if war is not None:
+            in_war = user.username in war.roster
+            in_absent = user.username in war.absent
+            user_data: Enlistment = user.user_data
+            data_exists = user_data is not None
+            question_options = []
+
+            question = 'If you see this message, contact an administrator!'
+            embed = None
+
+            print_fields('Enlistment', user=user.discord_user, username=user.username, in_war=in_war,
+                         in_absent=in_absent, data_exists=data_exists)
+
+            if not data_exists:
+                question = 'Before you can sign up, we need to collect some information first!'
+                question_options.append(survey_btn)
+
+            if in_war:
+                if absent:
+                    question = f'You are currently signed up for this war, are you sure you would like to switch to Absent? (**{war.location}**)'
+                    question_options.append(absent_btn)
+                else:
+                    question = f'You are already enlisted in this war, would you like to update your information? (**{war.location}**)'
+                    embed = user_data.embed()
+                    question_options.append(update_btn)
+            else:
+                if absent:
+                    question = f'Are you sure you want to be marked absent for this war? (**{war.location}**)'
+                    question_options.append(absent_btn)
+                else:
+                    question = f'Is the following information correct?\nWould you like to update your information?'
+                    embed = user_data.embed()
+                    question_options.append(enlist_btn)
+                    question_options.append(update_btn)
+
+                if in_absent and absent:
+                    await ctx.respond('You are already marked absent for this war! (**{war.location}**)', hidden=True)
+                    return None, None
+
+            question_options.append(cancel_btn)
+            response, msg = await option_buttons(self.state, ctx,
+                                                 question=question,
+                                                 options=question_options,
+                                                 embed=embed,
+                                                 hidden=True)
+
+            return response, msg
+        return None, None
+
+    async def _do_enlist(self, war: WarDef, ctx: Interaction, absent=False):
+        gcfg = self.state.config.guildcfg(ctx.guild_id)
+
+        if gcfg is None:
+            return
+
+        user = UserProfile(ctx.author, gcfg, self.state.users)
+        response, msg = await self.determine_action(user, war, ctx, absent)
+
+        print_fields('Enlist Response', username=user.username, response=response)
+
+        if response is None:
+            print(colors.red('Response is None!'))
+            return
+
+        if response == 'update':
+            user.user_data = await self.enlist_questionair(war, ctx, user.user_data)
+        elif response == 'enlist':
+            pass
+        elif response == 'absent':
+            pass
+        elif response == 'cancel':
+            pass
 
     async def do_enlist(self, war: WarDef, ctx: Interaction, absent=False):
         user = ctx.author

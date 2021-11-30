@@ -231,6 +231,14 @@ def print_dict_item(data: dict, ind=''):
                 cprint(colors.light_green(value), ',\n')
 
 
+def print_fields(name, **fields):
+    cprint(colors.light_cyan(name))
+    cprint(colors.light_grey('['))
+    for field in fields:
+        cprint(colors.light_blue(field), ': ', colors.light_green(fields[field]), colors.light_grey(', '))
+    cprint(colors.light_grey(']'), '\n')
+
+
 def print_list(data: list):
     data = list(data)
     cprint('[')
