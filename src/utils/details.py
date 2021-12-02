@@ -67,6 +67,8 @@ add_mapping(location_mappings, 'Fort Windsward', ['Windsward', 'WW'])
 company_mappings = {}
 add_mapping(company_mappings, 'Lotus Trading',
             ['Lotus Trading Cartel', 'Lotus Trading Company', 'Lotus Holdings Co.', 'LTC'])
+add_mapping(company_mappings, 'Storm Chasers', ['Storm Blazers', 'SC'])
+add_mapping(company_mappings, 'Actual Apes', ['Apes', 'AA'])
 
 
 def get_location(loc):

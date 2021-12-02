@@ -9,6 +9,7 @@ from discord_ui import *
 
 from utils.colorprint import *
 from utils.details import WAR_ROLES, WEAPON_CHOICES, FACTIONS
+from utils.details import replace_company_name
 
 from dat.UserSignup import UserSignup
 from dat.UserProfile import UserProfile
@@ -115,6 +116,7 @@ test_responses = {
     'group': None
 
 }
+
 
 # def _check(x, ctx):
 
@@ -226,6 +228,7 @@ class DMEnlistmentCog(commands.Cog):
             user = UserSignup()
             user.faction = responses['faction']
             user.company = responses['company']
+            user.company = replace_company_name(responses['company'])
             user.role = responses['role']
             user.username = responses['name']
             user.level = responses['level']
