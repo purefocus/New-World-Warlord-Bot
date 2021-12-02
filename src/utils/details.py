@@ -37,9 +37,12 @@ add_mapping(role_emoji_mappings, ':axe:', ['dps'])
 add_mapping(role_emoji_mappings, ':adhesive_bandage:', ['healer', 'heal'])
 add_mapping(role_emoji_mappings, ':shield:', ['tank'])
 add_mapping(role_emoji_mappings, ':hammer_pick:', ['siege'])
-add_mapping(role_emoji_mappings, ':bow_and_arrow:', ['sharpshooter', 'ranged', 'musket'])
+add_mapping(role_emoji_mappings, ':bow_and_arrow:', ['sharpshooter', 'ranged', 'musket', 'dex'])
 add_mapping(role_emoji_mappings, ':crown:', ['leader', 'lead'])
 add_mapping(role_emoji_mappings, ':man_mage:', ['mage'])
+add_mapping(role_emoji_mappings, ':muscle:', ['str dps'])
+add_mapping(role_emoji_mappings, ':man_mage:', ['int dps'])
+add_mapping(role_emoji_mappings, ':dagger:', ['dex dps'])
 
 ##########################
 # Location Name Mappings #
@@ -155,3 +158,24 @@ def parse_date(text):
             # return f'<t:{ts}:f> (<t:{ts}:R>)'
 
     return text
+
+
+'''
+Use <t:TIMESTAMP:FLAG> to send it
+
+Available flags:
+
+    t: Short time (e.g 9:41 PM)
+
+    T: Long Time (e.g. 9:41:30 PM)
+
+    d: Short Date (e.g. 30/06/2021)
+
+    D: Long Date (e.g. 30 June 2021)
+
+    f (default): Short Date/Time (e.g. 30 June 2021 9:41 PM)
+
+    F: Long Date/Time (e.g. Wednesday, June, 30, 2021 9:41 PM)
+
+    R: Relative Time (e.g. 2 months ago, in an hour)
+'''

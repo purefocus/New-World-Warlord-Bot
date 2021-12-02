@@ -174,3 +174,4 @@ class RosterCog(commands.Cog):
             btns = btns[0]
         await msg.edit(content='Done!', components=None)
         await ctx.respond(content='**Click buttons to enlist!**', components=btns)
+

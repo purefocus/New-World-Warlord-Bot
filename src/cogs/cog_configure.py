@@ -75,8 +75,24 @@ class ConfigurationCog(commands.Cog):
                 from cogs.cog_worldstatus import WorldStatusCog
                 wscog: WorldStatusCog = self.state.cogs['world_status']
                 await wscog.create_status_channels(ctx.guild)
-            if not ctx.responded:
-                await ctx.respond('Added Status Channels', hidden=True)
+
+                if not ctx.responded:
+                    await ctx.respond('Added Status Channels', hidden=True)
+            elif args[0] == 'sync':
+                try:
+                    if ctx.author.id == 198526201374048256:
+                        msg = await ctx.send(content='Removing all Commands... ', hidden=True)
+
+                        await self.state.ui_client.slash.nuke_commands()
+                        await msg.edit(content=f'{msg.content}\nAdding Commands...')
+                        print('Commands Before: ', self.state.client.commands)
+                        await self.state.ui_client.slash.sync_commands()
+                        print('Commands After: ', self.state.client.commands)
+                        await msg.edit(content=f'{msg.content}\nCommand Sync Complete!')
+                except Exception as e:
+                    print_stack_trace()
+                    await ctx.respond(content=str(e), hidden=True)
+                print('Done')
 
     @subslash_cog(base_names=['wl_configure', 'server'], name='init')
     async def cmd_init_guild(self, ctx: Interaction):

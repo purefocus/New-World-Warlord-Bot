@@ -7,6 +7,7 @@ from forms.war_management import *
 from utils.botutil import *
 from cogs import *
 from utils.colorprint import print_color_table
+
 # fc = 0
 # lst = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 # for i in range(len(lst)):
@@ -36,12 +37,14 @@ config = Config()
 config.load()
 state = BotState(client, config)
 state.load_war_data()
+state.ui_client = ui
 
 state.cogs = {
     #
     'war_management': WarManagementCog(client, state),
     'dm_enlist': DMEnlistmentCog(client, state),
     'roster': RosterCog(client, state),
+    'war_groups': WarGroupsCog(client, state),
 
     'extras': ExtrasCog(client, state),
     'world_status': WorldStatusCog(client, state),
@@ -50,6 +53,7 @@ state.cogs = {
     # 'verify': VerificationCog(client, state),
     # 'dm_verify': DMVerificationCog(client, state),
     'config': ConfigurationCog(client, state),
+    'bot_management': BotManagementCog(client, state, ui),
     #
     'temp_voice': TempVoiceCog(client, state),
     # 'war_voice': WarVoiceCog(client, state),

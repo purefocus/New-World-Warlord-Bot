@@ -5,6 +5,7 @@ from bot_state import BotState
 
 import discord_ui
 from discord_ui import Interaction
+from utils.permissions import *
 
 from utils.discord_utils import *
 import config as cfg
@@ -55,3 +56,20 @@ class ExtrasCog(commands.Cog):
         embed.set_footer(text='Generated using /channel_stats')
 
         await ctx.respond(embed=embed, hidden=True)
+
+    @slash_cog(name='wl_test_cmd')
+    async def wl_test_cmd(self, ctx: discord_ui.SlashedCommand, cmd: str, param1: str = None, param2: str = None,
+                          param3: str = None, param4: str = None):
+        if not await check_permission(ctx, Perm.WAR_POST):
+            return
+
+        if cmd == 'test':
+            await ctx.respond('Test Command!', hidden=True)
+
+
+
+        else:
+            await ctx.respond('Invalid Test Command', hidden=True)
+
+        if not ctx.responded:
+            await ctx.respond('Done.', hidden=True)

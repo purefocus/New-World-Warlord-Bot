@@ -1,5 +1,6 @@
 from dat.EnlistDef import Enlistment
 
+import pandas as pd
 import requests
 from utils.colorprint import print_dict
 
@@ -66,10 +67,64 @@ def _process_html(inp):
 
 def pull_from_sheet(url, sheet):
     url = f'{url}/gviz/tq?tqx=out:csv&sheet={sheet}'
-    import pandas as pd
-    pd.read_csv(url)
+    data = pd.read_csv(url)
+    data = _prune_csv_data(data)
+    return _parse_csv_data(data)
 
-    print(pd)
+
+def val(inp):
+    if str(inp) == 'nan':
+        return None
+    return inp
+
+
+def _prune_csv_data(data: pd.DataFrame):
+    rm_cols = []
+    for (colName, colData) in data.iteritems():
+        # print(f'{colName} :: {len(colData)}')
+        empty_column = True
+        for item in colData.values:
+            item = val(item)
+            if item is not None:
+                empty_column = False
+                break
+        if empty_column:
+            rm_cols.append(colName)
+
+    data = data.drop(columns=rm_cols)
+    return data
+
+
+def _parse_group_info(data: pd.DataFrame, row, col):
+    try:
+        print(f'Parsing Group data at ({col}, {row})')
+        data = data.iloc[row:row + 6, col:col + 2]
+        group_name = data.iloc[0, 0]
+        players = []
+        for i in range(5):
+            name = val(data.iloc[i + 1, 0])
+            role = val(data.iloc[i + 1, 1])
+            players.append((name, role))
+        # print('Group Name: ', group_name, '\nPlayers: ', players)
+        # print(data)
+    except:
+        return None, None
+
+    return group_name, players
+
+
+def _parse_csv_data(data: pd.DataFrame):
+    groups = []
+    for (rowidx, rowdat) in data.iterrows():
+        rowdat = rowdat.values
+        for c in range(len(rowdat)):
+            if str(rowdat[c]).lower().startswith('group '):
+                print(rowdat[c])
+                name, members = _parse_group_info(data, rowidx, c)
+                if name is not None:
+                    groups.append((name, members))
+
+    return groups
 
 
 def parse_google_form(url: str):
@@ -98,6 +153,7 @@ class Question:
 
 
 if __name__ == '__main__':
-    # pull_from_sheet('https://docs.google.com/spreadsheets/d/1shDl1rikY29gBocWiCJOXaFq6sgO-74OZk-JQWuTx_Y/', 'War+Roster')
-    parse_google_form(
-        'https://docs.google.com/forms/d/e/1FAIpQLSfYNr3uLqLKoXKuY6PmHsugpEn4H6QjL84dY6-KgDabq_gGtA/viewform?usp=sf_link')
+    pull_from_sheet('https://docs.google.com/spreadsheets/d/1shDl1rikY29gBocWiCJOXaFq6sgO-74OZk-JQWuTx_Y',
+                    'War+Template')
+    # parse_google_form(
+    #     'https://docs.google.com/forms/d/e/1FAIpQLSfYNr3uLqLKoXKuY6PmHsugpEn4H6QjL84dY6-KgDabq_gGtA/viewform?usp=sf_link')
