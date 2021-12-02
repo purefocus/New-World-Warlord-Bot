@@ -69,6 +69,8 @@ def _process_html(inp):
 
 
 def pull_from_sheet(url, sheet):
+    if url.endswith('/'):
+        url = url[:-1]
     url = f'{url}/gviz/tq?tqx=out:csv&sheet={sheet}'
     data = pd.read_csv(url)
     data = _prune_csv_data(data)
@@ -158,5 +160,5 @@ class Question:
 if __name__ == '__main__':
     pull_from_sheet('https://docs.google.com/spreadsheets/d/1shDl1rikY29gBocWiCJOXaFq6sgO-74OZk-JQWuTx_Y',
                     'War+Template')
-    parse_google_form(
-        'https://docs.google.com/forms/d/e/1FAIpQLSfYNr3uLqLKoXKuY6PmHsugpEn4H6QjL84dY6-KgDabq_gGtA/viewform?usp=sf_link')
+    # parse_google_form(
+    #     'https://docs.google.com/forms/d/e/1FAIpQLSfYNr3uLqLKoXKuY6PmHsugpEn4H6QjL84dY6-KgDabq_gGtA/viewform?usp=sf_link')
