@@ -42,9 +42,8 @@ state.ui_client = ui
 from utils.google_forms import post_enlistment
 
 for user in state.users.users:
-    user: Enlistment = user
-    if user.edit_key != None:
-        post_enlistment(user)
+    user: Enlistment = state.users.users[user]
+    post_enlistment(user)
 
 state.cogs = {
     #
