@@ -169,7 +169,7 @@ class RosterCog(commands.Cog):
                     new_line=True
                 )
             ]
-            if not war.id != 'General Enlistment':
+            if war.id != 'General Enlistment':
                 row.append(Button(custom_id=f'btn:absent:{war.id}', label='Absent', color='red'))
             btns.append(row)
         if len(btns) == 1:
