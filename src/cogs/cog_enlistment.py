@@ -186,7 +186,7 @@ class DMEnlistmentCog(commands.Cog):
             user = UserProfile(ctx.author, gcfg)
 
             responses = {}
-            responses = test_responses
+            # responses = test_responses
             if user.username is not None:
                 responses['name'] = user.username
 
