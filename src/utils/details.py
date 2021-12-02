@@ -34,15 +34,15 @@ add_mapping(weapon_mappings, 'Great Axe', ['GA', 'War Axe', 'Axe'])
 ##########################
 role_emoji_mappings = {}
 add_mapping(role_emoji_mappings, ':axe:', ['dps'])
-add_mapping(role_emoji_mappings, ':adhesive_bandage:', ['healer', 'heal'])
+add_mapping(role_emoji_mappings, ':adhesive_bandage:', ['healer', 'heal', 'heals'])
 add_mapping(role_emoji_mappings, ':shield:', ['tank'])
 add_mapping(role_emoji_mappings, ':hammer_pick:', ['siege'])
 add_mapping(role_emoji_mappings, ':bow_and_arrow:', ['sharpshooter', 'ranged', 'musket', 'dex'])
 add_mapping(role_emoji_mappings, ':crown:', ['leader', 'lead'])
 add_mapping(role_emoji_mappings, ':man_mage:', ['mage'])
-add_mapping(role_emoji_mappings, ':muscle:', ['str dps'])
-add_mapping(role_emoji_mappings, ':man_mage:', ['int dps'])
-add_mapping(role_emoji_mappings, ':dagger:', ['dex dps'])
+add_mapping(role_emoji_mappings, ':muscle:', ['str dps', 'str. dps', 'melee', 'melee dps'])
+add_mapping(role_emoji_mappings, ':man_mage:', ['int dps', 'int. dps'])
+add_mapping(role_emoji_mappings, ':dagger:', ['dex dps', 'dex. dps'])
 
 ##########################
 # Location Name Mappings #
@@ -68,7 +68,7 @@ company_mappings = {}
 add_mapping(company_mappings, 'Lotus Trading',
             ['Lotus Trading Cartel', 'Lotus Trading Company', 'Lotus Holdings Co.', 'LTC'])
 add_mapping(company_mappings, 'Storm Chasers', ['Storm Blazers', 'SC'])
-add_mapping(company_mappings, 'Actual Apes', ['Apes', 'AA'])
+add_mapping(company_mappings, 'Actual Apes', ['Apes', 'AA', 'Actuai Apes', 'Actual Ape', 'Actuai Ape'])
 
 
 def get_location(loc):
