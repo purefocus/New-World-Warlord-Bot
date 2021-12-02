@@ -38,12 +38,12 @@ config.load()
 state = BotState(client, config)
 state.load_war_data()
 state.ui_client = ui
-
-from utils.google_forms import post_enlistment
-
-for user in state.users.users:
-    user: Enlistment = state.users.users[user]
-    post_enlistment(user)
+#
+# from utils.google_forms import post_enlistment
+#
+# for user in state.users.users:
+#     user: Enlistment = state.users.users[user]
+#     post_enlistment(user)
 
 state.cogs = {
     #
