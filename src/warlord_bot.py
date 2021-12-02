@@ -151,6 +151,9 @@ async def on_ready():
 
         for guild in client.guilds:
             print('Guild: ', guild.name)
+            if guild.id == 782026589927637014:
+                for ch in guild.channels:
+                    print('Actual Apes Channel: ', ch.name)
 
         for war in state.wars:
             war = state.wars[war]
