@@ -224,7 +224,6 @@ class DMEnlistmentCog(commands.Cog):
 
             await ctx.author.send('You have finished answering all the questions!')
 
-            print_dict(responses)
             user = UserSignup()
             user.faction = responses['faction']
             user.company = responses['company']
@@ -234,6 +233,7 @@ class DMEnlistmentCog(commands.Cog):
             user.level = responses['level']
             # if 'gearscore' in responses:
             #     user.level = responses['gearscore']
+            print_dict(responses)
 
             user.primary_weapon = f"{responses['primary_weapon']}"  # ({responses['primary_level']})"
             user.secondary_weapon = f"{responses['secondary_weapon']}"  # ({responses['secondary_level']})"
