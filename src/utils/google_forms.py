@@ -25,6 +25,7 @@ field2post = {
 
 
 def post_enlistment(enl: Enlistment):
+    print('Posting Enlistment Data for ', enl.username)
     try:
         data = enl.data()
         fields = ['username', 'level', 'role', 'primary weapon', 'secondary weapon', 'preferred group', 'company',
@@ -39,6 +40,8 @@ def post_enlistment(enl: Enlistment):
             if dat is None or dat == 'none':
                 dat = ''
             req[f'entry.{post_key}'] = dat
+
+        # print_dict(req)
 
         params = {}
         if enl.edit_key is not None:
@@ -155,5 +158,5 @@ class Question:
 if __name__ == '__main__':
     pull_from_sheet('https://docs.google.com/spreadsheets/d/1shDl1rikY29gBocWiCJOXaFq6sgO-74OZk-JQWuTx_Y',
                     'War+Template')
-    # parse_google_form(
-    #     'https://docs.google.com/forms/d/e/1FAIpQLSfYNr3uLqLKoXKuY6PmHsugpEn4H6QjL84dY6-KgDabq_gGtA/viewform?usp=sf_link')
+    parse_google_form(
+        'https://docs.google.com/forms/d/e/1FAIpQLSfYNr3uLqLKoXKuY6PmHsugpEn4H6QjL84dY6-KgDabq_gGtA/viewform?usp=sf_link')

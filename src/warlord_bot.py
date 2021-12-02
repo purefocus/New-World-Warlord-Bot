@@ -39,6 +39,13 @@ state = BotState(client, config)
 state.load_war_data()
 state.ui_client = ui
 
+from utils.google_forms import post_enlistment
+
+for user in state.users.users:
+    user: Enlistment = user
+    if user.edit_key != None:
+        post_enlistment(user)
+
 state.cogs = {
     #
     'war_management': WarManagementCog(client, state),

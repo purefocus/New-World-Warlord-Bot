@@ -53,6 +53,7 @@ class BotState:
 
     async def add_enlistment(self, disc_name, war: WarDef, user: Enlistment, absent=False, save=True, announce=True):
         if user is None:
+            print('user is none!?')
             return
         try:
             num_enlisted = len(war)

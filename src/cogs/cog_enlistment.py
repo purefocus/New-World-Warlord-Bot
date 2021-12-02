@@ -104,6 +104,17 @@ survey_btn = BtnOpt('survey', 'Signup', 'green')
 enlist_btn = BtnOpt('enlist', 'Signup', 'green')
 absent_btn = BtnOpt('absent', 'Absent', 'green')
 
+test_responses = {
+    'name': 'purefocus',
+    'level': '582',
+    'faction': 'Syndicate',
+    'company': 'Storm Chasers',
+    'role': 'Str DPS',
+    'primary_weapon': 'War Hammer',
+    'secondary_weapon': 'Great Axe',
+    'group': None
+
+}
 
 # def _check(x, ctx):
 
@@ -175,6 +186,7 @@ class DMEnlistmentCog(commands.Cog):
             user = UserProfile(ctx.author, gcfg)
 
             responses = {}
+            responses = test_responses
             if user.username is not None:
                 responses['name'] = user.username
 
