@@ -145,6 +145,8 @@ class WarDef:
         # else:
 
         wartime = parse_date(self.war_time)
+        if wartime is None:
+            wartime = ''
         if not isinstance(wartime, str):
             ts = int(wartime.timestamp())
             wartime = f'<t:{ts}:f> (<t:{ts}:R>)'
