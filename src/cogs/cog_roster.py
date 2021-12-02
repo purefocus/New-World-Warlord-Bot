@@ -162,14 +162,16 @@ class RosterCog(commands.Cog):
         # print(wars)
         btns = []
         for war in wars:
-            btns.append([
+            row = [
                 Button(
                     custom_id=f'btn:enlist:{war.id}',
                     label=f'Enlist for {war.location}',
                     new_line=True
-                ),
-                Button(custom_id=f'btn:absent:{war.id}', label='Absent', color='red')
-            ])
+                )
+            ]
+            if not war.id != 'General Enlistment':
+                row.append(Button(custom_id=f'btn:absent:{war.id}', label='Absent', color='red'))
+            btns.append(row)
         if len(btns) == 1:
             btns = btns[0]
         await msg.edit(content='Done!', components=None)
