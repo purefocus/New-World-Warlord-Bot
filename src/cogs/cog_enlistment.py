@@ -227,7 +227,7 @@ class DMEnlistmentCog(commands.Cog):
             user = UserSignup()
             user.faction = responses['faction']
             user.company = responses['company']
-            user.company = replace_company_name(responses['company'])
+            user.company = replace_company_name(user.company)
             user.role = responses['role']
             user.username = responses['name']
             user.level = responses['level']
@@ -444,18 +444,18 @@ class DMEnlistmentCog(commands.Cog):
             await ctx.author.send(content=STR_NO_ACTIVE_WAR)
 
     async def _proc_enlist(self, ctx, war, absent=False):
-        if ctx.author in self.users_enlisting:
-            proc = self.users_enlisting[ctx.author]
+        if str(ctx.author) in self.users_enlisting:
+            proc = self.users_enlisting[str(ctx.author)]
             if proc is not None:
                 proc.close()
                 print('Proc killed')
-            del self.users_enlisting[ctx.author]
+            del self.users_enlisting[str(ctx.author)]
 
-        self.users_enlisting[ctx.author] = self._do_enlist(war, ctx, absent)
+        self.users_enlisting[str(ctx.author)] = self._do_enlist(war, ctx, absent)
         print(colors.red('Users Enlisting: '), len(self.users_enlisting))
-        await self.users_enlisting[ctx.author]
+        await self.users_enlisting[str(ctx.author)]
         try:
-            del self.users_enlisting[ctx.author]
+            del self.users_enlisting[str(ctx.author)]
             print(colors.red('Users Enlisting: '), len(self.users_enlisting))
         except:
             pass
