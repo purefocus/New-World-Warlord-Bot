@@ -17,11 +17,11 @@ class UserData:
         self.name_to_disc_map = {}
 
     def add_user(self, disc_name, user: Enlistment):
-        disc_name = disc_name.lower()
+        user.disc_name = disc_name
         if disc_name in self.users:
-            u = self.users[disc_name]
+            u = self.users[disc_name.lower()]
             user.edit_key = u.edit_key
-        self.users[disc_name] = user
+        self.users[disc_name.lower()] = user
         self.name_to_disc_map[user.username.lower()] = disc_name
         post_enlistment(user)
 
@@ -36,7 +36,7 @@ class UserData:
             need_update = False
             for key in data:
                 entry: dict = data[key]
-                # entry['disc_name'] = key
+                entry['disc_name'] = key
                 # print_dict(entry)
                 enl = self.users[key.lower()] = Enlistment(**entry)
                 self.name_to_disc_map[enl.username.lower()] = enl.disc_name
