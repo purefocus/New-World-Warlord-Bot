@@ -248,9 +248,9 @@ class DMEnlistmentCog(commands.Cog):
             print('No permission!')
             await ctx.send(STR_NO_PERMISSION, hidden=True)
         except asyncio.TimeoutError as e:
-            # import traceback
-            # import sys
-            # traceback.print_exception(*sys.exc_info())
+            import traceback
+            import sys
+            traceback.print_exception(*sys.exc_info())
 
             print(colors.red(f'Failed to enlist {ctx.author.display_name}!'))
             print(colors.red(f'\t-> {str(e)}'))
