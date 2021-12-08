@@ -173,7 +173,7 @@ async def on_ready():
         traceback.print_exception(*sys.exc_info())
 
 
-state.load_war_data()
+# state.load_war_data()
 
 client.run(config.bot_token)
 
