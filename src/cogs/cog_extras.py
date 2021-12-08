@@ -66,6 +66,16 @@ class ExtrasCog(commands.Cog):
         if cmd == 'test':
             await ctx.respond('Test Command!', hidden=True)
 
+        if cmd == 'check_dupe':
+            from utils.discord_utils import search_for_duplicate_names
+            result = 'Checkign for duplicated names...\n'
+            matches = search_for_duplicate_names(ctx.guild)
+            for key, matched in matches:
+                result += f'Matched Name: **{key}**\n'
+                for m in matched:
+                    result += f'> {m.mention} (*{m.joined_at.strftime("%m/%d/%y")}*)\n'
+            await ctx.respond(content=result)
+
 
 
         else:
