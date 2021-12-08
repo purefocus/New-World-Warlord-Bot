@@ -25,7 +25,6 @@ field2post = {
 
 
 def post_enlistment(enl: Enlistment):
-    print('Posting Enlistment Data for ', enl.username)
     try:
         data = enl.data()
         fields = ['username', 'level', 'role', 'primary weapon', 'secondary weapon', 'preferred group', 'company',
@@ -46,6 +45,8 @@ def post_enlistment(enl: Enlistment):
         params = {}
         if enl.edit_key is not None:
             params['edit2'] = enl.edit_key
+
+        print(f'Posting Enlistment Data for {enl.username} | {enl.edit_key}')
 
         response = requests.post(url=FORM_URL, data=req, params=params)
         content = str(response.content, 'UTF-8')
