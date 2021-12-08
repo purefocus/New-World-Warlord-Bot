@@ -57,6 +57,16 @@ class ExtrasCog(commands.Cog):
 
         await ctx.respond(embed=embed, hidden=True)
 
+    @slash_cog(name='test_cmd')
+    async def wl_test_cmd(self, ctx: discord_ui.SlashedCommand, arguments: str):
+        args = arguments.split(' ')
+        cmd = args[0]
+        try:
+            if cmd == 'check_dupe':
+                await self._check_dupe(ctx)
+        except:
+            pass
+
     @slash_cog(name='wl_test_cmd')
     async def wl_test_cmd(self, ctx: discord_ui.SlashedCommand, cmd: str, param1: str = None, param2: str = None,
                           param3: str = None, param4: str = None):
@@ -67,14 +77,7 @@ class ExtrasCog(commands.Cog):
             await ctx.respond('Test Command!', hidden=True)
 
         if cmd == 'check_dupe':
-            from utils.discord_utils import search_for_duplicate_names
-            result = 'Checkign for duplicated names...\n'
-            matches = search_for_duplicate_names(ctx.guild)
-            for key, matched in matches:
-                result += f'Matched Name: **{key}**\n'
-                for m in matched:
-                    result += f'> {m.mention} (*{m.joined_at.strftime("%m/%d/%y")}*)\n'
-            await ctx.respond(content=result)
+            await self._check_dupe(ctx)
 
 
 
@@ -83,3 +86,13 @@ class ExtrasCog(commands.Cog):
 
         if not ctx.responded:
             await ctx.respond('Done.', hidden=True)
+
+    async def _check_dupe(self, ctx: discord_ui.SlashedCommand):
+        from utils.discord_utils import search_for_duplicate_names
+        result = 'Checkign for duplicated names...\n'
+        matches = search_for_duplicate_names(ctx.guild)
+        for key, matched in matches:
+            result += f'Matched Name: **{key}**\n'
+            for m in matched:
+                result += f'> {m.mention} (*{m.joined_at.strftime("%m/%d/%y")}*)\n'
+        await ctx.respond(content=result)
