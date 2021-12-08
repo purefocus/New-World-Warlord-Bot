@@ -57,8 +57,10 @@ class ExtrasCog(commands.Cog):
 
         await ctx.respond(embed=embed, hidden=True)
 
-    @slash_cog(name='test_cmd')
-    async def wl_test_cmd(self, ctx: discord_ui.SlashedCommand, arguments: str):
+    @slash_cog(name='test_cmd', **cfg.cmd_cfg)
+    async def test_cmd(self, ctx: discord_ui.SlashedCommand, arguments: str=None):
+        if not await check_permission(ctx, Perm.WAR_POST):
+            return
         args = arguments.split(' ')
         cmd = args[0]
         try:
