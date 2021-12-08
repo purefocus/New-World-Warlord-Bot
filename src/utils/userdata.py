@@ -65,6 +65,7 @@ class UserData:
             name = name.lower()
             if '#' not in name:
                 name = self.name_to_disc_map[name]
+                name = name.lower()
             if name in self.users:
                 return self.users[name]
         except:
