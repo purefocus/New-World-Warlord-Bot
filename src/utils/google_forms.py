@@ -24,7 +24,7 @@ field2post = {
 }
 
 
-def post_enlistment(enl: Enlistment):
+def post_enlistment(enl: Enlistment, force=False):
     try:
         data = enl.data()
         fields = ['username', 'level', 'role', 'primary weapon', 'secondary weapon', 'preferred group', 'company',
@@ -43,7 +43,7 @@ def post_enlistment(enl: Enlistment):
         # print_dict(req)
 
         params = {}
-        if enl.edit_key is not None:
+        if not force and enl.edit_key is not None:
             params['edit2'] = enl.edit_key
 
         print(f'Posting Enlistment Data for {enl.username} | {enl.edit_key}')

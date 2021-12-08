@@ -58,7 +58,7 @@ class ExtrasCog(commands.Cog):
         await ctx.respond(embed=embed, hidden=True)
 
     @slash_cog(name='test_cmd', **cfg.cmd_cfg)
-    async def test_cmd(self, ctx: discord_ui.SlashedCommand, arguments: str=None):
+    async def test_cmd(self, ctx: discord_ui.SlashedCommand, arguments: str = None):
         if not await check_permission(ctx, Perm.WAR_POST):
             return
         args = arguments.split(' ')
@@ -66,6 +66,9 @@ class ExtrasCog(commands.Cog):
         try:
             if cmd == 'check_dupe':
                 await self._check_dupe(ctx)
+
+            elif cmd == 'push_roster':
+                await self._push_roster(ctx)
         except:
             pass
 
@@ -78,8 +81,11 @@ class ExtrasCog(commands.Cog):
         if cmd == 'test':
             await ctx.respond('Test Command!', hidden=True)
 
-        if cmd == 'check_dupe':
+        elif cmd == 'check_dupe':
             await self._check_dupe(ctx)
+
+        elif cmd == 'push_roster':
+            await self._push_roster(ctx)
 
 
 
@@ -98,3 +104,18 @@ class ExtrasCog(commands.Cog):
             for m in matched:
                 result += f'> {m.mention} (*{m.joined_at.strftime("%m/%d/%y")}*)\n'
         await ctx.respond(content=result)
+
+    async def _push_roster(self, ctx: discord_ui.SlashedCommand):
+
+        if not await check_permission(ctx, Perm.ADMIN):
+            return
+
+        from utils.google_forms import post_enlistment
+        users = self.state.users
+        await ctx.defer(hidden=True)
+        for user in users.users:
+            user = users.users[user]
+            post_enlistment(user, force=True)
+        await ctx.respond('Done.')
+
+        users.save()
