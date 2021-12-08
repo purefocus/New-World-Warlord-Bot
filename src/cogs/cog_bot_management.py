@@ -45,7 +45,7 @@ class BotManagementCog(commands.Cog):
     @slash_cog(name='warlord_reboot')
     async def warlord_reboot(self, ctx: SlashedCommand):
         try:
-            if ctx.author.id == 198526201374048256:
+            if ctx.author.id == 198526201374048256 or ctx.author.id == 154004012474171392:
                 confirm = await ask_confirm(self.state, ctx, f'Are you sure you want to reboot Warlord?')
                 if confirm:
                     await ctx.respond(content='Rebooting...', hidden=True)
