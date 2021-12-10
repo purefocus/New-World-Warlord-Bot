@@ -125,12 +125,27 @@ def replace_company_name(company: str):
 
 
 import datetime
+from datetime import tzinfo, timedelta
+
+
+class EST(tzinfo):
+    def utcoffset(self, dt):
+        return timedelta(hours=-5)
+
+    def dst(self, dt):
+        return timedelta(0)
+
+    def tzname(self, dt):
+        return "-05:00"
+
+    def __repr__(self):
+        return f'{self.__class__.__name__}()'
 
 
 def _parse_date(text, format):
     try:
         dt = datetime.datetime.strptime(text, format)
-        now = datetime.datetime.now()
+        now = datetime.datetime.now(tz=EST())
         dt = dt.replace(year=now.year, tzinfo=now.tzinfo)
         if dt.hour < 12:
             dt = dt.replace(hour=dt.hour + 12)
@@ -150,12 +165,13 @@ def parse_date(text):
         '%a, %b %d, %H:%M %p %Z',  # Tue, Nov 30, 11:00 PM EST
         '%a, %b %d, %H:%M %p',  # Tue, Nov 30, 11:00 PM
         '%b %d @ %H:%M %p',  # Nov 30 @ 11:00 PM
-        '%b %d @ %H:%M %p %Z',  # Nov 30 @ 11:00 PM EST
+        # '%b %d @ %H:%M %p %Z',  # Nov 30 @ 11:00 PM EST
         '%m/%d %H:%M %p %Z',  # 11/30 11:00 PM EST
     ]
     for fmt in formats:
         result = _parse_date(text, fmt)
         if result is not None:
+            print(result)
             return result
             # ts = int(result.timestamp())
             # return f'<t:{ts}:f> (<t:{ts}:R>)'
