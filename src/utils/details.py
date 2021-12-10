@@ -150,7 +150,7 @@ def parse_date(text):
         '%a, %b %d, %H:%M %p %Z',  # Tue, Nov 30, 11:00 PM EST
         '%a, %b %d, %H:%M %p',  # Tue, Nov 30, 11:00 PM
         '%b %d @ %H:%M %p',  # Nov 30 @ 11:00 PM
-        '%b %d @ %H:%M %p %Z',  # Nov 30 @ 11:00 PM
+        '%b %d @ %H:%M %p %Z',  # Nov 30 @ 11:00 PM EST
         '%m/%d %H:%M %p %Z',  # 11/30 11:00 PM EST
     ]
     for fmt in formats:
