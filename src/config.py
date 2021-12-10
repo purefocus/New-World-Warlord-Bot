@@ -26,6 +26,7 @@ WARLORD_TEST_ID = 897098434153185290
 FACTION_SERVER_ID = 894675526776676382
 LOTUS_SERVER_ID = 868924409115709480
 ACTUAL_APES_ID = 782026589927637014
+BUSTIN_SERVER_ID = 106579141217787904
 
 guild_ids = [WARLORD_TEST_ID, LOTUS_SERVER_ID, FACTION_SERVER_ID]
 fguild_ids = [WARLORD_TEST_ID, FACTION_SERVER_ID]
@@ -214,6 +215,8 @@ class Config:
         self.msgs = self._get(self.config, 'messages', {})
         self.status_channels = self._get(self.config, 'status_channels', {})
 
+        self.mysql_login = self._get(self.config, 'sql_login', {'username': 'warlord', 'password': 'password'})
+
         for key in self.msgs:
             msgs = self.msgs[key]
             lst = []
@@ -223,6 +226,9 @@ class Config:
 
         if self.unsaved:
             self.save()
+
+        import utils.user_database as db
+        self.db = db.UserDatabase(self)
 
     def get_messages(self, key):
         if key in self.msgs:

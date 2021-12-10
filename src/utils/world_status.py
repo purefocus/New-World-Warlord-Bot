@@ -19,6 +19,8 @@ class WorldStatus:
         self.status_enum = status_enum
         self.last_updated = time.strftime('%b %d, %I:%M %p %Z')
 
+        print(self)
+
     def __repr__(self):
         return f'{self.players_current}/{self.players_maximum} ({self.queue_current})'
 

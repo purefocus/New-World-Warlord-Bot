@@ -73,6 +73,16 @@ permissions = {
         Perm.CONFIGURE: [],
         Perm.WAR_HOST: []
     },
+    cfg.BUSTIN_SERVER_ID: {
+        Perm.ADMIN: ['Admin', 888566130585780234],
+        Perm.ENLIST: ['New World', 'OOF'],
+        Perm.WAR_CREATE: [],
+        Perm.WAR_END: [],
+        Perm.WAR_ROSTER: [],
+        Perm.WAR_POST: [],
+        Perm.CONFIGURE: [],
+        Perm.WAR_HOST: []
+    },
 }
 
 for guild in permissions:

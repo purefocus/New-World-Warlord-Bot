@@ -25,10 +25,15 @@ def _get_company_role_special(user: discord.Member) -> [None, str]:
     return None
 
 
-def has_role(user: discord.Member, role_name: str):
-    for role in user.roles:
-        if role.name == role_name:
-            return True
+def has_role(user: discord.Member, role_name):
+    if isinstance(role_name, str):
+        for role in user.roles:
+            if role.name == role_name:
+                return True
+    elif isinstance(role_name, int):
+        for role in user.roles:
+            if role.id == role_name:
+                return True
     return False
 
 
