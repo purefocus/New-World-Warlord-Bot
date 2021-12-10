@@ -136,7 +136,7 @@ class EST(tzinfo):
         return timedelta(0)
 
     def tzname(self, dt):
-        return "-05:00"
+        return "EST"
 
     def __repr__(self):
         return f'{self.__class__.__name__}()'
