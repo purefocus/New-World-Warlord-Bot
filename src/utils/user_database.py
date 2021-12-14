@@ -59,11 +59,12 @@ class UserDatabase:
             if enl is not None:
                 self.update_user(enl)
                 return
-
             data = user.data()
+            if data[1] > 700:
+                data[1] = -1
             entry = {
                 'username': data[0],
-                'discord': user.disc_name,
+                'discord': user.disc_name.encode('utf-8'),
                 'faction': data[7],
                 'company': data[6],
                 'level': data[1],
