@@ -39,10 +39,10 @@ state = BotState(client, config)
 state.load_war_data()
 state.ui_client = ui
 
-# for user in state.users.users:
-#     user = state.users.users[user]
-#     config.db.add_user(user)
-#
+for user in state.users.users:
+    user = state.users.users[user]
+    config.db.add_user(user)
+
 # sys.exit()
 #
 # from utils.google_forms import post_enlistment

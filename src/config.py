@@ -219,7 +219,10 @@ class Config:
             'username': 'warlord',
             'password': 'password',
             'host': 'localhost',
-            'database': 'warlord'
+            'database': 'warlord',
+            'tunnel': False,
+            'ssh_username': 'username',
+            'ssh_password': 'password'
         })
 
         for key in self.msgs:
@@ -232,8 +235,8 @@ class Config:
         if self.unsaved:
             self.save()
 
-        # import utils.user_database as db
-        # self.db = db.UserDatabase(self)
+        import utils.user_database as db
+        self.db = db.UserDatabase(self)
 
     def get_messages(self, key):
         if key in self.msgs:
