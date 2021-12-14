@@ -80,10 +80,10 @@ class UserDatabase:
             cursor.execute(query, param)
             self.mydb.commit()
 
-            print(cursor.rowcount, "Record Inserted")
+            # print(cursor.rowcount, "Record Inserted")
         except:
             print('Failed to add user!')
-            print_dict(user.data())
+            print(user.data())
 
     def update_user(self, user):
         data = user.data()
