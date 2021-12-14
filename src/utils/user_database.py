@@ -81,8 +81,8 @@ class UserDatabase:
             self.mydb.commit()
 
             # print(cursor.rowcount, "Record Inserted")
-        except:
-            print('Failed to add user!')
+        except Exception as e:
+            print('Failed to add user! ', e)
             print(user.data())
 
     def update_user(self, user):
