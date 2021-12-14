@@ -134,11 +134,20 @@ class VerificationCog(commands.Cog):
                 link = line
                 continue
 
+            if line.lower().startswith('username:'):
+                username = line.split(':')[1].strip()
+
+            elif line.lower().startswith('company:'):
+                company = line.split(':')[1].strip()
+
             elif username is None and len(line) > 0:
                 username = line
 
             elif company is None and len(line) > 1:
-                company = replace_company_name(line)
+                company = line
+
+            if company.lower() != 'none':
+                company = replace_company_name(company)
 
             original_text += f'> {line}\n'
 
