@@ -40,9 +40,9 @@ state.load_war_data()
 state.ui_client = ui
 
 state.users.db = config.db
-# for user in state.users.users:
-#     user = state.users.users[user]
-#     config.db.add_user(user)
+for user in state.users.users:
+    user = state.users.users[user]
+    config.db.add_user(user)
 
 # sys.exit()
 #
