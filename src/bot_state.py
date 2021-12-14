@@ -121,6 +121,7 @@ class BotState:
         if best_match is not None:
             exists = True
             war.roster = best_match.roster
+            war.absent = best_match.absent
             war.boards = best_match.boards
             # war.groups = best_match.groups
             war.id = best_match.id

@@ -215,7 +215,12 @@ class Config:
         self.msgs = self._get(self.config, 'messages', {})
         self.status_channels = self._get(self.config, 'status_channels', {})
 
-        self.mysql_login = self._get(self.config, 'sql_login', {'username': 'warlord', 'password': 'password'})
+        self.mysql_cfg = self._get(self.config, 'mysql_cfg', {
+            'username': 'warlord',
+            'password': 'password',
+            'host': 'localhost',
+            'database': 'warlord'
+        })
 
         for key in self.msgs:
             msgs = self.msgs[key]
