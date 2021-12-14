@@ -54,33 +54,36 @@ class UserDatabase:
             print('Connection Failed!')
 
     def add_user(self, user):
+        try:
+            enl = self.get_user(user)
+            if enl is not None:
+                self.update_user(enl)
+                return
 
-        enl = self.get_user(user)
-        if enl is not None:
-            self.update_user(enl)
-            return
+            data = user.data()
+            entry = {
+                'username': data[0],
+                'discord': user.disc_name,
+                'faction': data[7],
+                'company': data[6],
+                'level': data[1],
+                'role': data[2],
+                'weapon1': data[3],
+                'weapon2': data[4],
+                'extra': data[5],
+                'edit_key': user.edit_key,
+            }
 
-        data = user.data()
-        entry = {
-            'username': data[0],
-            'discord': user.disc_name,
-            'faction': data[7],
-            'company': data[6],
-            'level': data[1],
-            'role': data[2],
-            'weapon1': data[3],
-            'weapon2': data[4],
-            'extra': data[5],
-            'edit_key': user.edit_key,
-        }
+            query, param = insert_query('users', entry, dup_update=True)
+            cursor = self.mydb.cursor()
 
-        query, param = insert_query('users', entry, dup_update=True)
-        cursor = self.mydb.cursor()
+            cursor.execute(query, param)
+            self.mydb.commit()
 
-        cursor.execute(query, param)
-        self.mydb.commit()
-
-        print(cursor.rowcount, "Record Inserted")
+            print(cursor.rowcount, "Record Inserted")
+        except:
+            print('Failed to add user!')
+            print_dict(user.data())
 
     def update_user(self, user):
         data = user.data()
