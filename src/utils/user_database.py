@@ -45,6 +45,7 @@ class UserDatabase:
                                      password=mysql_cfg['password'],
                                      database=mysql_cfg['database'],
                                      port=mysql_cfg['port'],
+                                     charset='utf8mb4',
                                      use_pure=True)
         self.mydb.set_unicode(True)
 
@@ -64,7 +65,7 @@ class UserDatabase:
                 data[1] = -1
             entry = {
                 'username': data[0],
-                'discord': user.disc_name.encode('utf-8'),
+                'discord': user.disc_name,
                 'faction': data[7],
                 'company': data[6],
                 'level': data[1],
