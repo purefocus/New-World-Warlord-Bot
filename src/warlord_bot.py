@@ -42,6 +42,7 @@ state = BotState(client, config)
 database = SqlDatabase(config)
 
 orig_users = state.users
+orig_users.load()
 state.users = database.users
 state.load_war_data()
 
