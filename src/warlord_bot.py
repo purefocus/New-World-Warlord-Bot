@@ -38,6 +38,8 @@ ui.logger.disabled = False
 config = Config()
 config.load()
 state = BotState(client, config)
+# database = SqlDatabase(config)
+# state.users = database.users
 state.load_war_data()
 state.ui_client = ui
 
@@ -184,15 +186,16 @@ async def on_ready():
                 await state.update_war_boards(war)
 
         for user in state.users.users:
+            print(user)
             usr: Enlistment = state.users.users[user]
-            if user != usr.disc_name:
-                print(f'key and name do not match! {user} :: {usr.disc_name}')
             for guild in client.guilds:
                 for member in guild.members:
                     dname = str(member)
-                    if dname.lower() == user and dname != user:
+                    if dname.lower() == usr.disc_name.lower() and dname != usr.disc_name:
+                        usr.disc_name = dname
                         print(f'Name case does not match!  {dname} :: {usr.disc_name}')
 
+            state.users.save()
         # await ui.slash.sync_commands()
     except Exception as e:
         import traceback

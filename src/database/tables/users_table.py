@@ -9,19 +9,22 @@ _user_data_fields = ['user_id', 'last_updated', 'discord', 'username',
 
 class UsersRow:
 
-    def __init__(self):
-        self.user_id = None
-        self.discord = None
-        self.username = None
-        self.level = None
-        self.role = None
-        self.weapon1 = None
-        self.weapon2 = None
-        self.faction = None
-        self.company = None
-        self.extra = None
-        self.edit_key = None
-        self.last_updated = None
+    def __init__(self, discord=None, username=None, level=None,
+                 role=None, weapon1=None, weapon2=None,
+                 faction=None, company=None, extra=None,
+                 edit_key=None, last_updated=None):
+        self.user_id = -1
+        self.discord = discord
+        self.username = username
+        self.level = level
+        self.role = role
+        self.weapon1 = weapon1
+        self.weapon2 = weapon2
+        self.faction = faction
+        self.company = company
+        self.extra = extra
+        self.edit_key = edit_key
+        self.last_updated = last_updated
         self.changed = False
 
     def __setattr__(self, key, value):
@@ -64,6 +67,7 @@ class TableUsers:
         self.db = db
 
         self.users = {}
+        self.name_to_disc_map = {}
 
     def has_user(self, discord_name):
         if discord_name in self.users:
@@ -92,7 +96,8 @@ class TableUsers:
 
             cursor = self.db.cursor()
             cursor.execute(query,
-                           (user.company, user.level, user.role, user.weapon1, user.weapon2, user.extra, user.edit_key))
+                           (user.company, user.level, user.role, user.weapon1, user.weapon2, user.extra, user.edit_key,
+                            user.user_id))
             self.db.commit()
             user.changed = False
             return True
@@ -134,8 +139,8 @@ class TableUsers:
                 weapons = [weapons]
             for w in weapons:
                 where += f"AND (weapon1 LIKE '%s' OR weapon2 LIKE '%s')"
-            params.append(f'%{w}%')
-            params.append(f'%{w}%')
+                params.append(f'%{w}%')
+                params.append(f'%{w}%')
 
         query = f'SELECT * FROM users WHERE {where};'
         cursor = self.db.cursor()
@@ -144,7 +149,9 @@ class TableUsers:
         users = []
         results = cursor.fetchall()
         for result in results:
-            users.append(_data_from_row(result))
+            user = _data_from_row(result)
+            users.append(user)
+            self.users[user.discord] = user
 
         return users
 
@@ -153,14 +160,23 @@ class TableUsers:
             user: UsersRow = self.users[user]
             self.update_row(user)
 
-        self.name_to_disc_map = {}
 
     def add_user(self, disc_name, user: Enlistment):
         user.disc_name = disc_name
         if disc_name in self.users:
-            u = self.users[disc_name]
-            user.edit_key = u.edit_key
-        self.users[disc_name] = user
+            u: UsersRow = self.users[disc_name]
+            data = user.table_data()
+            u.role = data['role']
+            u.weapon1 = data['weapon1']
+            u.weapon2 = data['weapon2']
+            u.extra = data['extra']
+            u.faction = data['faction']
+            u.company = data['company']
+            u.level = data['level']
+            u.edit_key = u.edit_key
+            self.update_row(u)
+        self.insert_user(user)
+        # self.users[disc_name] = user
         self.name_to_disc_map[user.username.lower()] = disc_name
 
     def load(self, file=None):
@@ -177,12 +193,12 @@ class TableUsers:
 
     def __getitem__(self, name) -> [None, Enlistment]:
         try:
-            name = name.lower()
+            # name = name.lower()
             if '#' not in name:
-                name = self.name_to_disc_map[name]
-                name = name.lower()
+                name = self.name_to_disc_map[name.lower()]
+                # name = name.lower()
             if name in self.users:
-                return self.users[name]
+                return self.users[name].to_enlistment()
         except:
             pass
         return None
@@ -192,7 +208,7 @@ class TableUsers:
             item = item.lower()
             if '#' not in item:
                 item = self.name_to_disc_map[item]
-            return item.lower() in self.users
+            return item in self.users
         return False
 
     def __repr__(self):

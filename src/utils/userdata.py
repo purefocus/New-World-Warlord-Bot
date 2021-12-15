@@ -36,7 +36,6 @@ class UserData:
             need_update = False
             for key in data:
                 entry: dict = data[key]
-                entry['disc_name'] = key
                 # print_dict(entry)
                 enl = self.users[key.lower()] = Enlistment(**entry)
                 self.name_to_disc_map[enl.username.lower()] = enl.disc_name
