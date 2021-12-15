@@ -14,6 +14,7 @@ class WorldStatusCog(commands.Cog):
     def __init__(self, client: commands.Bot, state: BotState):
         self.client = client
         self.state = state
+        print('World Status Cog')
         self.update_status.start()
 
         # self.status_channels = {
@@ -44,6 +45,7 @@ class WorldStatusCog(commands.Cog):
         return embed
 
     async def update_status_messages(self, status: WorldStatus):
+        print('World Status Update')
 
         # status = self.state.world_status = get_status(self.state.config.nws_token)
         await self.state.update_presence(str(status))
@@ -87,6 +89,7 @@ class WorldStatusCog(commands.Cog):
             print_stack_trace()
 
     async def update_status_channels(self, status: WorldStatus):
+        print('World Status Update 2')
         for gid in self.state.config.status_channels:
             try:
                 channels = self.state.config.status_channels[gid]
@@ -106,6 +109,7 @@ class WorldStatusCog(commands.Cog):
 
     @tasks.loop(minutes=2)
     async def update_status(self):
+        print('World Status Update 3')
         status = self.state.world_status = get_status(self.state.config.nws_token)
         await self.state.update_presence(str(status))
         await self.update_status_messages(status)
@@ -113,6 +117,7 @@ class WorldStatusCog(commands.Cog):
 
     @update_status.before_loop
     async def before_update_status(self):
+        print('World Status Update 4')
         await self.client.wait_until_ready()
         status = self.state.world_status = get_status(self.state.config.nws_token)
         await self.state.update_presence(str(status))
