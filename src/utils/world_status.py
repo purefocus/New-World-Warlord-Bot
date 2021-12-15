@@ -37,7 +37,7 @@ def get_status(token) -> WorldStatus:
     print('2')
 
     result = sess.get(BASE_URL, headers=header)
-    print('3')
+    print('3', result.content)
     data = result.json()
     print('data')
     if data['success']:
