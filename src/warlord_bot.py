@@ -187,9 +187,11 @@ async def on_ready():
             usr: Enlistment = state.users.users[user]
             if user != usr.disc_name:
                 print(f'key and name do not match! {user} :: {usr.disc_name}')
-            # for guild in client.guilds:
-            #     for member in guild.members:
-            #         if str(member).lower() == user:
+                for guild in client.guilds:
+                    for member in guild.members:
+                        dname = str(member)
+                        if dname.lower() == user and dname != user:
+                            print(f'Name case does not match!  {dname} :: {usr.disc_name}')
 
         # await ui.slash.sync_commands()
     except Exception as e:
