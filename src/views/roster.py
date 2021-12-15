@@ -1,7 +1,7 @@
-from dat.EnlistDef import Enlistment
-from utils.userdata import UserData
-from utils.details import WAR_ROLES
 
+from utils.userdata import UserData
+from utils.details import *
+from database.tables.users_table import UserRow
 from discord import Embed
 
 
@@ -20,7 +20,7 @@ def _group_by_role(roster: list, absent: list):
             if user is None:
                 continue
 
-            if role in user.roles:
+            if role == user.role:
                 result[role].append(user)
     result['🚫 Absent'] = absent
     return result
@@ -39,10 +39,16 @@ def create_roster_embed(names, absent, state, title=None, embed=None, abrv_line=
         # enlisted = sorted(enlisted, key=lambda x: x.level, reverse=True)
         idx = 0
         for enl in enlisted:
-            enl: Enlistment = enl
+            enl: UserRow = enl
             if enl is None:
                 continue
-            val = f'> {str(enl.roster_line(abrv_line))}\n'
+
+            weapons = f'{enl.weapon1}/{enl.weapon2}'
+            if abrv_line:
+                line = f'{enl.username} *[{replace_weapons_abbrev(weapons)}]*'
+            else:
+                line = f'{enl.level} {replace_emojis(enl.role)} **{enl.username}** *[{weapons}]*'
+            val = f'> {line}\n'
             if len(value) + len(val) > 1024:
                 embed.add_field(name=f'{key} {"" if idx == 0 else idx}', value=value, inline=abrv_line)
                 value = ''

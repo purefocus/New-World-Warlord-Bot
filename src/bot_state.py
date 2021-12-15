@@ -8,7 +8,9 @@ from utils.userdata import UserData
 from utils.world_status import get_status
 import time
 
+from database.tables.users_table import UserRow
 from views.roster import create_roster_embed
+from views.embeds import user_embed
 
 
 def _chsum(cond):
@@ -33,7 +35,7 @@ class BotState:
         self.client: commands.Bot = client
         self.wars = {}
         self.config = config
-        self.users = UserData()
+        self.users: [UserData, None] = UserData()
         self.cogs = {}
         self.ui_client = None
 
@@ -52,14 +54,14 @@ class BotState:
             )
         )
 
-    async def add_enlistment(self, disc_name, war: WarDef, user: Enlistment, absent=False, save=True, announce=True):
+    async def add_enlistment(self, disc_name, war: WarDef, user: UserRow, absent=False, save=True, announce=True):
         if user is None:
             print('user is none!?')
             return
         try:
             num_enlisted = len(war)
-            if isinstance(user, UserSignup):
-                user = user.to_enlistment()
+            # if isinstance(user, UserSignup):
+            #     user = user.to_enlistment()
             if absent:
                 war.add_absent(user)
             else:
@@ -86,7 +88,7 @@ class BotState:
     async def announce_signup(self, user):
         if self.config.announce_signup:
             for ch in self.config.get_signup_channels():
-                await ch.send(embed=user.embed())
+                await ch.send(embed=user_embed(user, self))
 
     def add_war(self, war: WarDef, edit=False):
         if war.is_fake:

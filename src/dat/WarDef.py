@@ -106,8 +106,10 @@ class WarDef:
     def add_enlistment(self, enlisted) -> bool:
         # name = self.enlisted.is_enlisted(enlisted)
         # self.enlisted.enlist(enlisted)
-        if isinstance(enlisted, Enlistment):
+        try:
             enlisted = enlisted.username
+        except:
+            pass
 
         if enlisted in self.absent:
             self.absent.remove(enlisted)
@@ -119,8 +121,10 @@ class WarDef:
         return True
 
     def add_absent(self, enlisted) -> bool:
-        if isinstance(enlisted, Enlistment):
+        try:
             enlisted = enlisted.username
+        except:
+            pass
 
         if enlisted in self.roster:
             self.roster.remove(enlisted)

@@ -1,7 +1,6 @@
 import json
 
 import config as cfg
-from dat.EnlistDef import Enlistment
 from utils.google_forms import post_enlistment
 import mysql.connector as mcon
 

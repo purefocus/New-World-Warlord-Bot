@@ -2,7 +2,7 @@ from discord.ext import commands, tasks
 import discord
 from bot_state import *
 from forms.create_war import *
-from forms.enlist_form import cmd_enlist
+# from forms.enlist_form import cmd_enlist
 from forms.war_management import *
 from utils.botutil import *
 from cogs import *
@@ -38,21 +38,55 @@ ui.logger.disabled = False
 config = Config()
 config.load()
 state = BotState(client, config)
+
 database = SqlDatabase(config)
-# state.users = database.users
+
+orig_users = state.users
+state.users = database.users
 state.load_war_data()
+
+# state.load_war_data()
 state.ui_client = ui
+
+
+def convert_data():
+    odata = UserData()
+    odata.load()
+    try:
+        database.users.load()
+
+        for user in odata.users:
+            user = odata.users[user]
+            u = database.users.get_user(user.disc_name)
+            if u is None:
+                print('Insert')
+                database.users.insert_user(user)
+            else:
+                role = ''
+                weapons = ''
+                for r in user.roles:
+                    role = r
+                    weapons = user.roles[r]
+
+                u.role = role
+                u.weapon1 = weapons[0]
+                u.weapon2 = weapons[1]
+                u.extra = user.group
+                u.level = user.level
+                print('Update')
+                database.users.update_row(u)
+    except Exception as e:
+        print_stack_trace()
+        print(odata)
+
+
 
 # database = SqlDatabase(config)
 # # state.db = database
 # users = database.users.get_users(username='f')
 # print_dict(users)
-try:
-    for user in state.users.users:
-        user = state.users.users[user]
-        database.users.insert_user(user)
-except Exception as e:
-    print_stack_trace()
+# print('test')
+# print(database.users['purefocus'])
 # # user = state.users.users['purefocus#3061']
 # # database.users.insert_user(user)
 # # #
@@ -188,17 +222,18 @@ async def on_ready():
             if war.active:
                 await state.update_war_boards(war)
 
-        # for user in state.users.users:
-        #     # print(user)
-        #     usr: Enlistment = state.users.users[user]
-        #     for guild in client.guilds:
-        #         for member in guild.members:
-        #             dname = str(member)
-        #             if dname.lower() == usr.disc_name.lower() and dname != usr.disc_name:
-        #                 usr.disc_name = dname
-        #                 print(f'Name case does not match!  {dname} :: {usr.disc_name}')
+        for user in orig_users.users:
+            print(user)
+            # print(user)
+            usr: Enlistment = orig_users.users[user]
+            for guild in client.guilds:
+                for member in guild.members:
+                    dname = str(member)
+                    if dname.lower() == user.lower() and dname != usr.disc_name:
+                        usr.disc_name = dname
+                        print(f'Name case does not match!  {dname} :: {user}')
 
-        # state.users.save()
+        orig_users.save()
         # await ui.slash.sync_commands()
     except Exception as e:
         import traceback

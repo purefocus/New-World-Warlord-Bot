@@ -3,15 +3,18 @@ from discord.ext import commands
 from discord_ui.cogs import slash_cog, subslash_cog, listening_component_cog, context_cog
 from bot_state import BotState
 
-from dat.datadef import *
+# from dat.datadef import *
+from dat.WarDef import WarDef
+from database.tables.users_table import UserRow
 
 from discord_ui import *
 
 from utils.colorprint import *
 from utils.details import WAR_ROLES, WEAPON_CHOICES, FACTIONS
 from utils.details import replace_company_name
+from views.embeds import user_embed
 
-from dat.UserSignup import UserSignup
+# from dat.UserSignup import UserSignup
 from dat.UserProfile import UserProfile
 
 from views.view_confirm import *
@@ -29,7 +32,7 @@ question_list = {
     'level': {
         'question': '**What is your gear score?**',
         'response_type': int,
-        # 'check': lambda response, answers: None if 0 < response <= 60 else 'Your answer must be between 0-60'
+        'check': lambda response, answers: None if 0 < response <= 1000 else 'Your answer must be between 0-600'
     },
     # 'gearscore': {
     #     'question': 'What level is your Gear Score?',
@@ -180,7 +183,7 @@ class DMEnlistmentCog(commands.Cog):
 
         self.users_enlisting = {}
 
-    async def enlist_questionair(self, war, ctx, udata=None):
+    async def enlist_questionair(self, war, ctx, udata=None) -> [UserRow, None]:
         try:
             gcfg = self.state.config.guildcfg(ctx.guild_id)
             if gcfg is None:
@@ -219,30 +222,32 @@ class DMEnlistmentCog(commands.Cog):
                 while response is None:
                     key, response = await question(self.client, ctx, responses, key=q, **ques)
                     if key is None:
-                        return False
+                        return None
                 responses[key] = response
 
             await ctx.author.send('You have finished answering all the questions!')
 
-            user = UserSignup()
-            user.faction = responses['faction']
-            user.company = responses['company']
-            user.company = replace_company_name(user.company)
-            user.role = responses['role']
-            user.username = responses['name']
-            user.level = responses['level']
+            # user = UserSignup()
+            u = UserRow()
+            u.discord = user.discord_user
+            u.faction = responses['faction']
+            u.company = responses['company']
+            u.company = replace_company_name(user.company)
+            u.role = responses['role']
+            u.username = responses['name']
+            u.level = responses['level']
             # if 'gearscore' in responses:
             #     user.level = responses['gearscore']
             print_dict(responses)
 
-            user.primary_weapon = f"{responses['primary_weapon']}"  # ({responses['primary_level']})"
-            user.secondary_weapon = f"{responses['secondary_weapon']}"  # ({responses['secondary_level']})"
+            u.weapon1 = f"{responses['primary_weapon']}"  # ({responses['primary_level']})"
+            u.weapon2 = f"{responses['secondary_weapon']}"  # ({responses['secondary_level']})"
             pref_group = responses['group']
             if pref_group is not None and pref_group.lower() == 'none':
                 pref_group = None
-            user.preferred_group = pref_group
+            u.preferred_group = pref_group
 
-            return user.to_enlistment()
+            return u  # .to_enlistment()
 
         except discord.Forbidden as e:
             print('No permission!')
@@ -271,7 +276,7 @@ class DMEnlistmentCog(commands.Cog):
         if war is not None:
             in_war = user.username in war.roster
             in_absent = user.username in war.absent
-            user_data: Enlistment = user.user_data
+            user_data: UserRow = user.user_data
             data_exists = user_data is not None
             question_options = []
 
@@ -297,7 +302,7 @@ class DMEnlistmentCog(commands.Cog):
                     question_options.append(absent_btn)
                 else:
                     question = f'You are already enlisted in this war, would you like to update your information? (**{war.location}**)'
-                    embed = user_data.embed(self.state)
+                    embed = user_embed(user_data, self.state)
                     question_options.append(update_btn)
             else:
                 if absent:
@@ -305,7 +310,7 @@ class DMEnlistmentCog(commands.Cog):
                     question_options.append(absent_btn)
                 else:
                     question = f'Is the following information correct?\nWould you like to update your information?'
-                    embed = user_data.embed(self.state)
+                    embed = user_embed(user_data, self.state)
                     question_options.append(enlist_btn)
                     question_options.append(update_btn)
 
@@ -340,18 +345,18 @@ class DMEnlistmentCog(commands.Cog):
                 return
 
             if response == 'survey':
-                user.user_data = await self.enlist_questionair(war, ctx, user.user_data)
+                user.user_data: UserRow = await self.enlist_questionair(war, ctx, user.user_data)
                 await self.state.add_enlistment(str(ctx.author), war, user.user_data, absent=absent, announce=False)
                 if absent:
                     await action_msg.edit(f'You have been marked **Absent** for the war at **{war.location}**',
                                           components=None, embed=None)
                 else:
                     await action_msg.edit(f'You have been marked **Enlisted** for the war at **{war.location}**',
-                                          components=None, embed=user.user_data.embed(self.state))
+                                          components=None, embed=user_embed(user.user_data, self.state))
             elif response == 'enlist':
                 await self.state.add_enlistment(str(ctx.author), war, user.user_data, absent=absent, announce=False)
                 await action_msg.edit(f'You have been marked **Enlisted** for the war at **{war.location}**',
-                                      components=None, embed=user.user_data.embed(self.state))
+                                      components=None, embed=user_embed(user.user_data, self.state))
             elif response == 'absent':
                 await self.state.add_enlistment(str(ctx.author), war, user.user_data, absent=True, announce=False)
                 await action_msg.edit(f'You have been marked **Absent** for the war at **{war.location}**',
@@ -373,7 +378,7 @@ class DMEnlistmentCog(commands.Cog):
 
             msg = None
             ask = True
-            udata = self.state.users[str(ctx.author)]
+            udata: UserRow = self.state.users[str(ctx.author)]
             if udata is not None:
                 # if war.absent
                 if absent:
@@ -390,7 +395,7 @@ class DMEnlistmentCog(commands.Cog):
                                        '\nWould you like to update your information instead? '
                     ask, msg = await ask_confirm(self.state, ctx,
                                                  confirm_text,
-                                                 embed=udata.embed(), ret_msg=True,
+                                                 embed=user_embed(user.user_data), ret_msg=True,
                                                  text=['Update', 'Enlist', "Cancel"],
                                                  colors=['blurple', 'green', 'red'], cancel=True)
 
@@ -415,7 +420,7 @@ class DMEnlistmentCog(commands.Cog):
 
                     if udata is not None:
                         correct = await ask_confirm(self.state, ctx.author, 'Is this information correct?',
-                                                    embed=udata.embed(), hidden=False)
+                                                    embed=user_embed(udata), hidden=False)
                         if correct:
                             if absent:
                                 await ctx.author.send(STR_ENLIST_ABSENT % war.location)
@@ -513,8 +518,8 @@ class DMEnlistmentCog(commands.Cog):
     async def enlistment_lookup(self, ctx, user: discord.Member):
         print('Enlistment Lookup! ', str(user))
 
-        data = self.state.users[str(user)]
+        data: UserRow = self.state.users[str(user)]
         if data is not None:
-            await ctx.respond(content=' ', embed=data.embed(self.state), hidden=True)
+            await ctx.respond(content=' ', embed=user_embed(data, self.state), hidden=True)
         else:
             await ctx.respond(content='No enlistment data found for this user!', hidden=True)

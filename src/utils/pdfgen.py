@@ -51,12 +51,14 @@ def generate_enlistment_pdf(war: WarDef, users):
 def generate_enlistment_pandas(war: WarDef, users):
     data = war.create_table(users)
 
-    data = sorted(data, key=lambda x: x[1].sort_key(), reverse=True)
+    data = sorted(data, key=lambda x: str(x[1].role) + str(x[1].company) + str(x[1].level), reverse=True)
     dat = []
     for enl, entry in data:
-        d = entry.data()
+
+        d = [entry.username, entry.level, entry.role, entry.weapon1, entry.weapon2, entry.extra, entry.company,
+             entry.faction]
         if not enl:
-            d[2: ] = ['ABSENT', '', '', '', '', '']
+            d[2:] = ['ABSENT', '', '', '', '', '']
         dat.append(d)
     data = dat  # [entry.data() for enl, entry in data]
 

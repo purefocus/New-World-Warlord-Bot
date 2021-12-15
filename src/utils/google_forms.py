@@ -1,5 +1,5 @@
-from dat.EnlistDef import Enlistment
-
+# from dat.EnlistDef import Enlistment
+# from database.tables.users_table import UserRow
 import pandas as pd
 import requests
 from utils.colorprint import print_dict
@@ -24,29 +24,44 @@ field2post = {
 }
 
 
-def post_enlistment(enl: Enlistment, force=False):
+def post_enlistment(user, force=False):
     try:
-        data = enl.data()
-        fields = ['username', 'level', 'role', 'primary weapon', 'secondary weapon', 'preferred group', 'company',
-                  'faction']
+        # data = enl.data()
+        fields = {
+            'username': user.username,
+            'level': user.level,
+            'role': user.role,
+            'primary weapon': user.weapon1,
+            'secondary weapon': user.weapon2,
+            'preferred group': user.extra,
+            'company': user.company,
+            'faction': user.faction
+        }
 
         req = {
             "fvv": 1, "partialResponse": '[]', "pageHistory": 0, "fbzx": -6893020537148369068
         }
-        for i in range(len(fields)):
-            dat = data[i]
-            post_key = field2post[fields[i]]
+        for field in fields:
+            post_key = field2post[field]
+            dat = fields[field]
             if dat is None or dat == 'none':
                 dat = ''
             req[f'entry.{post_key}'] = dat
 
+        # for i in range(len(fields)):
+        #     dat = data[i]
+        #     post_key = field2post[fields[i]]
+        #     if dat is None or dat == 'none':
+        #         dat = ''
+        #     req[f'entry.{post_key}'] = dat
+
         # print_dict(req)
 
         params = {}
-        if not force and enl.edit_key is not None:
-            params['edit2'] = enl.edit_key
+        if not force and user.edit_key is not None:
+            params['edit2'] = user.edit_key
 
-        print(f'Posting Enlistment Data for {enl.username} | {enl.edit_key}')
+        print(f'Posting Enlistment Data for {user.username} | {user.edit_key}')
 
         response = requests.post(url=FORM_URL, data=req, params=params)
         content = str(response.content, 'UTF-8')
@@ -54,7 +69,8 @@ def post_enlistment(enl: Enlistment, force=False):
         match = regex.findall(content)
         if len(match) > 0:
             print(match[0])
-            enl.edit_key = match[0]
+            user.edit_key = match[0]
+
     except Exception as e:
         import traceback
         import sys
