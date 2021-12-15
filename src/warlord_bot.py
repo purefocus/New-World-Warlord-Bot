@@ -38,7 +38,7 @@ ui.logger.disabled = False
 config = Config()
 config.load()
 state = BotState(client, config)
-# database = SqlDatabase(config)
+database = SqlDatabase(config)
 # state.users = database.users
 state.load_war_data()
 state.ui_client = ui
@@ -47,9 +47,12 @@ state.ui_client = ui
 # # state.db = database
 # users = database.users.get_users(username='f')
 # print_dict(users)
-# # for user in state.users.users:
-# #     user = state.users.users[user]
-# #     database.users.insert_user(user)
+try:
+    for user in state.users.users:
+        user = state.users.users[user]
+        database.users.insert_user(user)
+except Exception as e:
+    print_stack_trace()
 # # user = state.users.users['purefocus#3061']
 # # database.users.insert_user(user)
 # # #
@@ -185,17 +188,17 @@ async def on_ready():
             if war.active:
                 await state.update_war_boards(war)
 
-        for user in state.users.users:
-            # print(user)
-            usr: Enlistment = state.users.users[user]
-            for guild in client.guilds:
-                for member in guild.members:
-                    dname = str(member)
-                    if dname.lower() == usr.disc_name.lower() and dname != usr.disc_name:
-                        usr.disc_name = dname
-                        print(f'Name case does not match!  {dname} :: {usr.disc_name}')
+        # for user in state.users.users:
+        #     # print(user)
+        #     usr: Enlistment = state.users.users[user]
+        #     for guild in client.guilds:
+        #         for member in guild.members:
+        #             dname = str(member)
+        #             if dname.lower() == usr.disc_name.lower() and dname != usr.disc_name:
+        #                 usr.disc_name = dname
+        #                 print(f'Name case does not match!  {dname} :: {usr.disc_name}')
 
-            state.users.save()
+        # state.users.save()
         # await ui.slash.sync_commands()
     except Exception as e:
         import traceback
