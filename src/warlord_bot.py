@@ -42,17 +42,18 @@ state.load_war_data()
 state.ui_client = ui
 
 # database = SqlDatabase(config)
-# state.db = database
-# database.users.get_user('purefocus#3061')
-
-# for user in state.users.users:
-#     user = state.users.users[user]
-#     database.users.insert_user(user)
-# user = state.users.users['purefocus#3061']
-# database.users.insert_user(user)
+# # state.db = database
+# users = database.users.get_users(username='f')
+# print_dict(users)
+# # for user in state.users.users:
+# #     user = state.users.users[user]
+# #     database.users.insert_user(user)
+# # user = state.users.users['purefocus#3061']
+# # database.users.insert_user(user)
+# # #
+# user = database.users.get_user('purefocus#3061')
+# print_dict(user.__dict__)
 # #
-# database.users.get_user('purefocus#3061')
-#
 # sys.exit()
 #
 # from utils.google_forms import post_enlistment
@@ -181,6 +182,14 @@ async def on_ready():
             war = state.wars[war]
             if war.active:
                 await state.update_war_boards(war)
+
+        for user in state.users.users:
+            usr: Enlistment = state.users.users[user]
+            if user != usr.disc_name:
+                print(f'key and name do not match! {user} :: {usr.disc_name}')
+            # for guild in client.guilds:
+            #     for member in guild.members:
+            #         if str(member).lower() == user:
 
         # await ui.slash.sync_commands()
     except Exception as e:

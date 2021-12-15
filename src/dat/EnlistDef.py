@@ -53,7 +53,8 @@ class Enlisted:
 
 class Enlistment:
 
-    def __init__(self, disc_name=None, username=None, level=None, faction=None, company=None, group=None, roles=None,
+    def __init__(self, disc_name=None, username=None, level=None,
+                 faction=None, company=None, group=None, roles=None,
                  edit_key=None,
                  **args):
         self.disc_name = disc_name

@@ -15,7 +15,6 @@ class UserData:
     def __init__(self):
         self.users = {}
         self.name_to_disc_map = {}
-        # self.db = None
 
     def add_user(self, disc_name, user: Enlistment):
         user.disc_name = disc_name
@@ -25,9 +24,6 @@ class UserData:
         self.users[disc_name.lower()] = user
         self.name_to_disc_map[user.username.lower()] = disc_name
         post_enlistment(user)
-
-        # if self.db is not None:
-        #     self.db.add_user(user)
 
     def has_user(self, username: str):
         return username.lower() in self.users
