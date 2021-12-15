@@ -89,7 +89,7 @@ class WorldStatusCog(commands.Cog):
             print_stack_trace()
 
     async def update_status_channels(self, status: WorldStatus):
-        print('World Status Update 2')
+        # print('World Status Update 2')
         for gid in self.state.config.status_channels:
             try:
                 channels = self.state.config.status_channels[gid]
@@ -107,9 +107,9 @@ class WorldStatusCog(commands.Cog):
             except Exception as e:
                 print_stack_trace()
 
-    @tasks.loop(minutes=2)
+    @tasks.loop(minutes=5)
     async def update_status(self):
-        print('World Status Update 3')
+        # print('World Status Update 3')
         status = self.state.world_status = get_status(self.state.config.nws_token)
         await self.state.update_presence(str(status))
         await self.update_status_messages(status)
@@ -117,11 +117,11 @@ class WorldStatusCog(commands.Cog):
 
     @update_status.before_loop
     async def before_update_status(self):
-        print('World Status Update 4')
+        # print('World Status Update 4')
         await self.client.wait_until_ready()
-        print('World Status Update 5')
+        # print('World Status Update 5')
         status = self.state.world_status = get_status(self.state.config.nws_token)
-        print('World Status Update 6')
+        # print('World Status Update 6')
         await self.state.update_presence(str(status))
         await self.update_status_messages(status)
         await self.update_status_channels(status)
