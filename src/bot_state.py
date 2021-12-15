@@ -40,6 +40,7 @@ class BotState:
         self.war_selection = {}
 
         self.world_status = None
+        self.db = None
 
     async def update_presence(self, status):
         start_time = int(1000 * time.time())

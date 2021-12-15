@@ -8,6 +8,8 @@ from utils.botutil import *
 from cogs import *
 from utils.colorprint import print_color_table
 
+from database.SqlDatabase import SqlDatabase
+
 # fc = 0
 # lst = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 # for i in range(len(lst)):
@@ -39,11 +41,18 @@ state = BotState(client, config)
 state.load_war_data()
 state.ui_client = ui
 
-state.users.db = config.db
-for user in state.users.users:
-    user = state.users.users[user]
-    config.db.add_user(user)
+# database = SqlDatabase(config)
+# state.db = database
+# database.users.get_user('purefocus#3061')
 
+# for user in state.users.users:
+#     user = state.users.users[user]
+#     database.users.insert_user(user)
+# user = state.users.users['purefocus#3061']
+# database.users.insert_user(user)
+# #
+# database.users.get_user('purefocus#3061')
+#
 # sys.exit()
 #
 # from utils.google_forms import post_enlistment

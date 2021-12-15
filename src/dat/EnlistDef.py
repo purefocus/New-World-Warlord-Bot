@@ -116,6 +116,31 @@ class Enlistment:
             self.faction
         ]
 
+    def table_data(self) -> dict:
+        role = None
+        weapons = None
+        for r in self.roles:
+            role = r
+            weapons = self.roles[r]
+        weapons = weapons.split('/')
+        data = {
+            'username': self.username,
+            'discord': self.disc_name,
+            'faction': self.faction,
+            'company': self.company,
+            'level': self.level,
+            'role': role,
+            'weapon1': weapons[0],
+            'weapon2': weapons[1],
+            'extra': self.group,
+            'edit_key': self.edit_key,
+        }
+        # data2 = {}
+        # for key in data:
+        #     if data[key] is not None:
+        #         data2[key] = data[key]
+        return data
+
     def embed(self, state=None):
         embed = discord.Embed(title='War Enlistment')
         user_data = f'*Name*: {self.username} (level {self.level})\n*Faction*: {self.faction}\n*Company*: {self.company}'

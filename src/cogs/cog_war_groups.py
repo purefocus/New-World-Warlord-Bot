@@ -64,13 +64,28 @@ class WarGroupsCog(commands.Cog):
                     lines = msg.content.split('\n')
                     url = lines[2]
                     sheet = lines[3]
+                    cid = -1
+                    if len(lines) == 5:
+                        channel_tag = lines[4].strip()
+                        if channel_tag.startswith('<#') and channel_tag.endswith('>'):
+                            channel_tag = channel_tag[2:-1]
+                            cid = int(channel_tag)
 
                     dir_split = url.split('/')
                     if 'edit' in dir_split[-1]:
                         url = url.replace('/' + dir_split[-1], '')
-                    print(url)
+                    print('Sheet URL: ', url)
                     embed = self.get_group_embed(url, sheet)
+
+                    try:
+                        if cid != -1:
+                            channel = msg.guild.get_channel(cid)
+                            await channel.send(embed=embed)
+                            return
+                    except:
+                        print_stack_trace()
                     await msg.reply(embed=embed)
+
 
                 except:
                     print_stack_trace()
@@ -88,8 +103,16 @@ class WarGroupsCog(commands.Cog):
 
         from utils.google_forms import pull_from_sheet
         from utils.details import role_emoji
-        groups = pull_from_sheet(link, sheet.replace(' ', '+'))
-        embed = discord.Embed(title='Group Assignments')
+        groups, details = pull_from_sheet(link, sheet.replace(' ', '+'))
+
+        val = ''
+        for key in details:
+            value = details[key]
+            val += f'**{key}**: {value}\n'
+        # if len(val) > 0:
+        #     embed.add_field(name='Details', value=val, inline=False)
+
+        embed = discord.Embed(title='Group Assignments', description=val)
         for group, members in groups:
             value = ''
             for member, role in members:

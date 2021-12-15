@@ -278,8 +278,14 @@ class DMEnlistmentCog(commands.Cog):
             question = 'If you see this message, contact an administrator!'
             embed = None
 
+            gname = ''
+            try:
+                gname = ctx.guild.name
+            except:
+                pass
+
             print_fields('Enlistment', user=user.discord_user, username=user.username, in_war=in_war,
-                         in_absent=in_absent, data_exists=data_exists)
+                         in_absent=in_absent, data_exists=data_exists, guild=gname)
 
             if not data_exists:
                 question = 'Before you can sign up, we need to collect some information first!'

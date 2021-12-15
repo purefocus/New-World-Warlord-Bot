@@ -73,7 +73,7 @@ def pull_from_sheet(url, sheet):
     if url.endswith('/'):
         url = url[:-1]
     url = f'{url}/gviz/tq?tqx=out:csv&sheet={sheet}'
-    data = pd.read_csv(url)
+    data = pd.read_csv(url, header=None)
     data = _prune_csv_data(data)
     return _parse_csv_data(data)
 
@@ -103,9 +103,12 @@ def _prune_csv_data(data: pd.DataFrame):
 
 def _parse_group_info(data: pd.DataFrame, row, col):
     try:
-        print(f'Parsing Group data at ({col}, {row})')
+        # print(f'Parsing Group data at ({col}, {row})')
         data = data.iloc[row:row + 6, col:col + 2]
-        group_name = data.iloc[0, 0]
+        group_name = val(data.iloc[0, 1])
+        if group_name is None:
+            group_name = val(data.iloc[0, 0])
+
         players = []
         for i in range(5):
             name = val(data.iloc[i + 1, 0])
@@ -119,18 +122,32 @@ def _parse_group_info(data: pd.DataFrame, row, col):
     return group_name, players
 
 
+def _parse_event_details(data: pd.DataFrame, row, col):
+    data = data.iloc[row + 1:row + 7, col:col + 2]
+    details = {}
+    for i in range(6):
+        key = val(data.iloc[i, 0])
+        value = val(data.iloc[i, 1])
+        if key is not None:
+            details[key] = value
+    return details
+
+
 def _parse_csv_data(data: pd.DataFrame):
     groups = []
+    details = {}
     for (rowidx, rowdat) in data.iterrows():
         rowdat = rowdat.values
         for c in range(len(rowdat)):
             if str(rowdat[c]).lower().startswith('group '):
-                print(rowdat[c])
+                # print(rowdat[c])
                 name, members = _parse_group_info(data, rowidx, c)
                 if name is not None:
                     groups.append((name, members))
+            if 'details' in str(rowdat[c]).lower():
+                details = _parse_event_details(data, rowidx, c)
 
-    return groups
+    return groups, details
 
 
 def parse_google_form(url: str):
@@ -159,7 +176,8 @@ class Question:
 
 
 if __name__ == '__main__':
-    pull_from_sheet('https://docs.google.com/spreadsheets/d/1shDl1rikY29gBocWiCJOXaFq6sgO-74OZk-JQWuTx_Y',
-                    'War+Template')
+    ret = pull_from_sheet('https://docs.google.com/spreadsheets/d/1shDl1rikY29gBocWiCJOXaFq6sgO-74OZk-JQWuTx_Y',
+                          'Test+Sheet')
+    print(ret)
     # parse_google_form(
     #     'https://docs.google.com/forms/d/e/1FAIpQLSfYNr3uLqLKoXKuY6PmHsugpEn4H6QjL84dY6-KgDabq_gGtA/viewform?usp=sf_link')
