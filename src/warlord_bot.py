@@ -186,7 +186,7 @@ async def on_ready():
                 await state.update_war_boards(war)
 
         for user in state.users.users:
-            print(user)
+            # print(user)
             usr: Enlistment = state.users.users[user]
             for guild in client.guilds:
                 for member in guild.members:
