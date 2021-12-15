@@ -30,13 +30,16 @@ class WorldStatus:
 
 def get_status(token) -> WorldStatus:
     sess = requests.Session()
-
+    print('1')
     header = {
         "Authorization": f'Bearer {token}'
     }
+    print('2')
 
     result = sess.get(BASE_URL, headers=header)
+    print('3')
     data = result.json()
+    print('data')
     if data['success']:
         return WorldStatus(**data['message'])
     else:
