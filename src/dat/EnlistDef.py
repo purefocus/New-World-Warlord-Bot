@@ -129,7 +129,7 @@ class Enlistment:
             'discord': self.disc_name,
             'faction': self.faction,
             'company': self.company,
-            'level': self.level,
+            'level': max(0, min(self.level, 1000)),
             'role': role,
             'weapon1': weapons[0],
             'weapon2': weapons[1],
