@@ -119,7 +119,9 @@ class WorldStatusCog(commands.Cog):
     async def before_update_status(self):
         print('World Status Update 4')
         await self.client.wait_until_ready()
+        print('World Status Update 5')
         status = self.state.world_status = get_status(self.state.config.nws_token)
+        print('World Status Update 6')
         await self.state.update_presence(str(status))
         await self.update_status_messages(status)
         await self.update_status_channels(status)
