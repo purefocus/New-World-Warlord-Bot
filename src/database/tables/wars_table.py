@@ -54,7 +54,9 @@ class WarTable(SqlTable):
             'extra': war.extra
         }
         cursor = self.exec(query, params)
-        war.id = cursor.getlastrowid()
+        id = cursor.getlastrowid()
+        if id > 0:
+            war.id = cursor.getlastrowid()
         self.commit()
         war.changed = False
 
@@ -78,7 +80,9 @@ class WarTable(SqlTable):
             'extra': war.extra
         }
         cursor = self.exec(query, params)
-        war.id = cursor.getlastrowid()
+        id = cursor.getlastrowid()
+        if id > 0:
+            war.id = cursor.getlastrowid()
         self.commit()
 
         war.changed = False
