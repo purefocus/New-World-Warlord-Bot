@@ -253,12 +253,8 @@ class DMEnlistmentCog(commands.Cog):
             print('No permission!')
             await ctx.send(STR_NO_PERMISSION, hidden=True)
         except asyncio.TimeoutError as e:
-            import traceback
-            import sys
-            traceback.print_exception(*sys.exc_info())
 
-            print(colors.red(f'Failed to enlist {ctx.author.display_name}!'))
-            print(colors.red(f'\t-> {str(e)}'))
+            print(colors.red(f'[TimeoutError] Failed to enlist {ctx.author.display_name}!'))
 
         return None
 
@@ -345,114 +341,35 @@ class DMEnlistmentCog(commands.Cog):
                 return
 
             if response == 'survey':
-                user.user_data: UserRow = await self.enlist_questionair(war, ctx, user.user_data)
-                await self.state.add_enlistment(str(ctx.author), war, user.user_data, absent=absent, announce=False)
-                if absent:
-                    await action_msg.edit(f'You have been marked **Absent** for the war at **{war.location}**',
-                                          components=None, embed=None)
+                user.user_data = await self.enlist_questionair(war, ctx, user.user_data)
+                if user.user_data is None:
+                    await action_msg.edit(
+                        f'You took too long to respond to the messages! Try again or message an admin for assistance!',
+                        components=None, embed=None)
                 else:
-                    await action_msg.edit(f'You have been marked **Enlisted** for the war at **{war.location}**',
-                                          components=None, embed=user_embed(user.user_data, self.state))
+                    await self.state.add_enlistment(str(ctx.author), war, user.user_data, absent=absent, announce=False)
+                    if absent:
+                        await action_msg.edit(f'You have been marked **Absent** for the war at **{war.location}**',
+                                              components=None, embed=None)
+
+                    else:
+                        await action_msg.edit(f'You have been marked **Enlisted** for the war at **{war.location}**',
+                                              components=None, embed=user_embed(user.user_data, self.state))
+
             elif response == 'enlist':
                 await self.state.add_enlistment(str(ctx.author), war, user.user_data, absent=absent, announce=False)
                 await action_msg.edit(f'You have been marked **Enlisted** for the war at **{war.location}**',
                                       components=None, embed=user_embed(user.user_data, self.state))
+
             elif response == 'absent':
                 await self.state.add_enlistment(str(ctx.author), war, user.user_data, absent=True, announce=False)
                 await action_msg.edit(f'You have been marked **Absent** for the war at **{war.location}**',
                                       components=None, embed=None)
+
             elif response == 'cancel':
                 pass
         except:
             print_stack_trace()
-
-    async def do_enlist(self, war: WarDef, ctx: Interaction, absent=False):
-        user = ctx.author
-        # war = self.state.wars[id]
-        if war is not None:
-            print('Enlistment Started! ', str(ctx.author))
-            # self.users_enlisting[ctx.author] = True
-
-            if user.name in war.roster:
-                print('Already in war!')
-
-            msg = None
-            ask = True
-            udata: UserRow = self.state.users[str(ctx.author)]
-            if udata is not None:
-                # if war.absent
-                if absent:
-                    ask, msg = await ask_confirm(self.state, ctx,
-                                                 'Are you sure you would like to be marked as *Absent*?',
-                                                 ret_msg=True,
-                                                 text=['Absent', "Cancel"],
-                                                 colors=['green', 'red'], cancel=False)
-                else:
-                    if user.name in war.roster:
-                        confirm_text = 'You are already enlisted in this war, would you like to update your information?'
-                    else:
-                        confirm_text = 'You have enlisted in a previous war, so we can just reuse that information! ' \
-                                       '\nWould you like to update your information instead? '
-                    ask, msg = await ask_confirm(self.state, ctx,
-                                                 confirm_text,
-                                                 embed=user_embed(user.user_data), ret_msg=True,
-                                                 text=['Update', 'Enlist', "Cancel"],
-                                                 colors=['blurple', 'green', 'red'], cancel=True)
-
-                if ask and (not absent or udata is None):
-                    await msg.edit(content='**Please check your private messages!**', components=None, embed=None)
-            if ask is None:
-                await msg.edit(content='Enlistment Canceled', components=None, embed=None)
-                return
-            elif ask and (not absent or udata is None):
-
-                if not ctx.responded:
-                    try:
-                        await ctx.respond(content='**Please check your private messages!**', hidden=True)
-                    except:
-                        pass
-                correct = False
-                while not correct:
-                    try:
-                        udata = await self.enlist_questionair(war, ctx, udata)
-                    except:
-                        break
-
-                    if udata is not None:
-                        correct = await ask_confirm(self.state, ctx.author, 'Is this information correct?',
-                                                    embed=user_embed(udata), hidden=False)
-                        if correct:
-                            if absent:
-                                await ctx.author.send(STR_ENLIST_ABSENT % war.location)
-                            else:
-                                await ctx.author.send(STR_ENLIST_SUCCESS % war.location)
-                    else:
-                        break
-
-                if not correct:
-                    await ctx.author.send(content=STR_ENLIST_FAILED)
-
-            # del self.users_enlisting[ctx.author]
-            print('Enlistment Ended! ', str(ctx.author), len(self.users_enlisting))
-
-            if udata is not None:
-                await self.state.add_enlistment(str(ctx.author), war, udata, absent=absent, announce=ask)
-                if msg is not None:
-
-                    if absent:
-                        await msg.edit(STR_ENLIST_ABSENT % war.location, components=None)
-                    else:
-                        await msg.edit(STR_ENLIST_SUCCESS % war.location, components=None)
-                else:
-                    if absent:
-                        await ctx.author.send(STR_ENLIST_ABSENT % war.location)
-                    else:
-                        await ctx.author.send(STR_ENLIST_SUCCESS % war.location)
-            else:
-                await ctx.author.send(content=STR_ENLIST_FAILED)
-
-        else:
-            await ctx.author.send(content=STR_NO_ACTIVE_WAR)
 
     async def _proc_enlist(self, ctx, war, absent=False):
         if str(ctx.author) in self.users_enlisting:
