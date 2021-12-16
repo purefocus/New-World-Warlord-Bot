@@ -171,7 +171,7 @@ def parse_date(text):
     for fmt in formats:
         result = _parse_date(text, fmt)
         if result is not None:
-            print(result)
+            # print(result)
             return result
             # ts = int(result.timestamp())
             # return f'<t:{ts}:f> (<t:{ts}:R>)'

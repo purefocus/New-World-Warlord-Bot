@@ -39,47 +39,46 @@ config = Config()
 config.load()
 state = BotState(client, config)
 
-database = SqlDatabase(config)
-
-orig_users = state.users
-orig_users.load()
-state.users = database.users
+# database =
+# state.db = database
+#
+# orig_users = state.users
+# orig_users.load()
+# state.users = database.users
 state.load_war_data()
 
 # state.load_war_data()
 state.ui_client = ui
 
-
-def convert_data():
-    odata = UserData()
-    odata.load()
-    try:
-        database.users.load()
-
-        for user in odata.users:
-            user = odata.users[user]
-            u = database.users.get_user(user.disc_name)
-            if u is None:
-                print('Insert')
-                database.users.insert_user(user)
-            else:
-                role = ''
-                weapons = ''
-                for r in user.roles:
-                    role = r
-                    weapons = user.roles[r]
-
-                u.role = role
-                u.weapon1 = weapons[0]
-                u.weapon2 = weapons[1]
-                u.extra = user.group
-                u.level = user.level
-                print('Update')
-                database.users.update_row(u)
-    except Exception as e:
-        print_stack_trace()
-        print(odata)
-
+# def convert_data():
+#     odata = UserData()
+#     odata.load()
+#     try:
+#         database.users.load()
+#
+#         for user in odata.users:
+#             user = odata.users[user]
+#             u = database.users.get_user(user.disc_name)
+#             if u is None:
+#                 print('Insert')
+#                 database.users.insert_user(user)
+#             else:
+#                 role = ''
+#                 weapons = ''
+#                 for r in user.roles:
+#                     role = r
+#                     weapons = user.roles[r]
+#
+#                 u.role = role
+#                 u.weapon1 = weapons[0]
+#                 u.weapon2 = weapons[1]
+#                 u.extra = user.group
+#                 u.level = user.level
+#                 print('Update')
+#                 database.users.update_row(u)
+#     except Exception as e:
+#         print_stack_trace()
+#         print(odata)
 
 
 # database = SqlDatabase(config)
@@ -223,18 +222,18 @@ async def on_ready():
             if war.active:
                 await state.update_war_boards(war)
 
-        for user in orig_users.users:
-            print(user)
-            # print(user)
-            usr: Enlistment = orig_users.users[user]
-            for guild in client.guilds:
-                for member in guild.members:
-                    dname = str(member)
-                    if dname.lower() == user.lower() and dname != usr.disc_name:
-                        usr.disc_name = dname
-                        print(f'Name case does not match!  {dname} :: {user}')
-
-        orig_users.save()
+        # for user in orig_users.users:
+        #     print(user)
+        #     # print(user)
+        #     usr: Enlistment = orig_users.users[user]
+        #     for guild in client.guilds:
+        #         for member in guild.members:
+        #             dname = str(member)
+        #             if dname.lower() == user.lower() and dname != usr.disc_name:
+        #                 usr.disc_name = dname
+        #                 print(f'Name case does not match!  {dname} :: {user}')
+        #
+        # orig_users.save()
         # await ui.slash.sync_commands()
     except Exception as e:
         import traceback

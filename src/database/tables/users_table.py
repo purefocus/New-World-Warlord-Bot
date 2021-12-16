@@ -1,19 +1,20 @@
 from dat.EnlistDef import Enlistment
 from utils.google_forms import post_enlistment
 from mysql.connector import MySQLConnection
+from utils.dbutil import *
+from database.tables.sql_table import *
 
 _user_data_fields = ['user_id', 'last_updated', 'discord', 'username',
                      'faction', 'company', 'level', 'role', 'weapon1',
                      'weapon2', 'extra', 'edit_key']
 
 
-class UserRow:
+class UserRow(SqlRow):
 
-    def __init__(self, discord=None, username=None, level=None,
-                 role=None, weapon1=None, weapon2=None,
-                 faction=None, company=None, extra=None,
-                 edit_key=None, last_updated=None):
-        self.user_id = -1
+    def __init__(self, user_id=-1, discord=None, username=None, level=None, role=None, weapon1=None, weapon2=None,
+                 faction=None, company=None, extra=None, edit_key=None, last_updated=None):
+        super().__init__()
+        self.user_id = user_id
         self.discord = discord
         self.username = username
         self.level = level
@@ -25,21 +26,9 @@ class UserRow:
         self.extra = extra
         self.edit_key = edit_key
         self.last_updated = last_updated
-        self.changed = False
-
-    def __setattr__(self, key, value):
-        if key != 'changed':
-            self.changed = True
-        super().__setattr__(key, value)
 
     def __repr__(self):
         return f'{self.discord} [id: {self.user_id}, username: {self.username}, changed: {self.changed}]'
-
-    # def to_enlistment(self):
-    #     enl = Enlistment(disc_name=self.discord, username=self.username, level=self.level,
-    #                      faction=self.faction, company=self.company, group=self.extra,
-    #                      roles={self.role: f'{self.weapon1}/{self.weapon2}'}, edit_key=self.edit_key)
-    #     return enl
 
 
 def _data_from_row(row):
@@ -60,11 +49,10 @@ def _data_from_row(row):
     return user
 
 
-class TableUsers:
+class TableUsers(SqlTable):
 
-    def __init__(self, table_name, db: MySQLConnection):
-        self.table_name = table_name
-        self.db = db
+    def __init__(self, db: MySQLConnection, table_name):
+        super().__init__(db, table_name)
 
         self.users = {}
         self.name_to_disc_map = {}
@@ -79,8 +67,7 @@ class TableUsers:
         key = 'discord' if '#' in name else 'username'
         query = f'SELECT * FROM users WHERE {key}=%s'
 
-        cursor = self.db.cursor()
-        cursor.execute(query, (name,))
+        cursor = self.exec(query, (name,))
         result = cursor.fetchone()
         if result is None:
             return None
@@ -100,11 +87,11 @@ class TableUsers:
                     f'company=%s, level=%s, role=%s, weapon1=%s, weapon2=%s, extra=%s, edit_key=%s ' \
                     f'WHERE discord=%s;'
 
-            cursor = self.db.cursor()
-            cursor.execute(query,
-                           (user.company, user.level, user.role, user.weapon1, user.weapon2, user.extra, user.edit_key,
-                            user.discord))
-            self.db.commit()
+            self.exec(query,
+                      (user.company, user.level, user.role,
+                       user.weapon1, user.weapon2, user.extra,
+                       user.edit_key, user.discord))
+            self.commit()
             user.changed = False
             return True
         return False
@@ -131,14 +118,15 @@ class TableUsers:
                     'level': enlist_data.level,
                     'edit_key': enlist_data.edit_key
                 }
-            # else:
-            #     return
+            else:
+                return
 
-            cursor = self.db.cursor()
-            cursor.execute(query, params)
+            # cursor = self.db.cursor()
+            # cursor.execute(query, params)
+            self.exec(query, params)
             self.db.commit()
             user = self.get_user(enlist_data.discord)
-
+            enlist_data.user_id = user.user_id
             return user
         except Exception as e:
             return None
@@ -170,17 +158,14 @@ class TableUsers:
                 params.append(f'%{w}%')
 
         query = f'SELECT * FROM users WHERE {where};'
-        cursor = self.db.cursor()
-        cursor.execute(query, params)
+        cursor = self.exec(query, params)
 
         users = []
-        results = cursor.fetchall()
-        for result in results:
-            user = _data_from_row(result)
+
+        results = get_data_from_cursor(cursor, UserRow)
+        for user in results:
             users.append(user)
             self._register_user(user)
-            # self.users[user.discord] = user
-
         return users
 
     def update_changed(self):

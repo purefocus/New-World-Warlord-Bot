@@ -7,8 +7,12 @@ from discord_ui import Button
 from utils.userdata import UserData
 from utils.world_status import get_status
 import time
+from utils.colorprint import *
+
+from database.SqlDatabase import SqlDatabase
 
 from database.tables.users_table import UserRow
+from database.tables.msgs_table import MsgRow
 from views.roster import create_roster_embed
 from views.embeds import user_embed
 
@@ -35,14 +39,14 @@ class BotState:
         self.client: commands.Bot = client
         self.wars = {}
         self.config = config
-        self.users: [UserData, None] = UserData()
         self.cogs = {}
         self.ui_client = None
 
         self.war_selection = {}
 
         self.world_status = None
-        self.db = None
+        self.db = SqlDatabase(config)
+        self.users = self.db.users
 
     async def update_presence(self, status):
         start_time = int(1000 * time.time())
@@ -67,6 +71,11 @@ class BotState:
             else:
                 war.add_enlistment(user)
 
+            try:
+                self.db.wars.enlist_user(user, self.db.wars[war.id], absent=absent)
+            except:
+                pass
+
             self.users.add_user(disc_name, user)
 
             if self.config.announce_signup and announce:
@@ -90,7 +99,7 @@ class BotState:
             for ch in self.config.get_signup_channels():
                 await ch.send(embed=user_embed(user, self))
 
-    def add_war(self, war: WarDef, edit=False):
+    def add_war(self, war: WarDef, edit=False, new_war=True):
         if war.is_fake:
             return False
         exists = False
@@ -131,7 +140,13 @@ class BotState:
 
             # if war.location.lower() != best_match.location.lower():
             #     del self.wars[best_match.id]
-
+        try:
+            if new_war:
+                self.db.wars.add_war(war.make_war_row())
+            elif edit:
+                self.db.wars.update_war(war.make_war_row())
+        except Exception as e:
+            print(colors.red('Failed to add war!'), str(e))
         self.wars[war.id] = war
         return exists
 
@@ -139,7 +154,10 @@ class BotState:
         saved_data = {}
         for w in self.wars:
             saved_data[w] = self.wars[w].as_dict()
-
+        try:
+            self.db.wars.update_changed()
+        except:
+            pass
         json.dump(saved_data, open(config.WAR_DATA, 'w+'), indent=4)
 
         # print('Saved: ', saved_data)
@@ -149,7 +167,7 @@ class BotState:
             war_data = json.load(open(config.WAR_DATA, 'r+'))
 
             for w in war_data:
-                self.add_war(WarDef(war_data[w]))
+                self.add_war(WarDef(war_data[w]), new_war=False)
 
             self.users.load()
 
@@ -174,6 +192,19 @@ class BotState:
     async def update_war_boards(self, war: WarDef):
         try:
             need_save = False
+            # boards = self.db.msgs.get_messages(func='War', info=war.id)
+            # for board in boards:
+            #     # board = boards[board]
+            #     try:
+            #         msg: discord.Message = await board.resolve(client=self.client)
+            #         if msg is not None:
+            #             await msg.edit(**self.create_board(war))
+            #             print('test')
+            #     except discord.NotFound as e:
+            #         print('Message Not Found!')
+            #         board.valid = False
+            #         need_save = True
+            #
             for board in war.boards:
                 try:
                     msg: discord.Message = await board.get_message(client=self.client)
@@ -214,6 +245,16 @@ class BotState:
                         if war.can_post(ch):
                             msg: discord.Message = await ch.send(**self.create_board(war, btn=True))
                             war.add_board(msg)
+                            try:
+                                row = MsgRow()
+                                row.gid = msg.guild.id
+                                row.cid = msg.channel.id
+                                row.mid = msg.id
+                                row.func = 'War'
+                                row.info = war.id
+                                self.db.msgs.add_message(row)
+                            except Exception as e:
+                                print(colors.red('[Error] (add_message): '), str(e))
                         else:
                             print('Cannot post!')
 
@@ -227,3 +268,13 @@ class BotState:
         if war.can_post(ch):
             msg: discord.Message = await ch.send(**self.create_board(war, btn=True))
             war.add_board(msg)
+            try:
+                row = MsgRow()
+                row.gid = msg.guild.id
+                row.cid = msg.channel.id
+                row.mid = msg.id
+                row.func = 'War'
+                row.info = war.id
+                self.db.msgs.add_message(row)
+            except Exception as e:
+                print(colors.red('[Error] (add_message): '), str(e))

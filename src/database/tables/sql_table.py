@@ -1,7 +1,48 @@
+from mysql.connector import MySQLConnection
+from mysql.connector.cursor import MySQLCursor
+
+
+class SqlRow:
+
+    def __init__(self):
+        self.changed = False
+
+    def __setattr__(self, key, value):
+        if key != 'changed':
+            self.changed = True
+        super().__setattr__(key, value)
+
+
 class SqlTable:
 
-    def __init__(self, index_column):
-        self.index_column = -1
+    def __init__(self, db: MySQLConnection, table_name):
+        self.table_name = table_name
+        self.db = db
 
-    def _split_key_values(self, data: dict):
-        pass
+    def exec(self, query, params=None) -> MySQLCursor:
+
+        cursor = self.db.cursor()
+        if params is not None:
+            cursor.execute(query, params)
+        else:
+            cursor.execute(query)
+
+        return cursor
+
+    def commit(self):
+        self.db.commit()
+
+
+def get_data_from_cursor(cursor, obj=None):
+    rows = cursor.fetchall()
+    cols = cursor.column_names
+    arr = []
+    for row in rows:
+        fields = {}
+        for i in range(len(cols)):
+            fields[cols[i]] = row[i]
+        if obj is not None:
+            arr.append(obj(**fields))
+        else:
+            arr.append(fields)
+    return arr

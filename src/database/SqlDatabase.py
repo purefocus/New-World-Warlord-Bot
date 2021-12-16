@@ -11,6 +11,8 @@ from utils.colorprint import *
 from utils.dbutil import *
 
 from database.tables.users_table import TableUsers
+from database.tables.wars_table import WarTable
+from database.tables.msgs_table import MessagesTable
 
 
 class SqlDatabase:
@@ -47,4 +49,11 @@ class SqlDatabase:
         else:
             print('Connection Failed!')
 
-        self.users = TableUsers('users', self.db)
+        self.users = TableUsers(self.db, 'users')
+        self.wars = WarTable(self.db, 'wars')
+        self.msgs = MessagesTable(self.db, 'messages')
+
+        wars = self.wars.get_active_wars()
+        for war in wars:
+            war = wars[war]
+            self.wars.get_roster_for(war)

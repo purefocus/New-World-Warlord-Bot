@@ -9,6 +9,9 @@ import uuid
 from utils.details import WAR_ROLES
 from utils.details import parse_date
 
+from database.tables.wars_table import WarRow
+import datetime
+
 
 class WarDef:
 
@@ -40,6 +43,28 @@ class WarDef:
 
         if data is not None:
             self.from_dict(data)
+
+    def make_war_row(self):
+        row = WarRow()
+        row.uuid = self.id
+        row.owners = self.owners
+        row.private = self.private or -1
+        row.active = self.active
+        row.name = self.name
+        row.attacking = self.attacking
+        row.defending = self.defending
+        row.location = self.location
+        row.created = datetime.datetime.now().timestamp()
+
+        wartime = parse_date(self.war_time)
+        if not isinstance(wartime, str):
+            wartime = wartime.strftime('%Y-%m-%d %H:%M:%S')
+
+        row.wartime = wartime
+        row.image = self.image_url
+        row.extra = self.additional_info
+
+        return row
 
     def as_dict(self):
         ret = {
