@@ -16,6 +16,8 @@ from database.tables.msgs_table import MsgRow
 from views.roster import create_roster_embed
 from views.embeds import user_embed
 
+from utils.botutil import print_stack_trace
+
 
 def _chsum(cond):
     return 1 if cond else 0
@@ -74,7 +76,7 @@ class BotState:
             try:
                 self.db.wars.enlist_user(user, self.db.wars[war.id], absent=absent)
             except:
-                pass
+                print_stack_trace()
 
             self.users.add_user(disc_name, user)
 
