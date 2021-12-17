@@ -65,7 +65,7 @@ permissions = {
     },
     cfg.ACTUAL_APES_ID: {
         Perm.ADMIN: ['Server Admin', 'Consul', 'Gorillas'],
-        Perm.ENLIST: ['Apes', 'War Fighter', 'Scrimps'],
+        Perm.ENLIST: ['Apes', 'War Fighter', 'Scrimps', '*'],
         Perm.WAR_CREATE: [],
         Perm.WAR_END: [],
         Perm.WAR_ROSTER: [],
@@ -127,6 +127,8 @@ def has_permission(user: discord.User, p: Permission) -> bool:
             perms = permissions[guild.id]
             if p in perms:
                 allowed = perms[p]
+                if allowed == '*':
+                    return p.allow
                 if isinstance(allowed, Permission):
                     allowed = perms[allowed]
 
