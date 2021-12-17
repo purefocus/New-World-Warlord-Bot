@@ -238,7 +238,6 @@ class DMEnlistmentCog(commands.Cog):
             u.level = responses['level']
             # if 'gearscore' in responses:
             #     user.level = responses['gearscore']
-            print_dict(responses)
 
             u.weapon1 = f"{responses['primary_weapon']}"  # ({responses['primary_level']})"
             u.weapon2 = f"{responses['secondary_weapon']}"  # ({responses['secondary_level']})"
@@ -246,6 +245,8 @@ class DMEnlistmentCog(commands.Cog):
             if pref_group is not None and pref_group.lower() == 'none':
                 pref_group = None
             u.preferred_group = pref_group
+            print_dict(responses, 'Response')
+            print_dict(u.__dict__, 'RowData')
 
             return u  # .to_enlistment()
 
