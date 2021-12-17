@@ -4,6 +4,8 @@ from mysql.connector import MySQLConnection
 from utils.dbutil import *
 from database.tables.sql_table import *
 
+from utils.colorprint import print_dict
+
 _user_data_fields = ['user_id', 'last_updated', 'discord', 'username',
                      'faction', 'company', 'level', 'role', 'weapon1',
                      'weapon2', 'extra', 'edit_key']
@@ -83,6 +85,7 @@ class TableUsers(SqlTable):
 
     def update_row(self, user: UserRow):
         if user.changed:
+            print_dict(user.__dict__, 'Update')
             query = f'UPDATE users SET ' \
                     f'company=%s, level=%s, role=%s, weapon1=%s, weapon2=%s, extra=%s, edit_key=%s ' \
                     f'WHERE discord=%s;'
@@ -201,6 +204,7 @@ class TableUsers(SqlTable):
 
             self.update_row(u)
         else:
+            print_dict(user.__dict__, 'Insert')
             self.insert_user(user)
         # self.users[disc_name] = user
         self._register_user(user)
