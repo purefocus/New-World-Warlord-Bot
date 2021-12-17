@@ -229,12 +229,12 @@ class DMEnlistmentCog(commands.Cog):
 
             # user = UserSignup()
             u = UserRow()
+            if user.user_data is not None:
+                u.user_id = user.user_data.user_id
             u.discord = user.discord_user
             u.faction = responses['faction']
             u.company = responses['company']
-            print('c1: ', u.company)
-            u.company = replace_company_name(user.company)
-            print('c2: ', u.company)
+            u.company = replace_company_name(u.company)
             u.role = responses['role']
             u.username = responses['name']
             u.level = responses['level']
@@ -246,7 +246,7 @@ class DMEnlistmentCog(commands.Cog):
             pref_group = responses['group']
             if pref_group is not None and pref_group.lower() == 'none':
                 pref_group = None
-            u.preferred_group = pref_group
+            u.extra = pref_group
             print_dict(responses, 'Response')
             print_dict(u.__dict__, 'RowData')
 
