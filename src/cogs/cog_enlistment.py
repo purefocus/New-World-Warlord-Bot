@@ -247,7 +247,7 @@ class DMEnlistmentCog(commands.Cog):
             if pref_group is not None and pref_group.lower() == 'none':
                 pref_group = None
             u.extra = pref_group
-            print_dict(responses, 'Response')
+            # print_dict(responses, 'Response')
             print_dict(u.__dict__, 'RowData')
 
             return u  # .to_enlistment()

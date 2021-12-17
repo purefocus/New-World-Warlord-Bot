@@ -16,6 +16,7 @@ def user_embed(user: UserRow, state=None):
         embed.add_field(name='Extra Information', value=user.extra, inline=False)
 
     if state is not None:
+        print(state.db.wars.enlisted_in(user))
         enlisted_wars = ''
         for war in state.wars:
             war = state.wars[war]
@@ -27,7 +28,7 @@ def user_embed(user: UserRow, state=None):
     return embed
 
 
-def get_embeded(war):
+def war_embed(war):
     if war.name is not None:
         embed = discord.Embed(title=f':exclamation: __{war.name}!__ :exclamation: ',
                               colour=discord.Colour.blurple())

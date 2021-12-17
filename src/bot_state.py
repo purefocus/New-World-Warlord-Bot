@@ -73,12 +73,12 @@ class BotState:
             else:
                 war.add_enlistment(user)
 
+            self.users.add_user(disc_name, user)
             try:
                 self.db.wars.enlist_user(user, self.db.wars[war.id], absent=absent)
             except:
                 print_stack_trace()
 
-            self.users.add_user(disc_name, user)
 
             if self.config.announce_signup and announce:
                 await self.announce_signup(user)
