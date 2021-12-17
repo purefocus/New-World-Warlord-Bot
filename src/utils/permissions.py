@@ -127,13 +127,12 @@ def has_permission(user: discord.User, p: Permission) -> bool:
             perms = permissions[guild.id]
             if p in perms:
                 allowed = perms[p]
-                if allowed == '*':
-                    return p.allow
                 if isinstance(allowed, Permission):
                     allowed = perms[allowed]
 
                 for role in allowed:
-                    if has_role(user, role):
+
+                    if has_role(user, role) or role == '*':
                         # print(f'allowed by role {role}')
                         return p.allow
     return not p.allow
