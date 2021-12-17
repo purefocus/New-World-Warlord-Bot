@@ -40,9 +40,6 @@ def get_status(token) -> WorldStatus:
     # print('2')
 
     result = sess.get(BASE_URL, headers=header)
-    # print('3', result.content)
-    print(result.status_code)
-    print(result.is_redirect)
     data = result.json()
     # print('data')
     if data['success']:

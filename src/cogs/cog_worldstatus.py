@@ -94,15 +94,15 @@ class WorldStatusCog(commands.Cog):
             try:
                 channels = self.state.config.status_channels[gid]
                 guild = self.client.get_guild(int(gid))
+                if guild is not None:
+                    ch = guild.get_channel(channels['players_online'])
+                    await ch.edit(name=f'Online: {status.players_current}/{status.players_maximum}')
 
-                ch = guild.get_channel(channels['players_online'])
-                await ch.edit(name=f'Online: {status.players_current}/{status.players_maximum}')
+                    ch = guild.get_channel(channels['queue_size'])
+                    await ch.edit(name=f'Queue: {status.queue_current}')
 
-                ch = guild.get_channel(channels['queue_size'])
-                await ch.edit(name=f'Queue: {status.queue_current}')
-
-                ch = guild.get_channel(channels['status'])
-                await ch.edit(name=f'Ohonoo : {status.status_enum}')
+                    ch = guild.get_channel(channels['status'])
+                    await ch.edit(name=f'Ohonoo : {status.status_enum}')
 
             except Exception as e:
                 print_stack_trace()
