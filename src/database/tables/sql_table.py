@@ -7,6 +7,9 @@ class SqlRow:
     def __init__(self):
         self.changed = False
 
+    def finalize(self):
+        self.changed = False
+
     def __setattr__(self, key, value):
         if key != 'changed':
             cur_val = getattr(self, key, None)

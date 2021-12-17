@@ -95,7 +95,7 @@ class TableUsers(SqlTable):
                        user.weapon1, user.weapon2, user.extra,
                        user.edit_key, user.discord))
             self.commit()
-            user.changed = False
+            user.finalize()
             return True
         return False
 
@@ -130,6 +130,7 @@ class TableUsers(SqlTable):
             self.db.commit()
             user = self.get_user(enlist_data.discord)
             enlist_data.user_id = user.user_id
+            user.finalize()
             return user
         except Exception as e:
             return None
@@ -169,6 +170,7 @@ class TableUsers(SqlTable):
         for user in results:
             users.append(user)
             self._register_user(user)
+            user.finalize()
         return users
 
     def update_changed(self):
