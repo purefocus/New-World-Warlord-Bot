@@ -14,7 +14,7 @@ class WorldStatusCog(commands.Cog):
     def __init__(self, client: commands.Bot, state: BotState):
         self.client = client
         self.state = state
-        print('World Status Cog')
+        # print('World Status Cog')
         self.update_status.start()
 
         # self.status_channels = {
@@ -45,7 +45,7 @@ class WorldStatusCog(commands.Cog):
         return embed
 
     async def update_status_messages(self, status: WorldStatus):
-        print('World Status Update')
+        # print('World Status Update')
 
         # status = self.state.world_status = get_status(self.state.config.nws_token)
         await self.state.update_presence(str(status))
