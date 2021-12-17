@@ -65,7 +65,7 @@ permissions = {
     },
     cfg.ACTUAL_APES_ID: {
         Perm.ADMIN: ['Server Admin', 'Consul', 'Gorillas'],
-        Perm.ENLIST: ['Apes'],
+        Perm.ENLIST: ['Apes', 'War Fighter', 'Scrimps'],
         Perm.WAR_CREATE: [],
         Perm.WAR_END: [],
         Perm.WAR_ROSTER: [],
