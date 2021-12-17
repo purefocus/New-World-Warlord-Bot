@@ -118,9 +118,9 @@ def replace_weapons_abbrev(txt: str):
 def replace_company_name(company: str):
     if company is None:
         return None
-    company = company.lower()
-    if company in company_mappings:
-        return company_mappings[company]
+    _company = company.lower()
+    if _company in company_mappings:
+        return company_mappings[_company]
     return company
 
 

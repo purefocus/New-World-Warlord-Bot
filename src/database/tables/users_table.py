@@ -224,8 +224,8 @@ class TableUsers(SqlTable):
         try:
             if '#' not in name:
                 name = self.name_to_disc_map[name.lower()]
-            if name.lower() in self.users:
-                return self.users[name.lower()]  # .to_enlistment()
+            if name in self.users:
+                return self.users[name]  # .to_enlistment()
         except:
             pass
         return None
