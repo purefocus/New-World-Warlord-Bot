@@ -9,7 +9,7 @@ class SqlRow:
 
     def __setattr__(self, key, value):
         if key != 'changed':
-            cur_val = getattr(self, key)
+            cur_val = getattr(self, key, None)
             self.changed = self.changed or cur_val != value
         super().__setattr__(key, value)
 
