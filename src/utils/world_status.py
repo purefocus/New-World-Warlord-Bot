@@ -32,7 +32,8 @@ def get_status(token) -> WorldStatus:
     sess = requests.Session()
     # print('1')
     header = {
-        "Authorization": f'Bearer {token}'
+        "Authorization": f'Bearer {token}',
+        'Content-type': 'application/json'
     }
     print_dict(header)
     # print('2')
