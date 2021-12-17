@@ -232,7 +232,9 @@ class DMEnlistmentCog(commands.Cog):
             u.discord = user.discord_user
             u.faction = responses['faction']
             u.company = responses['company']
+            print('c1: ', u.company)
             u.company = replace_company_name(user.company)
+            print('c2: ', u.company)
             u.role = responses['role']
             u.username = responses['name']
             u.level = responses['level']
