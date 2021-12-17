@@ -146,11 +146,24 @@ class WarTable(SqlTable):
     def enlisted_in(self, user: UserRow):
         try:
             query = f'SELECT wars.id, wars.uuid, wars.name FROM wars INNER JOIN roster ON wars.id = roster.event_id WHERE roster.user_id = %s AND wars.active=1;'
-            cursor = self.exec(query, (user.user_id))
+            cursor = self.exec(query, (user.user_id,))
 
             rows = get_data_from_cursor(cursor)
+            return rows
         except Exception as e:
             print(f'Error (enlisted_in({user})) ->', str(e))
+
+        return []
+
+    def resolve_war(self, key):
+        if key in self.wars:
+            return self.wars[key]
+
+        for war in self.wars:
+            war = self.wars[war]
+            if str(war.id) == str(key):
+                return war
+        return None
 
     def __getitem__(self, uuid) -> [None, WarRow]:
         try:
