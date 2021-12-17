@@ -36,7 +36,7 @@ def get_status(token) -> WorldStatus:
         'Authorization': f'Bearer {token}',
         'Content-type': 'application/json'
     }
-    print_dict(header)
+    # print_dict(header)
     # print('2')
 
     result = sess.get(BASE_URL, headers=header)
