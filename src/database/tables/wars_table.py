@@ -160,8 +160,8 @@ class WarTable(SqlTable):
 
     def end_war(self, war):
         try:
-            query = f'UPDATE {self.table_name} SET active=0 WHERE uuid=%s;'
-            self.exec(query, war.id)
+            query = f'UPDATE wars SET active=0 WHERE uuid=%s;'
+            self.exec(query, (war.id,))
         except Exception as e:
             print(f'Error (end_war({war})) ->', str(e))
 
