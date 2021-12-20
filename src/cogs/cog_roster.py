@@ -113,6 +113,10 @@ class RosterCog(commands.Cog):
         if war is not None:
             war.active = False
             await msg.edit(content=f'War \'{war.location}\' has been ended!', components=None)
+            try:
+                self.state.db.wars.end_war(war)
+            except:
+                pass
             for board in war.boards:
                 try:
                     m = await board.get_message(self.state.client)

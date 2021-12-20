@@ -158,6 +158,13 @@ class WarTable(SqlTable):
 
         return []
 
+    def end_war(self, war):
+        try:
+            query = f'UPDATE {self.table_name} SET active=0 WHERE uuid=%s;'
+            self.exec(query, war.uuid)
+        except Exception as e:
+            print(f'Error (end_war({war})) ->', str(e))
+
     def resolve_war(self, key):
         if key in self.wars:
             return self.wars[key]
