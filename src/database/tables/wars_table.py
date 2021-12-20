@@ -114,21 +114,23 @@ class WarTable(SqlTable):
         # return war
 
     def get_roster_for(self, war: WarRow):
-        query = f'SELECT `users`.`discord` AS `user`, `roster`.`enlist` FROM `roster` ' \
-                f'INNER JOIN `users` ON `users`.user_id = `roster`.user_id WHERE `roster`.event_id = %s;'
+        if war is not None:
+            query = f'SELECT `users`.`discord` AS `user`, `roster`.`enlist` FROM `roster` ' \
+                    f'INNER JOIN `users` ON `users`.user_id = `roster`.user_id WHERE `roster`.event_id = %s;'
 
-        cursor = self.exec(query, (war.id,))
-        war.roster = []
-        war.absent = []
+            cursor = self.exec(query, (war.id,))
+            war.roster = []
+            war.absent = []
 
-        rows = get_data_from_cursor(cursor)
-        for row in rows:
-            if row['enlist']:
-                war.roster.append(row['user'])
-            else:
-                war.absent.append(row['user'])
+            rows = get_data_from_cursor(cursor)
+            for row in rows:
+                if row['enlist']:
+                    war.roster.append(row['user'])
+                else:
+                    war.absent.append(row['user'])
 
-        return war.roster
+            return war.roster
+        return []
 
     def remove_enlistment(self, user: UserRow, war: WarRow):
         query = f'DELETE FROM roster WHERE user_id=%s AND event_id=%s;'
@@ -136,10 +138,11 @@ class WarTable(SqlTable):
 
     def enlist_user(self, user: UserRow, war: WarRow, absent=False):
         try:
-            self.remove_enlistment(user, war)
-            query = f'INSERT INTO `roster` (user_id, event_id, enlist) VALUES (%s, %s, %s);'
+            if war is not None:
+                self.remove_enlistment(user, war)
+                query = f'INSERT INTO `roster` (user_id, event_id, enlist) VALUES (%s, %s, %s);'
 
-            self.exec(query, (user.user_id, war.id, not absent))
+                self.exec(query, (user.user_id, war.id, not absent))
         except Exception as e:
             print(f'Error (enlist_user({user}, {war}) ->', str(e))
 
