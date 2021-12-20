@@ -24,7 +24,8 @@ class SqlTable:
         self.db = db
 
     def exec(self, query, params=None) -> MySQLCursor:
-
+        if not self.db.is_connected():
+            self.db.reconnect(10, 5)
         cursor = self.db.cursor()
         if params is not None:
             cursor.execute(query, params)
