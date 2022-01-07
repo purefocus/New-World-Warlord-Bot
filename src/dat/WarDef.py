@@ -182,7 +182,7 @@ class WarDef:
         embed.add_field(name='Absent',
                         value=f'{str(len(self.absent))}',
                         inline=True)
-        embed.add_field(name='\u200b', value='\u200b', inline=True)
+        embed.add_field(name='\u200b', value='\u200b', inline=False)
 
         if self.private is not None:
             embed.set_footer(text='🔒 Private')
