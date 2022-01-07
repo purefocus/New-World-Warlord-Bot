@@ -72,7 +72,7 @@ question_list = {
     #     'check': lambda response, answers: None if 0 < response <= 20 else 'Your answer must be between 0-20'
     # },
     'group': {
-        'question': '**Any extra information?** \n  *Attribute Distribution, Specialties, Favorite Taylor Swift song, etc..?*\n*Enter None if no extra information*',
+        'question': '**Any extra information?** \n  *Attribute Distribution, Specialties, Preferred roles, etc..?*\n*Enter None if no extra information*',
         'response_type': str,
     }
 }
@@ -225,7 +225,7 @@ class DMEnlistmentCog(commands.Cog):
                         return None
                 responses[key] = response
 
-            await ctx.author.send('You have finished answering all the questions!')
+            await ctx.author.send('You have finished answering all the questions!\n You have successfully signed up for the war!\n*Don\'t forget to sign up in-game too!*')
 
             # user = UserSignup()
             u = UserRow()
