@@ -109,7 +109,7 @@ state.cogs = {
     'war_groups': WarGroupsCog(client, state),
 
     'extras': ExtrasCog(client, state),
-    'world_status': WorldStatusCog(client, state),
+    # 'world_status': WorldStatusCog(client, state),
     #
     # 'admin': AdminCog(client, state, ui),
     # 'verify': VerificationCog(client, state),
@@ -211,8 +211,8 @@ async def on_ready():
         print('------')
         config.resolve(client)
 
-        # for guild in client.guilds:
-        #     print('Guild: ', guild.name)
+        for guild in client.guilds:
+            print('Guild: ', guild.name)
             # if guild.id == 782026589927637014:
             #     for ch in guild.channels:
             #         print('Actual Apes Channel: ', ch.name)
