@@ -75,7 +75,7 @@ def _gf(data, key):
 def parse_war_info(state: BotState, lines) -> WarDef:
     result = {}
     is_fake = False
-    is_private = True
+    is_private = None
     additional_info = None
     for i in range(len(lines)):
         line = lines[i]
@@ -87,7 +87,7 @@ def parse_war_info(state: BotState, lines) -> WarDef:
         if '[private]' in line:
             is_private = True
         if '[public]' in line:
-            is_private = False
+            is_private = None
 
         text_block = parse_text_block(line, lines, i)
         if text_block is not None:
