@@ -72,6 +72,16 @@ permissions = {
         Perm.WAR_POST: [],
         Perm.CONFIGURE: [],
         Perm.WAR_HOST: []
+    },
+    850011885574815754: {
+        Perm.ADMIN: ['Moderator', 'Admin', 'Stormuwu', 'Consul'],
+        Perm.ENLIST: ['Storm Chasers'],
+        Perm.WAR_CREATE: ['Officer'],
+        Perm.WAR_END: [],
+        Perm.WAR_ROSTER: ['Officer'],
+        Perm.WAR_POST: [],
+        Perm.CONFIGURE: [],
+        Perm.WAR_HOST: []
     }
 }
 
