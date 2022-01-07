@@ -103,9 +103,9 @@ async def check_faction_permission(user: discord.Member, p: Permission, client: 
 
 
 def has_permission(user: discord.User, p: Permission) -> bool:
-    # if user.id in master_users:
-    #     # print(f'Master Permission Bypass! {user.display_name} ({user})')
-    #     return True
+    if user.id in master_users:
+        # print(f'Master Permission Bypass! {user.display_name} ({user})')
+        return True
     # print(type(user))
     # guild = user.guild
     for guild in user.mutual_guilds:
