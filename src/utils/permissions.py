@@ -88,8 +88,8 @@ for guild in permissions:
 
 
 async def check_faction_permission(user: discord.Member, p: Permission, client: discord.Client) -> bool:
-    if user.guild.id != cfg.FACTION_SERVER_ID:
-        faction_guild = client.get_guild(cfg.FACTION_SERVER_ID)
+    if user.guild.id != cfg.FACTION_SERVER2_ID:
+        faction_guild = client.get_guild(cfg.FACTION_SERVER2_ID)
         try:
             user = await faction_guild.fetch_member(user.id)
             if user is None:
@@ -110,7 +110,7 @@ def has_permission(user: discord.User, p: Permission) -> bool:
     # guild = user.guild
     for guild in user.mutual_guilds:
         user = guild.get_member(user.id)
-        if p.faction_only and guild.id != cfg.FACTION_SERVER_ID:
+        if p.faction_only and guild.id != cfg.FACTION_SERVER2_ID:
             return False
 
         if guild.id in permissions:
