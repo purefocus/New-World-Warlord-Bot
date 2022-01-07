@@ -44,14 +44,14 @@ permissions = {
     #     Perm.WAR_HOST: ['War Manager']
     # },
     cfg.FACTION_SERVER2_ID: {
-        Perm.ADMIN: ['Mods', 'Admin'],
-        Perm.ENLIST: ['Syndicate Verified'],
-        Perm.WAR_CREATE: ['Governor', 'Consul'],
-        Perm.WAR_END: Perm.WAR_CREATE,
-        Perm.WAR_ROSTER: ['Governor', 'Consul', 'Officer'],
-        Perm.WAR_POST: Perm.WAR_ROSTER,
-        Perm.CONFIGURE: [],
-        Perm.WAR_HOST: ['War Manager']
+        Perm.ADMIN: ['Mods', 'Admin'],  # Global permissions to everything
+        Perm.ENLIST: ['Syndicate Verified'],  # Permission to enlist in a war
+        Perm.WAR_CREATE: ['Governor', 'Consul'],  # Create a new war post
+        Perm.WAR_END: Perm.WAR_CREATE,  # Can end a war
+        Perm.WAR_ROSTER: ['Governor', 'Consul', 'Officer'],  # Can pull/download the roster for a war
+        Perm.WAR_POST: Perm.WAR_ROSTER,  # Can re-post war notifications and enlistment links
+        Perm.CONFIGURE: [],  # Can change bot configuration
+        Perm.WAR_HOST: ['War Manager']  # (Work in Progress)
     },
     cfg.WARLORD_TEST_ID: {
         Perm.ADMIN: ['WarAdmin'],
