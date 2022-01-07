@@ -164,7 +164,7 @@ class VerificationCog(commands.Cog):
         if msg.author.id == self.client.user.id:
             return
 
-        if has_role(msg.author, 'Verified'):
+        if has_role(msg.author, 'Syndicate Verified'):
             return
 
         username, company, link, otext = self._parse_data(msg)
@@ -200,7 +200,7 @@ class VerificationCog(commands.Cog):
         if msg.author.id == self.client.user.id:
             return
 
-        if has_role(msg.author, 'Verified'):
+        if has_role(msg.author, 'Syndicate Verified'):
             return
 
         username, company, link, otext = self._parse_data(msg)
@@ -289,16 +289,16 @@ class VerificationCog(commands.Cog):
 
                 if func == 'verify':
                     if self.vrole is None:
-                        self.vrole = discord.utils.get(ctx.guild.roles, name="Verified")
-                    if self.uvrole is None:
-                        self.uvrole = discord.utils.get(ctx.guild.roles, name="Unverified")
+                        self.vrole = discord.utils.get(ctx.guild.roles, name="Syndicate Verified")
+                    # if self.uvrole is None:
+                    #     self.uvrole = discord.utils.get(ctx.guild.roles, name="Unverified")
                     components[2].disabled = True
                     components[3].disabled = True
                     # print(self.vrole)
-                    try:
-                        await user.remove_roles(self.uvrole, reason='Verified')
-                    except:
-                        pass
+                    # try:
+                    #     await user.remove_roles(self.uvrole, reason='Verified')
+                    # except:
+                    #     pass
                     await user.add_roles(self.vrole, reason='Verification')
 
                     update = self._set_embed_status(post, f'✅ Verified\n(*{ctx.author.display_name}*)',
