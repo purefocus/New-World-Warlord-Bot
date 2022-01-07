@@ -5,6 +5,7 @@ from utils.botutil import *
 
 from bot_state import *
 from utils.details import get_location, replace_weapon
+from views.embeds import user_embed
 
 from views.view_confirm import ask_confirm
 from utils.colorprint import *
@@ -134,15 +135,15 @@ def parse_signup_info(state: BotState, lines):
             result[field] = info
 
     if len(result) == len(signup_fields):
-        entry = UserSignup()
+        entry = UserRow()
         entry.username = result['name']
         entry.faction = result['faction']
         entry.company = result['company']
         entry.level = result['level']
         entry.role = result['role']
-        entry.primary_weapon = replace_weapon(result['primary_weapon'])
-        entry.secondary_weapon = replace_weapon(result['secondary_weapon'])
-        entry.preferred_group = result['extra_info']
+        entry.weapon1 = replace_weapon(result['primary_weapon'])
+        entry.weapon2 = replace_weapon(result['secondary_weapon'])
+        entry.extra = result['extra_info']
 
         return entry
 
@@ -229,10 +230,11 @@ async def handle_signup_message(state: BotState, message: discord.Message, edite
         if entry is not None:
             author = message.author
             correct, cmsg = await ask_confirm(state, message, 'Is this information correct?',
-                                              embed=entry.embed(), hidden=False, ret_msg=True)
+                                              embed=user_embed(entry, state), hidden=False, ret_msg=True)
             if correct:
-                state.users.add_user(str(message.author), entry.to_enlistment())
-                await cmsg.edit(content='Data Saved!', embed=entry.embed(), components=None)
+                state.users.add_user(str(message.author), entry)
+
+                await cmsg.edit(content='Data Saved!', embed=user_embed(entry, state), components=None)
                 await message.delete()
             else:
                 await cmsg.edit(content='Failed! Please try again!', embed=None, components=None)

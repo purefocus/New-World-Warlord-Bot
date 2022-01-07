@@ -21,7 +21,7 @@ class Permission:
 class Perm:
     ENLIST = Permission('enlist', True)
     WAR_CREATE = Permission('war_create', True)
-    WAR_MANAGEMENT = Permission('war_manage', False)
+    WAR_MANAGEMENT = Permission('war_manage', True)
     WAR_END = Permission('war_end', True)
     WAR_ROSTER = Permission('war_roster', True)
     WAR_POST = Permission('war_post', True)
@@ -33,19 +33,19 @@ class Perm:
 master_users = [198526201374048256]
 # /message_enlisted message: Sorry for the spam, but this is just a test
 permissions = {
-    cfg.LOTUS_SERVER_ID: {
-        Perm.ADMIN: ['Moderator', 'Governor', 'Consul'],
-        Perm.ENLIST: ['Guest', 'Member', 'Ally', 'Ambassador'],
-        Perm.WAR_CREATE: ['Warden Leader'],
-        Perm.WAR_END: Perm.WAR_CREATE,
-        Perm.WAR_ROSTER: ['Warden Leader'],
-        Perm.WAR_POST: Perm.WAR_ROSTER,
-        Perm.CONFIGURE: [],
-        Perm.WAR_HOST: []
-    },
-    cfg.FACTION_SERVER_ID: {
-        Perm.ADMIN: ['Moderators', 'Admin'],
-        Perm.ENLIST: ['Verified'],
+    # cfg.FACTION_SERVER_ID: {
+    #     Perm.ADMIN: ['Moderators', 'Admin'],
+    #     Perm.ENLIST: ['Verified'],
+    #     Perm.WAR_CREATE: ['Governor', 'Consul'],
+    #     Perm.WAR_END: Perm.WAR_CREATE,
+    #     Perm.WAR_ROSTER: ['Governor', 'Consul', 'Officer'],
+    #     Perm.WAR_POST: Perm.WAR_ROSTER,
+    #     Perm.CONFIGURE: [],
+    #     Perm.WAR_HOST: ['War Manager']
+    # },
+    cfg.FACTION_SERVER2_ID: {
+        Perm.ADMIN: ['Mods', 'Admin'],
+        Perm.ENLIST: ['Syndicate Verified'],
         Perm.WAR_CREATE: ['Governor', 'Consul'],
         Perm.WAR_END: Perm.WAR_CREATE,
         Perm.WAR_ROSTER: ['Governor', 'Consul', 'Officer'],
@@ -72,17 +72,7 @@ permissions = {
         Perm.WAR_POST: [],
         Perm.CONFIGURE: [],
         Perm.WAR_HOST: []
-    },
-    cfg.BUSTIN_SERVER_ID: {
-        Perm.ADMIN: ['Admin', 888566130585780234],
-        Perm.ENLIST: ['New World', 'OOF'],
-        Perm.WAR_CREATE: [],
-        Perm.WAR_END: [],
-        Perm.WAR_ROSTER: [],
-        Perm.WAR_POST: [],
-        Perm.CONFIGURE: [],
-        Perm.WAR_HOST: []
-    },
+    }
 }
 
 for guild in permissions:
