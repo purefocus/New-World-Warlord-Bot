@@ -72,10 +72,20 @@ permissions = {
         Perm.WAR_POST: [],
         Perm.CONFIGURE: [],
         Perm.WAR_HOST: []
-    },
+    }, # Storm Chasers
     850011885574815754: {
         Perm.ADMIN: ['Moderator', 'Admin', 'Stormuwu', 'Consul'],
         Perm.ENLIST: ['Storm Chasers'],
+        Perm.WAR_CREATE: ['Officer'],
+        Perm.WAR_END: [],
+        Perm.WAR_ROSTER: ['Officer'],
+        Perm.WAR_POST: [],
+        Perm.CONFIGURE: [],
+        Perm.WAR_HOST: []
+    }, # Goblin Loot Corpse
+    895073382465425418: {
+        Perm.ADMIN: ['Moderator', 'Admin', 'Stormuwu', 'Governor', 'Consul'],
+        Perm.ENLIST: ['Goblin'],
         Perm.WAR_CREATE: ['Officer'],
         Perm.WAR_END: [],
         Perm.WAR_ROSTER: ['Officer'],
