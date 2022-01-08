@@ -75,7 +75,7 @@ permissions = {
     }, # Storm Chasers
     850011885574815754: {
         Perm.ADMIN: ['Moderator', 'Admin', 'Stormuwu', 'Consul'],
-        Perm.ENLIST: ['Storm Chasers'],
+        Perm.ENLIST: ['Storm Chasers', 'Cuties'],
         Perm.WAR_CREATE: ['Officer'],
         Perm.WAR_END: [],
         Perm.WAR_ROSTER: ['Officer'],
