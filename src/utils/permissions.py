@@ -112,6 +112,16 @@ permissions = {
         Perm.WAR_POST: [],
         Perm.CONFIGURE: [],
         Perm.WAR_HOST: []
+    }, # Silver Dawn
+    894043484191867011: {
+        Perm.ADMIN: ['Moderator', 'Admin', 'Governor', 'Consul'],
+        Perm.ENLIST: ['Shadow Pack', 'Syndicate'],
+        Perm.WAR_CREATE: ['Officer'],
+        Perm.WAR_END: [],
+        Perm.WAR_ROSTER: ['Officer'],
+        Perm.WAR_POST: [],
+        Perm.CONFIGURE: [],
+        Perm.WAR_HOST: []
     }
 }
 
