@@ -102,17 +102,17 @@ permissions = {
         Perm.WAR_POST: [],
         Perm.CONFIGURE: [],
         Perm.WAR_HOST: []
-    }, # Silver Dawn
-    892519781759070218: {
-        Perm.ADMIN: ['Moderator', 'Admin', 'Governor', 'Consul'],
-        Perm.ENLIST: ['Settler'],
-        Perm.WAR_CREATE: ['Officer'],
+    }, # Scrimps
+    905475600364498974: {
+        Perm.ADMIN: ['Moderator', 'Admin', 'Governor', 'Consul', 'Scrimp Lord', 'Scrimp King'],
+        Perm.ENLIST: ['Scrimp'],
+        Perm.WAR_CREATE: ['Scrimp Officer'],
         Perm.WAR_END: [],
         Perm.WAR_ROSTER: ['Officer'],
         Perm.WAR_POST: [],
         Perm.CONFIGURE: [],
         Perm.WAR_HOST: []
-    }, # Silver Dawn
+    }, # Shadow Pack
     894043484191867011: {
         Perm.ADMIN: ['Moderator', 'Admin', 'Governor', 'Consul'],
         Perm.ENLIST: ['Shadow Pack', 'Syndicate'],
