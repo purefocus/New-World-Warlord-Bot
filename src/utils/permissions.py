@@ -122,6 +122,16 @@ permissions = {
         Perm.WAR_POST: [],
         Perm.CONFIGURE: [],
         Perm.WAR_HOST: []
+    }, # Gremlin
+    919685476850491442: {
+        Perm.ADMIN: ['Moderator', 'Admin', 'Governor', 'Consul'],
+        Perm.ENLIST: ['Friend of the Gremlins', 'Syndicate'],
+        Perm.WAR_CREATE: ['Officer'],
+        Perm.WAR_END: [],
+        Perm.WAR_ROSTER: ['Officer'],
+        Perm.WAR_POST: [],
+        Perm.CONFIGURE: [],
+        Perm.WAR_HOST: []
     }
 }
 
