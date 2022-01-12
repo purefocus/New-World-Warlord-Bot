@@ -132,6 +132,16 @@ permissions = {
         Perm.WAR_POST: [],
         Perm.CONFIGURE: [],
         Perm.WAR_HOST: []
+    }, # Amazonian Primez
+    785469845487353877: {
+        Perm.ADMIN: ['All Might', 'Marked Ones', 'Chancellor'],
+        Perm.ENLIST: ['Amazonian Primez'],
+        Perm.WAR_CREATE: ['Officer'],
+        Perm.WAR_END: [],
+        Perm.WAR_ROSTER: ['Officer'],
+        Perm.WAR_POST: [],
+        Perm.CONFIGURE: [],
+        Perm.WAR_HOST: []
     }
 }
 
