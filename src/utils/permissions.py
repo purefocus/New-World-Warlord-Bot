@@ -72,10 +72,20 @@ permissions = {
         Perm.WAR_POST: [],
         Perm.CONFIGURE: [],
         Perm.WAR_HOST: []
-    }, # Storm Chasers
+    }, # Stormys Cloud
     850011885574815754: {
         Perm.ADMIN: ['Moderator', 'Admin', 'Stormuwu', 'Consul'],
         Perm.ENLIST: ['Storm Chasers', 'Cuties'],
+        Perm.WAR_CREATE: ['Officer'],
+        Perm.WAR_END: [],
+        Perm.WAR_ROSTER: ['Officer'],
+        Perm.WAR_POST: [],
+        Perm.CONFIGURE: [],
+        Perm.WAR_HOST: []
+    }, # Storm Chasers Discord
+    897255450054127637: {
+        Perm.ADMIN: ['Moderator', 'Admin', 'Stormuwu', 'Consul'],
+        Perm.ENLIST: ['Storm Chasers', 'Cuties', 'Syndicate', 'Covenant', 'Marauders', 'Allies', '*'],
         Perm.WAR_CREATE: ['Officer'],
         Perm.WAR_END: [],
         Perm.WAR_ROSTER: ['Officer'],
