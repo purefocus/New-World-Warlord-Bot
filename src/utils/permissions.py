@@ -154,7 +154,7 @@ permissions = {
         Perm.WAR_HOST: []
     }, # Unhinged
     614191241525067776: {
-        Perm.ADMIN: ['Leadership', 'Server Admin'],
+        Perm.ADMIN: ['Leadership', 'Server Admin', 'Company Consul'],
         Perm.ENLIST: ['Member', 'Company Member', 'new world'],
         Perm.WAR_CREATE: ['Company Officer'],
         Perm.WAR_END: [],
