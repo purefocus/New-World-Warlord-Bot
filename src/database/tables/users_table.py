@@ -208,7 +208,8 @@ class TableUsers(SqlTable):
             u.faction = user.faction
             u.company = user.company
             u.level = user.level
-            u.edit_key = user.edit_key
+            user.edit_key = u.edit_key
+            # u.edit_key = user.edit_key
 
             self.update_row(u)
         else:
