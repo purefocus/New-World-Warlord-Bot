@@ -254,6 +254,11 @@ class DMEnlistmentCog(commands.Cog):
             if pref_group is not None and pref_group.lower() == 'none':
                 pref_group = None
             u.extra = pref_group
+            try:
+                if user.user_data is not None:
+                    u.edit_key = user.user_data.edit_key
+            except:
+                print('u.edit_key = user.user_data.edit_key')
             # print_dict(responses, 'Response')
             print_dict(u.__dict__, 'RowData')
 
