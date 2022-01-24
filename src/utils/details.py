@@ -33,7 +33,7 @@ add_mapping(weapon_mappings, 'Great Axe', ['GA', 'War Axe', 'Axe'])
 #  Emoji Role Mappings   #
 ##########################
 role_emoji_mappings = {}
-add_mapping(role_emoji_mappings, ':axe:', ['dps'])
+# add_mapping(role_emoji_mappings, ':axe:', ['dps'])
 add_mapping(role_emoji_mappings, ':adhesive_bandage:', ['healer', 'heal', 'heals'])
 add_mapping(role_emoji_mappings, ':shield:', ['tank'])
 add_mapping(role_emoji_mappings, ':hammer_pick:', ['siege'])
@@ -43,6 +43,14 @@ add_mapping(role_emoji_mappings, ':man_mage:', ['mage'])
 add_mapping(role_emoji_mappings, ':muscle:', ['str dps', 'str. dps', 'melee', 'melee dps'])
 add_mapping(role_emoji_mappings, ':man_mage:', ['int dps', 'int. dps'])
 add_mapping(role_emoji_mappings, ':dagger:', ['dex dps', 'dex. dps'])
+
+############################
+#  Emoji Weight Mappings   #
+############################
+weight_emoji_mappings = {}
+add_mapping(weight_emoji_mappings, ':bricks:', ['heavy'])
+add_mapping(weight_emoji_mappings, ':scales:', ['medium'])
+add_mapping(weight_emoji_mappings, ':feather:', ['light'])
 
 ##########################
 # Location Name Mappings #
@@ -65,15 +73,15 @@ add_mapping(location_mappings, 'Fort Windsward', ['Windsward', 'WW'])
 # Company Name Mappings #
 #########################
 company_mappings = {}
-add_mapping(company_mappings, 'Lotus Trading',
-            ['Lotus Trading Cartel', 'Lotus Trading Company', 'Lotus Holdings Co.', 'LTC'])
-add_mapping(company_mappings, 'Storm Chasers', ['Storm Blazers', 'SC'])
-add_mapping(company_mappings, 'Actual Apes', ['Apes', 'AA', 'Actuai Apes', 'Actual Ape', 'Actuai Ape'])
+# add_mapping(company_mappings, 'Lotus Trading',
+#             ['Lotus Trading Cartel', 'Lotus Trading Company', 'Lotus Holdings Co.', 'LTC'])
+# add_mapping(company_mappings, 'Storm Chasers', ['Storm Blazers', 'SC'])
+# add_mapping(company_mappings, 'Actual Apes', ['Apes', 'AA', 'Actuai Apes', 'Actual Ape', 'Actuai Ape'])
 
 
 def get_location(loc):
     if loc is None:
-        return None
+        return ''
     _loc = loc.lower()
     if _loc in location_mappings:
         return location_mappings[_loc]
@@ -82,16 +90,25 @@ def get_location(loc):
 
 def role_emoji(role):
     if role is None:
-        return None
+        return ''
     _loc = role.lower()
     if _loc in role_emoji_mappings:
         return role_emoji_mappings[_loc]
     return role
 
 
+def weight_emoji(weight):
+    if weight is None:
+        return ''
+    _loc = weight.lower()
+    if _loc in weight_emoji_mappings:
+        return weight_emoji_mappings[_loc]
+    return weight
+
+
 def replace_weapon(weappon):
     if weappon is None:
-        return None
+        return ''
     _weappon = weappon.lower()
     if _weappon in weapon_mappings:
         return weapon_mappings[_weappon]
@@ -100,7 +117,7 @@ def replace_weapon(weappon):
 
 def replace_emojis(txt: str):
     if txt is None:
-        return None
+        return ''
     _txt = txt.lower()
     for emoji in role_emoji_mappings:
         _txt = _txt.replace(emoji, role_emoji_mappings[emoji])
@@ -117,7 +134,7 @@ def replace_weapons_abbrev(txt: str):
 
 def replace_company_name(company: str):
     if company is None:
-        return None
+        return ''
     _company = company.lower()
     if _company in company_mappings:
         return company_mappings[_company]

@@ -1,4 +1,3 @@
-
 from utils.userdata import UserData
 from utils.details import *
 from database.tables.users_table import UserRow
@@ -47,7 +46,7 @@ def create_roster_embed(names, absent, state, title=None, embed=None, abrv_line=
             if abrv_line:
                 line = f'{enl.username} *[{replace_weapons_abbrev(weapons)}]*'
             else:
-                line = f'{enl.level} {replace_emojis(enl.role)} **{enl.username}** *[{weapons}]*'
+                line = f'{enl.level} {weight_emoji(enl.weight)}{replace_emojis(enl.role)} **{enl.username}** *[{weapons}]*'
             val = f'> {line}\n'
             if len(value) + len(val) > 1024:
                 embed.add_field(name=f'{key} {"" if idx == 0 else idx}', value=value, inline=abrv_line)

@@ -55,10 +55,11 @@ def generate_enlistment_pandas(war: WarDef, users):
     dat = []
     for enl, entry in data:
 
-        d = [entry.username, entry.level, entry.role, entry.weapon1, entry.weapon2, entry.extra, entry.company,
+        d = [entry.username, entry.level, entry.role, entry.weight, entry.weapon1, entry.weapon2, entry.extra,
+             entry.company,
              entry.faction]
         if not enl:
-            d[2:] = ['ABSENT', '', '', '', '', '']
+            d[2:] = ['ABSENT', '', '', '', '', '', '']
         dat.append(d)
     data = dat  # [entry.data() for enl, entry in data]
 
@@ -67,6 +68,7 @@ def generate_enlistment_pandas(war: WarDef, users):
                             'Name',
                             'Level',
                             'Role',
+                            'Weight',
                             'Primary Weapon',
                             'Secondary Weapon',
                             'Preferred Group',
