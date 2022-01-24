@@ -93,6 +93,20 @@ class ConfigurationCog(commands.Cog):
                     print_stack_trace()
                     await ctx.respond(content=str(e), hidden=True)
                 print('Done')
+            elif args[0] == 'roster_push':
+
+                if not await check_permission(ctx, Perm.ADMIN):
+                    return
+
+                from utils.google_forms import post_enlistment
+                users = self.state.users
+                await ctx.defer(hidden=True)
+                for user in users.users:
+                    user = users.users[user]
+                    post_enlistment(user, force=True)
+                await ctx.respond('Done.')
+
+                users.save()
 
     @subslash_cog(base_names=['wl_configure', 'server'], name='init')
     async def cmd_init_guild(self, ctx: Interaction):
