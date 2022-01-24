@@ -7,7 +7,7 @@ class WarRow(SqlRow):
     def __init__(self, id=None, uuid=None, active=False, private=None,
                  name=None, owners=None, attacking=None,
                  defending=None, location=None, created=None,
-                 wartime=None, image=None, extra=None):
+                 wartime=None, image=None, extra=None, created_by=None):
         super().__init__()
         self.id = id
         self.uuid = uuid
@@ -22,6 +22,7 @@ class WarRow(SqlRow):
         self.wartime = wartime
         self.image = image
         self.extra = extra
+        self.created_by = created_by
 
         self.roster = []
         self.absent = []
@@ -35,8 +36,8 @@ class WarTable(SqlTable):
 
     def add_war(self, war: WarRow):
 
-        query = f'INSERT INTO {self.table_name} (uuid, owners, private, active, name, attacking, defending, location, wartime, image, extra)' \
-                f'VALUES (%(uuid)s, %(owners)s, %(private)s, %(active)s, %(name)s, %(attacking)s, %(defending)s, %(location)s, TIMESTAMP(%(wartime)s), %(image)s, %(extra)s) ON DUPLICATE KEY UPDATE id=id;'
+        query = f'INSERT INTO {self.table_name} (uuid, owners, private, active, name, attacking, defending, location, wartime, image, extra, created_by)' \
+                f'VALUES (%(uuid)s, %(owners)s, %(private)s, %(active)s, %(name)s, %(attacking)s, %(defending)s, %(location)s, TIMESTAMP(%(wartime)s), %(image)s, %(extra)s, %(created_by)s) ON DUPLICATE KEY UPDATE id=id;'
 
         params = {
             'id': war.id,
@@ -51,7 +52,8 @@ class WarTable(SqlTable):
             'created': war.created,
             'wartime': war.wartime,
             'image': war.image,
-            'extra': war.extra
+            'extra': war.extra,
+            'created_by': war.created_by
         }
         cursor = self.exec(query, params)
         id = cursor.getlastrowid()

@@ -34,6 +34,7 @@ class WarDef:
         self.absent = []
         # self.war_board = []
         self.boards = []
+        self.created_by = None
 
         self.looking_for = None
         self.additional_info = None
@@ -63,7 +64,7 @@ class WarDef:
         row.wartime = wartime
         row.image = self.image_url
         row.extra = self.additional_info
-
+        row.created_by = self.created_by
         return row
 
     def as_dict(self):
@@ -85,7 +86,8 @@ class WarDef:
             # 'boards': self.war_board,
             'boards': store_message_references(self.boards),
             'looking_for': self.looking_for,
-            'groups': self.groups.__dict__()
+            'groups': self.groups.__dict__(),
+            'created_by': self.created_by
         }
         return ret
 
@@ -111,6 +113,8 @@ class WarDef:
             self.additional_info = dic['additional']
         if 'private' in dic:
             self.private = dic['private']
+        if 'created_by' in dic:
+            self.created_by = dic['created_by']
 
         self.boards = parse_message_references(dic['boards'])
 
@@ -168,6 +172,10 @@ class WarDef:
         else:
             embed = discord.Embed(title=f':exclamation: __{self.location}!__ :exclamation: ',
                                   colour=discord.Colour.blurple())
+        # if self.created_by is not None:
+        #     name = self.created_by
+        #     embed.set_author(name=name)
+
         # embed.set_author(name='Test')
         if self.image_url is not None:
             embed.set_image(url=self.image_url)
@@ -213,8 +221,12 @@ class WarDef:
                         inline=True)
         embed.add_field(name='\u200b', value='\u200b', inline=True)
 
+        footer = ''
         if self.private is not None:
-            embed.set_footer(text='🔒 Private')
+            footer = '🔒 Private | '
+        if self.created_by is not None:
+            footer += f'Created by {self.created_by}'
+        embed.set_footer(text=footer)
 
         # embed.set_footer(text='Use /enlist to sign up!')
 

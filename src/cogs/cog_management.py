@@ -184,6 +184,11 @@ async def handle_management_message(state: BotState, msg: discord.Message, edite
     war = parse_war_info(state, lines)
 
     if war is not None:
+        user = state.users[str(msg.author)]
+        if user is not None:
+            war.created_by = user.username
+        else:
+            war.created_by = str(msg.author)
         war.active = True
         if war.private:
             war.private = msg.guild.id

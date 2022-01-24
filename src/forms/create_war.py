@@ -13,24 +13,50 @@ from utils.permissions import *
 
 
 async def cmd_create_war(ctx, attacking, defending, location, time, owner, state: BotState):
-    if not await check_permission(ctx, Perm.WAR_MANAGEMENT):
-        return
-    war = WarDef()
-    war.attacking = attacking
-    war.defending = defending
-    war.location = location
-    war.war_time = time
-    war.owners = owner
-    war.active = True
-
-    # await war_form(ctx, client, war)
-
-    state.add_war(war)
-
-    await add_war_board(war, state)
-    state.save_war_data()
-
-    await ctx.respond(content='War created!', hidden=True)
+    await ctx.respond(
+        content='Sorry! This command no longer works! Please use the **War Creation Template** and make a post in the #war-management channel!'
+                '\n'
+                '\n**War Creation Template**:\n'
+                '```\n'
+                '@Warlord\n'
+                '\n'
+                'Name:\n'
+                'Attacking Faction: \n'
+                'Defending Faction: \n'
+                'Contact:\n'
+                'War Time: Nov 30 @ 10:45 PM\n'
+                'Location: \n'
+                '\n'
+                '---\n'
+                '  You can place any additional \n'
+                '  information you need in this area\n'
+                '---\n'
+                '\n'
+                '[Attach screenshot of notification (optional)]\n'
+                '```\n'
+                '*Only works from the #war-management channel*\n'
+                'Add **[private]** anywhere in the post to make it a private post (only on this discord server)\n'
+                '**Attacking Faction** and **Defending Faction** are optional fields.\n')
+    return
+    # if not await check_permission(ctx, Perm.WAR_MANAGEMENT):
+    #     return
+    # war = WarDef()
+    # war.attacking = attacking
+    # war.defending = defending
+    # war.location = location
+    # war.war_time = time
+    # war.owners = owner
+    # war.created_by = str(ctx.author)
+    # war.active = True
+    #
+    # # await war_form(ctx, client, war)
+    #
+    # state.add_war(war)
+    #
+    # await add_war_board(war, state)
+    # state.save_war_data()
+    #
+    # await ctx.respond(content='War created!', hidden=True)
 
 
 async def cmd_end_war(state, ctx):
