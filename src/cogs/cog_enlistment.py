@@ -51,6 +51,10 @@ question_list = {
         'question': '**What is your desired role?**',
         'choices': WAR_ROLES,
     },
+    'weight': {
+        'question': '**What type of armor are you using?**',
+        'choices': ['Light', 'Medium', 'Heavy'],
+    },
     'primary_weapon': {
         'question': '**What is your Primary Weapon?**',
         'choices': WEAPON_CHOICES,
@@ -114,6 +118,7 @@ test_responses = {
     'faction': 'Syndicate',
     'company': 'Storm Chasers',
     'role': 'Str DPS',
+    'weight': 'Heavy',
     'primary_weapon': 'War Hammer',
     'secondary_weapon': 'Great Axe',
     'group': None
@@ -225,7 +230,8 @@ class DMEnlistmentCog(commands.Cog):
                         return None
                 responses[key] = response
 
-            await ctx.author.send('You have finished answering all the questions!\n You have successfully signed up for the war!\n*Don\'t forget to sign up in-game too!*')
+            await ctx.author.send(
+                'You have finished answering all the questions!\n You have successfully signed up for the war!\n*Don\'t forget to sign up in-game too!*')
 
             # user = UserSignup()
             u = UserRow()
@@ -236,6 +242,7 @@ class DMEnlistmentCog(commands.Cog):
             u.company = responses['company']
             u.company = replace_company_name(u.company)
             u.role = responses['role']
+            u.weight = responses['weight']
             u.username = responses['name']
             u.level = responses['level']
             # if 'gearscore' in responses:

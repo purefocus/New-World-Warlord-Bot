@@ -14,7 +14,7 @@ _user_data_fields = ['user_id', 'last_updated', 'discord', 'username',
 class UserRow(SqlRow):
 
     def __init__(self, user_id=-1, discord=None, username=None, level=None, role=None, weapon1=None, weapon2=None,
-                 faction=None, company=None, extra=None, edit_key=None, last_updated=None):
+                 faction=None, company=None, extra=None, edit_key=None, last_updated=None, weight=None):
         super().__init__()
         self.user_id = user_id
         self.discord = discord
@@ -28,6 +28,7 @@ class UserRow(SqlRow):
         self.extra = extra
         self.edit_key = edit_key
         self.last_updated = last_updated
+        self.weight = weight
 
     def __repr__(self):
         return f'{self.discord} [id: {self.user_id}, username: {self.username}, changed: {self.changed}]'
@@ -47,6 +48,10 @@ def _data_from_row(row):
     user.weapon2 = row[9]
     user.extra = row[10]
     user.edit_key = row[11]
+    try:
+        user.weight = row[12]
+    except:
+        pass
     user.changed = False
     return user
 
@@ -86,13 +91,13 @@ class TableUsers(SqlTable):
     def update_row(self, user: UserRow):
         if user.changed:
             query = f'UPDATE users SET ' \
-                    f'company=%s, level=%s, role=%s, weapon1=%s, weapon2=%s, extra=%s, edit_key=%s ' \
+                    f'company=%s, level=%s, role=%s, weapon1=%s, weapon2=%s, extra=%s, edit_key=%s, weight=%s ' \
                     f'WHERE discord=%s;'
 
             self.exec(query,
                       (user.company, user.level, user.role,
                        user.weapon1, user.weapon2, user.extra,
-                       user.edit_key, user.discord))
+                       user.edit_key, user.weight, user.discord))
             self.commit()
             user.finalize()
             return True
@@ -100,9 +105,9 @@ class TableUsers(SqlTable):
 
     def insert_user(self, enlist_data: UserRow):
         try:
-            query = f'INSERT INTO users (discord, username, faction, company, level, role, weapon1, weapon2, extra, edit_key) ' \
+            query = f'INSERT INTO users (discord, username, faction, company, level, role, weapon1, weapon2, extra, edit_key, weight) ' \
                     f'VALUES (%(discord)s, %(username)s, %(faction)s, %(company)s, ' \
-                    f'%(level)s, %(role)s, %(weapon1)s, %(weapon2)s, %(extra)s, %(edit_key)s) ' \
+                    f'%(level)s, %(role)s, %(weapon1)s, %(weapon2)s, %(extra)s, %(edit_key)s, %(weight)s) ' \
                     f'ON DUPLICATE KEY update user_id=user_id;'
 
             if isinstance(enlist_data, Enlistment):
@@ -118,7 +123,8 @@ class TableUsers(SqlTable):
                     'faction': enlist_data.faction,
                     'company': enlist_data.company,
                     'level': enlist_data.level,
-                    'edit_key': enlist_data.edit_key
+                    'edit_key': enlist_data.edit_key,
+                    'weight': enlist_data.weight
                 }
             else:
                 return
@@ -195,6 +201,7 @@ class TableUsers(SqlTable):
             #
             # elif isinstance(user, UserRow):
             u.role = user.role
+            u.weight = user.weight
             u.weapon1 = user.weapon1
             u.weapon2 = user.weapon2
             u.extra = user.extra

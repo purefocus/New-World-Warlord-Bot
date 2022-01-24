@@ -72,7 +72,7 @@ permissions = {
         Perm.WAR_POST: [],
         Perm.CONFIGURE: [],
         Perm.WAR_HOST: []
-    }, # Stormys Cloud
+    },  # Stormys Cloud
     850011885574815754: {
         Perm.ADMIN: ['Moderator', 'Admin', 'Stormuwu', 'Consul'],
         Perm.ENLIST: ['Storm Chasers', 'Cuties'],
@@ -82,7 +82,7 @@ permissions = {
         Perm.WAR_POST: [],
         Perm.CONFIGURE: [],
         Perm.WAR_HOST: []
-    }, # Storm Chasers Discord
+    },  # Storm Chasers Discord
     897255450054127637: {
         Perm.ADMIN: ['Moderator', 'Admin', 'Stormuwu', 'Consul'],
         Perm.ENLIST: ['Storm Chasers', 'Cuties', 'Syndicate', 'Covenant', 'Marauders', 'Allies', '*'],
@@ -92,7 +92,7 @@ permissions = {
         Perm.WAR_POST: [],
         Perm.CONFIGURE: [],
         Perm.WAR_HOST: []
-    }, # Goblin Loot Corpse
+    },  # Goblin Loot Corpse
     895073382465425418: {
         Perm.ADMIN: ['Moderator', 'Admin', 'Stormuwu', 'Governor', 'Consul'],
         Perm.ENLIST: ['Goblin'],
@@ -102,7 +102,7 @@ permissions = {
         Perm.WAR_POST: [],
         Perm.CONFIGURE: [],
         Perm.WAR_HOST: []
-    }, # Silver Dawn
+    },  # Silver Dawn
     892519781759070218: {
         Perm.ADMIN: ['Moderator', 'Admin', 'Stormuwu', 'Governor', 'Consul'],
         Perm.ENLIST: ['Settler'],
@@ -112,7 +112,7 @@ permissions = {
         Perm.WAR_POST: [],
         Perm.CONFIGURE: [],
         Perm.WAR_HOST: []
-    }, # Scrimps
+    },  # Scrimps
     905475600364498974: {
         Perm.ADMIN: ['Moderator', 'Admin', 'Governor', 'Consul', 'Scrimp Lord', 'Scrimp King'],
         Perm.ENLIST: ['Scrimp'],
@@ -122,7 +122,7 @@ permissions = {
         Perm.WAR_POST: [],
         Perm.CONFIGURE: [],
         Perm.WAR_HOST: []
-    }, # Shadow Pack
+    },  # Shadow Pack
     894043484191867011: {
         Perm.ADMIN: ['Moderator', 'Admin', 'Governor', 'Consul'],
         Perm.ENLIST: ['Shadow Pack', 'Syndicate'],
@@ -132,7 +132,7 @@ permissions = {
         Perm.WAR_POST: [],
         Perm.CONFIGURE: [],
         Perm.WAR_HOST: []
-    }, # Gremlin
+    },  # Gremlin
     919685476850491442: {
         Perm.ADMIN: ['Moderator', 'Admin', 'Governor', 'Consul'],
         Perm.ENLIST: ['Friend of the Gremlins', 'Syndicate'],
@@ -142,7 +142,7 @@ permissions = {
         Perm.WAR_POST: [],
         Perm.CONFIGURE: [],
         Perm.WAR_HOST: []
-    }, # Amazonian Primez
+    },  # Amazonian Primez
     785469845487353877: {
         Perm.ADMIN: ['All Might', 'Marked Ones', 'Chancellor'],
         Perm.ENLIST: ['Amazonian Primez'],
@@ -152,7 +152,7 @@ permissions = {
         Perm.WAR_POST: [],
         Perm.CONFIGURE: [],
         Perm.WAR_HOST: []
-    }, # Unhinged
+    },  # Unhinged
     614191241525067776: {
         Perm.ADMIN: ['Leadership', 'Server Admin', 'Company Consul'],
         Perm.ENLIST: ['Member', 'Company Member', 'new world'],
