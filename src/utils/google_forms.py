@@ -21,6 +21,7 @@ field2post = {
     'preferred group': 74838911,
     'faction': 324917347,
     'role': 184378169,
+    'armor type': 1740222478,
 }
 
 
@@ -35,7 +36,8 @@ def post_enlistment(user, force=False):
             'secondary weapon': user.weapon2,
             'preferred group': user.extra,
             'company': user.company,
-            'faction': user.faction
+            'faction': user.faction,
+            'armor type': user.weight
         }
 
         req = {
@@ -192,8 +194,8 @@ class Question:
 
 
 if __name__ == '__main__':
-    ret = pull_from_sheet('https://docs.google.com/spreadsheets/d/1shDl1rikY29gBocWiCJOXaFq6sgO-74OZk-JQWuTx_Y',
-                          'Test+Sheet')
-    print(ret)
-    # parse_google_form(
-    #     'https://docs.google.com/forms/d/e/1FAIpQLSfYNr3uLqLKoXKuY6PmHsugpEn4H6QjL84dY6-KgDabq_gGtA/viewform?usp=sf_link')
+    # ret = pull_from_sheet('https://docs.google.com/spreadsheets/d/1shDl1rikY29gBocWiCJOXaFq6sgO-74OZk-JQWuTx_Y',
+    #                       'Test+Sheet')
+    # print(ret)
+    parse_google_form(
+        'https://docs.google.com/forms/d/e/1FAIpQLSfYNr3uLqLKoXKuY6PmHsugpEn4H6QjL84dY6-KgDabq_gGtA/viewform?usp=sf_link')
