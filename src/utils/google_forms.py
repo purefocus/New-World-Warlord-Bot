@@ -22,6 +22,9 @@ field2post = {
     'faction': 324917347,
     'role': 184378169,
     'armor type': 1740222478,
+    'war experience': 1350731213,
+    'attribute distribution': 2132497935,
+    'extra information': 74838911,
 }
 
 
@@ -37,7 +40,9 @@ def post_enlistment(user, force=False):
             'preferred group': user.extra,
             'company': user.company,
             'faction': user.faction,
-            'armor type': user.weight
+            'armor type': user.weight,
+            'attribute distribution': user.attributes,
+            'war experience': user.experience
         }
 
         req = {

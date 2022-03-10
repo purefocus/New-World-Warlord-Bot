@@ -75,8 +75,16 @@ question_list = {
     #     'response_type': int,
     #     'check': lambda response, answers: None if 0 < response <= 20 else 'Your answer must be between 0-20'
     # },
+    'attributes': {
+        'question': 'Current Stat Distribution',
+        'response_type': str,
+    },
+    'experience': {
+        'question': 'How much war experience do you have?\n    *# of wars, leadership experience, etc..*',
+        'response_type': str,
+    },
     'group': {
-        'question': '**Any extra information?** \n  *Attribute Distribution, Specialties, Preferred roles, etc..?*\n*Enter None if no extra information*',
+        'question': '**Any extra information?** \n    *Specialties, Preferred roles, etc..?*\n*Enter None if no extra information*',
         'response_type': str,
     }
 }
@@ -121,6 +129,8 @@ test_responses = {
     'weight': 'Heavy',
     'primary_weapon': 'War Hammer',
     'secondary_weapon': 'Great Axe',
+    'attributes': '300str/200con',
+    'experience': '300str/200con',
     'group': None
 
 }
@@ -245,6 +255,8 @@ class DMEnlistmentCog(commands.Cog):
             u.weight = responses['weight']
             u.username = responses['name']
             u.level = responses['level']
+            u.attributes = responses['attributes']
+            u.experience = responses['attributes']
             # if 'gearscore' in responses:
             #     user.level = responses['gearscore']
 

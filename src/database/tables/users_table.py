@@ -8,13 +8,14 @@ from utils.colorprint import print_dict
 
 _user_data_fields = ['user_id', 'last_updated', 'discord', 'username',
                      'faction', 'company', 'level', 'role', 'weapon1',
-                     'weapon2', 'extra', 'edit_key']
+                     'weapon2', 'extra', 'edit_key', 'attributes', 'experience']
 
 
 class UserRow(SqlRow):
 
     def __init__(self, user_id=-1, discord=None, username=None, level=None, role=None, weapon1=None, weapon2=None,
-                 faction=None, company=None, extra=None, edit_key=None, last_updated=None, weight=None):
+                 faction=None, company=None, extra=None, edit_key=None, last_updated=None, weight=None,
+                 attributes=None, experience=None):
         super().__init__()
         self.user_id = user_id
         self.discord = discord
@@ -29,6 +30,8 @@ class UserRow(SqlRow):
         self.edit_key = edit_key
         self.last_updated = last_updated
         self.weight = weight
+        self.attributes = attributes
+        self.experience = experience
 
     def __repr__(self):
         return f'{self.discord} [id: {self.user_id}, username: {self.username}, changed: {self.changed}]'
@@ -50,6 +53,8 @@ def _data_from_row(row):
     user.edit_key = row[11]
     try:
         user.weight = row[12]
+        user.attributes = row[13]
+        user.experience = row[14]
     except:
         pass
     user.changed = False
@@ -91,7 +96,8 @@ class TableUsers(SqlTable):
     def update_row(self, user: UserRow):
         if user.changed:
             query = f'UPDATE users SET ' \
-                    f'company=%s, level=%s, role=%s, weapon1=%s, weapon2=%s, extra=%s, edit_key=%s, weight=%s ' \
+                    f'company=%s, level=%s, role=%s, weapon1=%s, weapon2=%s, extra=%s, edit_key=%s, weight=%s, ' \
+                    f'experience=%s, attributes=%s ' \
                     f'WHERE discord=%s;'
 
             self.exec(query,
@@ -105,9 +111,9 @@ class TableUsers(SqlTable):
 
     def insert_user(self, enlist_data: UserRow):
         try:
-            query = f'INSERT INTO users (discord, username, faction, company, level, role, weapon1, weapon2, extra, edit_key, weight) ' \
+            query = f'INSERT INTO users (discord, username, faction, company, level, role, weapon1, weapon2, extra, edit_key, weight, experience, attributes) ' \
                     f'VALUES (%(discord)s, %(username)s, %(faction)s, %(company)s, ' \
-                    f'%(level)s, %(role)s, %(weapon1)s, %(weapon2)s, %(extra)s, %(edit_key)s, %(weight)s) ' \
+                    f'%(level)s, %(role)s, %(weapon1)s, %(weapon2)s, %(extra)s, %(edit_key)s, %(weight)s, %(experience)s, %(attributes)s) ' \
                     f'ON DUPLICATE KEY update user_id=user_id;'
 
             if isinstance(enlist_data, Enlistment):
@@ -124,7 +130,9 @@ class TableUsers(SqlTable):
                     'company': enlist_data.company,
                     'level': enlist_data.level,
                     'edit_key': enlist_data.edit_key,
-                    'weight': enlist_data.weight
+                    'weight': enlist_data.weight,
+                    'attributes': enlist_data.attributes,
+                    'experience': enlist_data.experience
                 }
             else:
                 return
@@ -209,6 +217,8 @@ class TableUsers(SqlTable):
             u.company = user.company
             u.level = user.level
             user.edit_key = u.edit_key
+            u.attributes = user.attributes
+            u.experience = user.experience
             # u.edit_key = user.edit_key
 
             self.update_row(u)
