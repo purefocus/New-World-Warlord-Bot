@@ -12,9 +12,13 @@ def user_embed(user: UserRow, state=None):
 
     embed.add_field(name='Role', value=user.role, inline=True)
     embed.add_field(name='Weapons', value=f'{user.weapon1}/{user.weapon2}', inline=True)
-    if user.extra is not None:
-        embed.add_field(name='Armor Weight', value=user.weight, inline=False)
     if user.weight is not None:
+        embed.add_field(name='Armor Weight', value=user.weight, inline=False)
+    if user.attributes is not None:
+        embed.add_field(name='Attribute Distribution', value=user.attributes, inline=False)
+    if user.experience is not None:
+        embed.add_field(name='War Experience', value=user.experience, inline=False)
+    if user.extra is not None:
         embed.add_field(name='Extra Information', value=user.extra, inline=False)
 
     if state is not None:

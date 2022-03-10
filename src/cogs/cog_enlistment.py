@@ -256,7 +256,7 @@ class DMEnlistmentCog(commands.Cog):
             u.username = responses['name']
             u.level = responses['level']
             u.attributes = responses['attributes']
-            u.experience = responses['attributes']
+            u.experience = responses['experience']
             # if 'gearscore' in responses:
             #     user.level = responses['gearscore']
 
