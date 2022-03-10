@@ -34,11 +34,6 @@ question_list = {
         'response_type': int,
         'check': lambda response, answers: None if 0 < response <= 1000 else 'Your answer must be between 0-600'
     },
-    # 'gearscore': {
-    #     'question': 'What level is your Gear Score?',
-    #     'response_type': int,
-    #     'askif': lambda answers: answers['level'] == 60
-    # },
     'faction': {
         'question': '**What Faction are you?**',
         'choices': FACTIONS,
@@ -59,22 +54,12 @@ question_list = {
         'question': '**What is your Primary Weapon?**',
         'choices': WEAPON_CHOICES,
     },
-    # 'primary_level': {
-    #     'followup': lambda x: f"What is your Mastery Level for your {x['primary_weapon']}",
-    #     'response_type': int,
-    #     'check': lambda response, answers: None if 0 < response <= 20 else 'Your answer must be between 0-20'
-    # },
     'secondary_weapon': {
         'question': '**What is your Secondary Weapon?**',
         'choices': WEAPON_CHOICES,
         'check': lambda response, answers: None if response != answers[
             'primary_weapon'] else 'You must select a different weapon from your primary!'
     },
-    # 'secondary_level': {
-    #     'followup': lambda x: f"What is your Mastery Level for your {x['secondary_weapon']}",
-    #     'response_type': int,
-    #     'check': lambda response, answers: None if 0 < response <= 20 else 'Your answer must be between 0-20'
-    # },
     'attributes': {
         'question': 'Current Stat Distribution',
         'response_type': str,
@@ -84,10 +69,11 @@ question_list = {
         'response_type': str,
     },
     'group': {
-        'question': '**Any extra information?** \n    *Specialties, Preferred roles, etc..?*\n*Enter None if no extra information*',
+        'question': '**Any extra information?** \n    *Specialties, Preferred Roles, Secondary Builds, *\n*Enter None if no extra information*',
         'response_type': str,
     }
 }
+
 STR_ENLIST_FAILED = 'Something went wrong and you have not been enlisted.'
 
 STR_NO_ACTIVE_WAR = 'Sorry, This war is no longer active!\nIf this is a mistake, please contact an admin!'
@@ -130,7 +116,7 @@ test_responses = {
     'primary_weapon': 'War Hammer',
     'secondary_weapon': 'Great Axe',
     'attributes': '300str/200con',
-    'experience': '300str/200con',
+    'experience': 'Too much',
     'group': None
 
 }
