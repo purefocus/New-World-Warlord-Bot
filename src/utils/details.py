@@ -8,7 +8,7 @@ WEAPON_CHOICES_ABRV = ['SS', 'R', 'H',  # One handed
                        'Bow', 'M',  # Ranged
                        'FS', 'LS', 'IG', 'VG']  # Magic
 
-WAR_ROLES = ['Healer', 'Tank', 'Dex DPS', 'Str DPS', 'Int DPS']
+WAR_ROLES = ['Healer', 'Tank', 'Ranged DPS', 'Melee DPS', 'Mage DPS', 'Siege']
 
 FACTIONS = ['Syndicate', 'Covenant', 'Marauders']
 
