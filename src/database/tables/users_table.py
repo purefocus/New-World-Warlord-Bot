@@ -103,7 +103,7 @@ class TableUsers(SqlTable):
             self.exec(query,
                       (user.company, user.level, user.role,
                        user.weapon1, user.weapon2, user.extra,
-                       user.edit_key, user.weight, user.discord))
+                       user.edit_key, user.weight, user.experience, user.attributes, user.discord))
             self.commit()
             user.finalize()
             return True
